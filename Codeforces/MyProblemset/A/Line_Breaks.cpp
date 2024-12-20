@@ -23,16 +23,38 @@ const int MAXN = -1;
 
 using namespace std;
  
-int t;
+int t, n, m;
 
 int main()
 {
-    #ifdef MILF
-        freopen("../input.txt", "r", stdin);
-    #endif
-    ios::sync_with_stdio(0);
-    cin.tie(0);
-    
+    // #ifdef MILF
+    //     freopen("../input.txt", "r", stdin);
+    // #endif
+
+    cin >> t;
+
+    while (t--)
+    {
+        cin >> n >> m;
+        string s;
+        int x = 0;
+
+        forn(i,n)
+        {
+            cin >> s;
+            if ((m - (int) s.size()) >= 0) 
+            {
+                m -= s.size();
+                x++;
+            }
+            else
+            {
+                m = 0;
+            }
+        }
+
+        cout << x << nl;
+    }
 
     return 0;
 }

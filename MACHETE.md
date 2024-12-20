@@ -18,8 +18,13 @@
 
 | Seccion                                                                                                  | Complejidad                                      |
 |----------------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| [Algebra: Raiz](#Raices)                                                                                 | O(log(numero))                                   |
-| [Algebra: Exponenciacion](#Exponenciacion)                                                               | O(#potencias)                                    |
+| [Progresiones: Sumas Gaussianas](#sumas-gaussianas)                                                      | O(1)                                             |
+| [Progresiones: Formula de Faulhaber](#formula-de-faulhaber-hasta-6)                                      | O(1)                                             |
+| [Progresiones: Progresion Aritmetica](#progresion-aritmetica)                                            | O(1)                                             |
+| [Progresiones: Progresion Geometrica](#progresion-geometrica)                                            | O(1)                                             |
+| [Algebra: Raiz](#raices)                                                                                 | O(log(numero))                                   |
+| [Algebra: Exponenciacion](#exponenciacion)                                                               | O(#potencias)                                    |
+| [Algebra: Formula de Binet](#formula-de-binet)                                                           | O(1)                                             |
 | [Geometria: Suma y resta de vectores](#suma-y-resta-de-vectores)                                         | O(1)                                             |
 | [Geometria: Multiplicacion y division de vectores por escalares](#multiplacion-y-division-por-escalares) | O(1)                                             |
 | [Geometria: Norma de un vector](#norma)                                                                  | O(log(U^2))                                      |
@@ -228,9 +233,9 @@ set<int> S;
 **S.insert():** // S.insert(5); S.insert(10); S.insert(5); no da error, pero el elemento no se agrega
 **S.size():** // 2
 **S.erase():** // S.erase(5); chau 5
-S.count(5) // 0 puede ser solo 0 o 1
-S.lower_bound(x) // puntero al primer elemento >= x
-S.upper_bound(x) // putero al primer elemento > x
+**S.count(5):** // 0; puede ser solo 0 o 1
+**S.lower_bound(x):** // puntero al primer elemento >= x
+**S.upper_bound(x):** // puntero al primer elemento > x
 
 - *Se maneja internamente con **punteros***
 - *Es mas costoso de insertar (**O(log(n))**) que un vector pero es mas rapido de buscar (**O(log(n))**)*
@@ -251,7 +256,7 @@ multiset<int> MS;
 
 ## Maps
 
-Es como un arreglo, pero lo podes indexar con la estructura que quieras y ordena los indices de mayor a menor
+Es como un arreglo, pero lo podes indexar con la estructura que quieras y ordena los indices de mayor a menor.
 
 <u>Inicializacion:</u>
 map<int, string> M; // mapea de tipo `int` a tipo `string`
@@ -344,10 +349,57 @@ void sumst(int v, int tl, int tr, int l, int r) { // nodo raiz, 0, n, indice izq
 
 # Matematicas
 
-## Sumas Gausseaneas
+## Progresiones
+
+### Sumas Gaussianas
 
 - Sum(n) -> (n*(n+1))/2
 - Sum(n-1) -> (n*(n-1))/2
+
+### Formula de Faulhaber (hasta 6)
+
+$
+1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2} = \frac{n^2 + n}{2}
+$
+
+$
+1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6} = \frac{2n^3 + 3n^2 + n}{6}
+$
+
+$
+1^3 + 2^3 + 3^3 + \cdots + n^3 = \left(\frac{n^2 + n}{2}\right)^2 = \frac{n^4 + 2n^3 + n^2}{4}
+$
+
+$
+1^4 + 2^4 + 3^4 + \cdots + n^4 = \frac{6n^5 + 15n^4 + 10n^3 - n}{30}
+$
+
+$
+1^5 + 2^5 + 3^5 + \cdots + n^5 = \frac{2n^6 + 6n^5 + 5n^4 - n^2}{12}
+$
+
+$
+1^6 + 2^6 + 3^6 + \cdots + n^6 = \frac{6n^7 + 21n^6 + 21n^5 - 7n^3 + n}{42}
+$
+
+### Progresion Aritmetica
+
+$$
+\underbrace{a + \cdots + b}_{n \text{ numbers}} = \frac{n(a + b)}{2}
+$$
+
+Donde *a* es el primer numero, *b* el ultimo y *n* la cantidad total de numeros.
+
+**NOTA**:
+- La formula es **independiente de la constante de separacion** entre los sumandos
+
+### Progresion Geometrica
+
+$
+a + ak + ak^2 + \cdots b = \frac{bk - a}{k - 1}
+$
+
+Donde *a* es el primer numero, *b* el ultimo y *k* es el radio entre los sumandos.
 
 ## Algebra
 
@@ -405,6 +457,17 @@ ll exp(int b, int e) {
 }
 ```
 > *Complejidad: O(e)*
+
+### Formula de Binet
+
+$
+f(n) = \frac{(1 + \sqrt{5})^n - (1 - \sqrt{5})^n}{2^n \sqrt{5}}
+$
+
+Calcula el n-esimo numero de la sucesion de *Fibonacci*.
+
+**NOTA**: 
+- El resultado debe estar en **punto flotante**
 
 ## Geometria
 

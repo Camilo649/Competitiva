@@ -28,7 +28,7 @@ int n;
 int main()
 {
     #ifdef CAM
-        freopen("input.txt", "r", stdin);
+        freopen("../input.txt", "r", stdin);
     #endif
 
     cin >> n;
