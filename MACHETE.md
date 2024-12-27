@@ -56,6 +56,7 @@
 | [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                                 |
 | [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | O(tamaño(matriz))                                |
 | [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | O(tamaño(matriz))                                |
+| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(tamaño(matriz))                                |
 
 # Indice Estructuras
 
@@ -156,7 +157,7 @@ Especialmente eficiente para:
 vector<int> S
 S.push_back(0);
 void sumaAditiva  (vector<int > &A) {
-    for(int i = 0; i < A.size()) {
+    for(int i = 0; i < A.size(); i++) {
         S.push_back(A[i] + S[i]);
     }
 }
@@ -1276,7 +1277,7 @@ int D(int n){
 
 ### BottomUp
 
-Enfoque que consiste en fijar los cases bases y desde ahi llevarlo hasta el caso de interes.
+Enfoque que consiste en fijar los casos bases y desde ahi llevarlo hasta el caso de interes.
 
 ``` c++
 int D[MAXN];
@@ -1298,6 +1299,32 @@ for (int n = 2; n < MAXN; ++n) {
 ## Complejidad de una DP
 
 La complejidad de una dp esta dada por la suma de sus estados. Aqui un estado es una tupla con informacion particular de un subproblema (ej, n = 3).
+
+### Algoritmo de Kadane
+
+Obtener la maxima suma de subarreglos:
+
+```c
+int a[n];
+int curmx = a[0], glmx = a[0];
+forr(i,1,n)
+{
+    curmx = max(a[i], curmx + a[i]);
+    glmx = max(glmx, curmx);
+}
+```
+
+Obtener la minima suma de subarreglos:
+
+```c
+int a[n];
+int curmn = a[0], glmn = a[0];
+forr(i,1,n)
+{
+    curmn = min(a[i], curmn + a[i]);
+    glmn = min(glmn, curmn);
+}
+```
 
 # Greddy
 
