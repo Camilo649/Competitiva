@@ -1,4 +1,4 @@
-#include<bits/stdc++.h>
+#include <bits/stdc++.h>
 
 // for's hacia adelante
 #define forr(i, a, b) for(int i = (int) a; i < (int) b; ++i)

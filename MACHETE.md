@@ -2,6 +2,82 @@
 
 - bits/stdc++.h
 
+## Usando *sort()*
+
+- **vectores:**
+
+```c++
+vector<int> v = {4,2,5,3,5,8,3};
+sort(v.begin(),v.end());   // <-- DE MENOR A MAYOR
+sort(v.rbegin(),v.rend()); // <-- DE MAYOR A MENOR
+```
+
+- **arreglos:**
+
+```c++
+int n = 7;
+int a[] = {4,2,5,3,5,8,3};
+sort(a,a+n);
+```
+
+- **strings:**
+
+```c++
+string s = "monkey";
+sort(s.begin(), s.end());
+```
+
+### Funcion de Comparacion
+
+Tambien podemos utilizar la funcion *sort()* con una comparacion *ad-hoc*.
+
+Por ejemplo, definimos la funcion *comp()* que ordena strings primero por su longitud y luego alfabeticamente:
+
+```c++
+bool comp(string a, string b) {
+    if (a.size() != b.size()) 
+        return a.size() < b.size();
+    return a < b;
+}
+```
+
+Luego, dado `v` un vector de strings, podemos ordenar utilizando *comp()* llamando a *sort()* como sigue:
+
+```c++
+sort(v.begin(), v.end(), comp);
+```
+
+## Funciones de Busqueda
+
+**NOTAS**:
+- Las siguientes funciones requieren que la estructura a iterar se encuentre **ordenada de menor a mayor**
+- Al estar implementadas con busqueda lineal, su complejidad es **O(log(n))**
+
+### *lower_bound()* 
+
+Devuelve un puntero al primer elemento cuyo valor es <= a `x`.
+
+```c++
+auto a = lower_bound(array, array+n, x);
+```
+
+### *upper_bound()*
+
+Devuelve un puntero al primer elemento cuyo valor es > a `x`
+
+```c++
+auto b = upper_bound(array, array+n, x);
+```
+
+### *equal_range()*
+
+Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente.
+
+```c++
+auto r = equal_range(array, array+n, x);
+cout << r.second-r.first << "\n";
+```
+
 # Estimado de Eficiencia
 
 | Input size | Required time complexity |
@@ -883,7 +959,8 @@ for (int i = 0; i < n ; i ++) {
 Especialmente eficiente para:
 
 - Buscar valores "menores que" o "mayores que"
-- Buscar valores minimos y maximos
+- Buscar valores minimos y maximos de funciones
+- Buscar la primer posicion en la que cambia el valor de una funcion
 
 ``` c++
 int a = 0 , b = n -1;
@@ -902,7 +979,7 @@ while (a <= b) {
 
 ``` c++
 int k = 0;
-for (int b = n /2; b >= 1; b /= 2) {
+for (int b = n/2; b >= 1; b /= 2) {
     while (k + b < n && array [k+b] <= x) k += b ;
 }
 if (array [k] == x) {
@@ -1304,7 +1381,7 @@ La complejidad de una dp esta dada por la suma de sus estados. Aqui un estado es
 
 Obtener la maxima suma de subarreglos:
 
-```c
+```c++
 int a[n];
 int curmx = a[0], glmx = a[0];
 forr(i,1,n)
@@ -1316,7 +1393,7 @@ forr(i,1,n)
 
 Obtener la minima suma de subarreglos:
 
-```c
+```c++
 int a[n];
 int curmn = a[0], glmn = a[0];
 forr(i,1,n)
