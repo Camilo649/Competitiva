@@ -27,6 +27,8 @@ string s = "monkey";
 sort(s.begin(), s.end());
 ```
 
+- *Lo mismo aplica para la funcion **random_shuffle()** que ordena los elementos de manera aleatoria*
+
 ### Funcion de Comparacion
 
 Tambien podemos utilizar la funcion *sort()* con una comparacion *ad-hoc*.
@@ -55,7 +57,7 @@ sort(v.begin(), v.end(), comp);
 
 ### *lower_bound()* 
 
-Devuelve un puntero al primer elemento cuyo valor es <= a `x`.
+Devuelve un puntero al primer elemento cuyo valor es >= a `x`.
 
 ```c++
 auto a = lower_bound(array, array+n, x);
@@ -139,13 +141,18 @@ cout << r.second-r.first << "\n";
 | Seccion                                               | Memoria Total(usando `int`)                                                              |
 |-------------------------------------------------------|------------------------------------------------------------------------------------------|
 | [Arrays](#arrays)                                     | (4*#elementos)B                                                                          |
+| [Bitsets](#bitsets)                                   | (#elementos)b                                                                            |
 | [Prefix sum/Tabla aditiva](#prefix-sum)               | (8*#elementos+4)B                                                                        |
 | [Vectors](#vectors)                                   | (4*#elementos)B                                                                          |
+| [Strings](#strings)                                   | (#elementos + 1)B                                                                        |
+| [Deques](#deques)                                     | (4*#elementos)B                                                                          |
 | [Queues](#queues)                                     | (4*#elementos)B                                                                          |
 | [Priority Queues](#priority-queues)                   | (4*#elementos)B                                                                          |
 | [Sets](#sets)                                         | (4*#elementos)B                                                                          |
 | [Multisets](#multisets)                               | (4*#elementos)B                                                                          |
+| [Indexed Sets](#indexed-sets)                         | (4*#elementos)B                                                                          |
 | [Maps](#maps)                                         | (8*#elementos)B                                                                          |
+| [Iteradores](#iteradores)                             | 4B                                                                                       |
 | [Segment Tree](#segment-tree)                         | (16*#elementos)B                                                                         |
 | [Geometria: Punto](#punto)                            | 8B                                                                                       |
 | [Geometria: Vector](#vector)                          | 8B                                                                                       |
@@ -201,6 +208,8 @@ cout << r.second-r.first << "\n";
 
 - **UPSOLVEAR. Aprender lo que no sabes**
 
+- **Siempre es preferible utilizar la funcion `sort()` que mantener una estructura ordenada (como sets o maps)**
+
 # Estructuras de datos
 
 ## Arrays
@@ -215,12 +224,35 @@ Especialmente eficiente para:
 **Usar siempre que se puedan.**
 
 <u>Inicializacion:</u>
+
+```c++
 int A[10] = {}; // inicializado a 0
 int B[200]; // inicializado con la memoria que ya estaba (basura)
+```
 
 - *Tamaño fijo*
-- *Acceso O(1)*
 - *Su memoria se aloja de manera contigua por lo cual es ligeramente mas rapido que un vector de su mismo tamaño*
+
+## Bitsets
+
+Un areglo cuyos elementos solo pueden ser 1 o 0.
+
+Especialmente eficiente para:
+
+- Reducir memoria (cada entrada solo ocupa 1 bit)
+- Utilizar operadores de bits, como `&` (and), `|` (or) o `^` (xor)
+
+<u>Inicializacion:</u>
+
+```c++
+bitset<10> b; // inicializado a 0
+bitset<10> b(string("0010011010")); // inicializado de derecha a izquierda arbitrariamente
+```
+
+<u>Funciones:</u>
+**b.count():** Devuelve el numero de 1s presentes en el bitset
+
+- *El tamaño debe ser una **constante***
 
 ## Prefix Sum
 
@@ -249,20 +281,56 @@ void sumaAditiva  (vector<int > &A) {
 Es como un arreglo pero con la posibilidad de tener un tamaño dinamico.
 
 <u>Inicializacion:</u>
-vector<int> A; // vector vacío
-vector<int> A(9); // vector de 9 ints con valor 0
-vector<int> A(9, 3); // vector de 9 ints, todos con valor 3
+
+```c++
+vector<int> v; // vector vacío
+vector<int> v = {2,4,2,5,1}; // vector con valores arbitrarios
+vector<int> v(9); // vector de 9 ints con valor 0
+vector<int> v(9, 3); // vector de 9 ints, todos con valor 3
+```
 
 <u>Funciones:</u>
-**A.size():** Devuelve el tamaño del arreglo
-**A.empty():** Es *true* si el vector no tiene elementos
-**A.clear():** Deja sin elementos al vector
-**A.push_back():** Insertar un elemento al final del vector
-**A.pop_back():** Eliminar el ultimo elemento
-**A.back():** Devuelve el valor del ultimo elemento
+**v.size():** Devuelve el tamaño del arreglo
+**v.empty():** Es *true* si el vector no tiene elementos
+**v.clear():** Deja sin elementos al vector
+**v.push_back():** Insertar un elemento al final del vector
+**v.pop_back():** Eliminar el ultimo elemento
+**v.back():** Devuelve el valor del ultimo elemento
 
 - *Se puede acceder como si fuese un array*
-- *Las funciones push_back y pop_back se pueden utilizar para simular el comportamiento de un stack (pila)*
+- *Las funciones `push_back` y `pop_back` se pueden utilizar para simular el comportamiento de un **stack** (pila), aunque la funcion `top` debe reemplazarse por `v.back()` o `v[v.size()-1]`*
+
+## Strings
+
+Tienen las mismas funciones que los vectores pero cuentan con caracteristicas adicionales.
+
+<u>Inicializacion:</u>
+
+```c++
+string s; // cadena vacia
+```
+
+<u>Funciones (particulares):</u>
+**s+s':** Devuelve la concatenacion de los strigns `s` y `s'` --> **O(∣s∣+∣s′∣)**
+**substr(k,x):** Devuelve un substring que comienza en la posicion `k` y tiene longitud `x` --> **O(x)**
+**find(t):** Devuelve la posicion en la que aparece el primer caracter (de izquierda a derecha) del primer substring `t` o `string::npos` en su defecto --> **O(∣s∣*∣t∣)**
+**rfind(t):** Devuelve la posicion en la que aparece el primer caracter (de derecha a izquierda) del primer substring `t` o `string::npos` en su defecto --> **O(∣s∣*∣t∣)**
+
+## Deques
+
+Es como un vector pero se pueden insertar y eliminar elementos por delante y por detras en **O(1)**.
+
+<u>Inicializacion:</u>
+
+```c++
+deque<int> d;
+```
+
+<u>Funciones (particulares):</u>
+**d.push_front():** Insertar un elemento al comienzo
+**d.pop_front():** Eliminar el primer elemento
+
+- *Suelen ser ligeramente mas lentos que los vectores pero en promedio la insercion y la eliminacion son **O(1)***
 
 ## Stacks
 
@@ -274,9 +342,13 @@ Simula una cola/fila. Tiene un comportamiento FIFO (First In, First Out).
 
 - *Resulta util cuando queremos agregar cosas para procesarlas luego en un orden FIFO*
 - *Es preferible antes que un **set***
+- *Inserciones, eliminaciones y accesos -> **O(1)***
 
 <u>Inicializacion:</u>
+
+```c++
 queue<int> Q;
+```
 
 <u>Funciones:</u>
 **Q.push():** // Q.push(5); Q.push(3); Q.push(-1);
@@ -290,10 +362,14 @@ queue<int> Q;
 Como una *queue* normal, pero ordena internamente los elementos de mayor a menor.
 
 <u>Inicializacion:</u>
+
+```c++
 priority_queue<int> PQ;
+priority_queue<int, vector<int>, greater<int>> PQ; // cola de prioridades inversa (ordena de menor a mayor)
+```
 
 <u>Funciones:</u>
-**PQ.push():** //PQ.push(5); PQ.push(10); PQ.push(7);
+**PQ.push():** // PQ.push(5); PQ.push(10); PQ.push(7);
 **PQ.top():** // 10
 **PQ.pop():** // chau 10
 
@@ -304,15 +380,20 @@ priority_queue<int> PQ;
 Es una coleccion **ordenada** de menor a mayor de elementos **unicos**.
 
 <u>Inicializacion:</u>
-set<int> S;
+
+```c++
+set<int> s;
+set<int> s = {2,5,6,8}; // set con valores arbitrarios
+```
 
 <u>Funciones:</u>
-**S.insert():** // S.insert(5); S.insert(10); S.insert(5); no da error, pero el elemento no se agrega
-**S.size():** // 2
-**S.erase():** // S.erase(5); chau 5
-**S.count(5):** // 0; puede ser solo 0 o 1
-**S.lower_bound(x):** // puntero al primer elemento >= x
-**S.upper_bound(x):** // puntero al primer elemento > x
+**s.insert():** // S.insert(5); S.insert(10); S.insert(5); no da error, pero el elemento no se agrega
+**s.size():** // 2
+**s.erase():** // S.erase(5); chau 5
+**s.count(5):** // 0; puede ser solo 0 o 1
+**s.find(x):** // puntero (iterador) al elemento `x` o `end` si `x` no se encuentra en `s`
+**s.lower_bound(x):** // puntero (iterador) al primer elemento >= `x` o `end` en caso contrario
+**s.upper_bound(x):** // puntero (iterador) al primer elemento > `x` o `end` en caso contrario
 
 - *Se maneja internamente con **punteros***
 - *Es mas costoso de insertar (**O(log(n))**) que un vector pero es mas rapido de buscar (**O(log(n))**)*
@@ -324,23 +405,54 @@ set<int> S;
 Es como un set, pero permite meter mas de una vez un elemento.
 
 <u>Inicializacion:</u>
+
+```c++
 multiset<int> MS;
+```
 
 <u>Funciones:</u>
 **MS.insert():** // MS.insert(3); MS.insert(3);
 **MS.erase():** // MS.erase(3); OJO: esto borra todas las repeticiones!
-**MS.size():** // 0. MS.insert(10); MS.insert(10); MS.erase(S.find(10)); MS.size(); // 1
+**MS.size():** // 0. MS.insert(10); MS.insert(10); MS.erase(MS.find(10)); MS.size(); // 1
+
+## Indexed Sets
+
+Es como un set, pero podemos utilizar funciones adicionales.
+
+Como un indexed set es una policy-based data structure, debemos agregar lo siguiente para poder utilizarlo para numeros enteros:
+
+```c++
+#include <ext/pb_ds/assoc_container.hpp>
+using namespace __gnu_pbds;
+typedef tree<int,null_type,less<int>,rb_tree_tag,
+            tree_order_statistics_node_update> indexed_set;
+```
+
+<u>Inicializacion:</u>
+
+```c++
+indexed_set is;
+```
+
+<u>Funciones (particulares):</u>
+**is.find_by_order(i):** Devuelve un puntero (iterador) al elemento i-esimo 
+**is.find_by_order(x):** Devuelve la posicion en la que deberia estar `x`; No hace falta que `x` pertenezca al set
+
+- *La complejidad de estas funciones es **O(log(n))***
 
 ## Maps
 
-Es como un arreglo, pero lo podes indexar con la estructura que quieras y ordena los indices de mayor a menor.
+Es como un arreglo de pares clave-valor, pero lo podes indexar con la estructura que quieras y ordena los indices de mayor a menor.
 
 <u>Inicializacion:</u>
+
+```c++
 map<int, string> M; // mapea de tipo `int` a tipo `string`
+```
 
 <u>Funciones:</u>
 M[5] = “V”; // asociamos el 5 con la string “V”
-**M.size():** // 1
+**M.size()**; // 1
 M[7] = “VII”; // asociamos el 7 con la string “VII”
 M.size(); // 2. if (M[10] == “X”) { … } OJO: este patrón agrega el elemento 10
 // if (M.count(3) > 0 && M[3] == “III”) { … } este patrón si funciona como esperamos
@@ -349,7 +461,19 @@ M.size(); // 2. if (M[10] == “X”) { … } OJO: este patrón agrega el elemen
 
 Como set y map, pero sus elementos no están ordenados.
 
-- *Muchas operaciones pasan a ser **O(1)** en vez de O(log(n)).*
+- *Muchas operaciones pasan a ser **O(1)** (en promedio) en vez de O(log(n))*
+
+## Iteradores
+
+Es una variable que a punta a un elemento en una estructura de datos. Los iteradores `begin` y `end` definen el rango que contiene todos los elementos de una estructura de datos.
+
+- **begin:** Apunta al primer elemento.
+- **end:** Apunta a la posicion siguiente del ultimo elemento (OJO! No se puede desreferenciar ya que la posicion es invalida).
+
+![Iteradores begin y end](Imagenes/begin-end.png) 
+
+- *Los iteradores pueden irse moviendo (de a un elemento) en la estructura por medio de `++` y `--`*
+- *Tambein se pueden utilizar los iteradores **rbegin** y **rend** que apuntan al ultimo elemento y a la posicion anterior al primer elemento respectivamente*
 
 ## Segment Tree
 
@@ -379,7 +503,7 @@ void buildst(int a[], int v, int tl, int tr) { // arreglo, nodo raiz, 0, n
         int tm = (tl + tr) / 2;
         buildst(a, v*2, tl, tm);
         buildst(a, v*2+1, tm+1, tr);
-        t[v] = t[v*2] + t[v*2+1]
+        t[v] = t[v*2] + t[v*2+1];
     }
 }
 ```
