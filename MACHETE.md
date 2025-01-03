@@ -132,9 +132,13 @@ cout << r.second-r.first << "\n";
 | [Grafos: Bellman Ford](#bellman-ford)                                                                    | O(#vertices∗#aristas)                            |
 | [Grafos: Dijkstra](#dijkstra)                                                                            | O(min{(#vertices)^2, (#aristas)∗log(#vertices)}) |
 | [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                                 |
+| [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                            |
+| [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | O(#elementos!)                                   |
+| [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | O(raiz(2^#elementos))                            |
+| [Bactracking: Ejemplo Problema de las N Reinas](#ejemplo-problema-de-las-n-reinas)                       | O(#reinas!)                                      |
 | [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | O(tamaño(matriz))                                |
 | [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | O(tamaño(matriz))                                |
-| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(tamaño(matriz))                                |
+| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(#elementos)                                    |
 
 # Indice Estructuras
 
@@ -274,7 +278,7 @@ void sumaAditiva  (vector<int > &A) {
 > *Complejidad consulta: O(1)*
 
 **NOTAS**:
-- Se necesitan **dos arreglos/vectores** (uno con los elementos y otro con la suma de los primeros i elementos). El arreglo de la suma tiene un elemento mas el cual es el 0;
+- Se necesitan **dos arreglos/vectores** (uno con los elementos y otro con la suma de los primeros i elementos) - El arreglo de la suma tiene un elemento mas el cual es el 0
 
 ## Vectors
 
@@ -1438,12 +1442,141 @@ for(int k = 0; k < n, k++) {
 - **Permite arsitas con peso negativo**
 - Floyd-Warshall detecta si hay un **ciclo negativo**, pero se vuelve no determinista.
 
+# Fuerza Bruta
+
+Solo es util cuando el `n` lo permite, en caso contrario deberia optarse por utilizar [greedy](#greedy) o [programacion dinamica](#programacion-dinamica).
+
+## Generacion de Subconjuntos
+
+### Metodo 1
+
+Dado un vector `subset` utilizado para mantener los elementos de cada subconjunto, el algortimo llama recursivamente a la funcion `search()` considerando incluir el elemento `k` o no. 
+
+```c++
+void search(int k) {
+    if (k == n) {
+    // process subset
+    } else {
+        search(k+1);
+        subset.push_back(k);
+        search(k+1);
+        subset.pop_back();
+    }
+}
+```
+
+> *Complejidad O(2^n)*
+
+**NOTA**:
+- En la primera llamada, **`k` debe ser 0**
+
+### Metodo 2
+
+La idea consiste en explotar la representacion binaria de un numero. Se ve al subconjunto como un numero de `n` bits donde un 0 representa la ausencia del elemento y un 1 la presencia. Los elementos se representan de derecha izquierda siendo el primero el elemento 0.
+
+```c++
+for (int b = 0; b < (1<<n); b++) {
+    // process subset
+}
+```
+
+> *Complejidad O(2^n)*
+
+**NOTAS**:
+- Es mas rapido que el metodo 1
+- Esta limitado para **0 <= n < 64** ya que en el mejor de los casos podemos utilizar `long long` para representar hasta 64 bits
+
+## Generacion de Permutaciones
+
+### Metodo 1
+
+Dado un vector `permutation` utilizado para contener la permutacion y un arreglo de booleanos `chosen` (tambien se podria emplear un bitset) utilizado para indicar que elemento ya ha sido incluido en la permutacion, el algortimo llama recursivamente a la funcion `search()` que va añadiendo un nuevo elemento al vector en cada llamada hasta que se genera una permutacion cuando el tamaño halla alcanzado `n`. 
+
+```c++
+void search() {
+    if (permutation.size() == n) {
+    // process permutation
+    } else {
+        for (int i = 0; i < n; i++) {
+            if (chosen[i]) continue;
+            chosen[i] = true;
+            permutation.push_back(i);
+            search();
+            chosen[i] = false;
+            permutation.pop_back();
+        }
+    }
+}
+```
+
+> *Complejidad O(n!)*
+
+### Metodo 2
+
+Comenzando con la permutacion {0, 1, ..., n-1}, se generan las siguientes utilizando la funcion de la liberia estandar de C++ `next_permutation()`.
+
+```c++
+vector<int> permutation;
+for (int i = 0; i < n; i++) {
+    permutation.push_back(i);
+}
+do {
+    // process permutation
+} while (next_permutation(permutation.begin(),permutation.end()));
+```
+
+> *Complejidad O(n!)*
+
+**NOTAS**:
+- Es mas rapido que el metodo 1
+- Tambien se puede recorrer en **orden inverso** comenzando con la permutacion {n-1, n-2, ..., 0} y la funcion `prev_permutation()`
+
+## Reunion en el Centro
+
+Cuando el problema permita dividr el espacio de busqueda en dos partes de igual tamaño y exista una forma eficiente de combinarlas, conviene utilizar la tecnica de reunion en el centro.
+
+Por ejemplo, considerese el problema de que dada una lista de `n` elementos se debe determinar si es posible tomar algunos numeros de ella de forma tal que su suma sea `x`. Sea *n = 4*, la lista *[2, 4, 5, 9]* y *x = 15*. En vez de calcular todos los subconjuntos posibles y sumar su elementos (lo cual tendria complejidad O(2^n)), podemos dividir la lista en dos sublistas *A = [2, 4]* y *B = [5, 9]*, quedandonos los subconjuntos *SA = [0, 2, 4, 6]* y *SB = [0, 5, 9, 14]*. Solo resta chequear si la suma de algun elemento de `SA` con un elemento de `SB` es igual a 15, lo cual puede hacer en O((n/2)^2). En este caso es posible ya que 6 + 9 = 15, lo cual se corresponde con haber sumado 2 + 4 + 9 en la lista original. Este enfoque reduce la complejidad temporal de O(2^n) a O(2^(n/2)) lo cual es lo mismo que **O(raiz(2^n))**.
+
+# Backtracking
+
+Un algortimo de Bactracking parte desde una solucion vacia y la extiende paso a paso de manera recursiva a una solucion posible de forma tal que detiene una rama de busqueda cuando la solucion parcial se vuelve inviable.
+
+- En los algoritmos de backtracking, la complejidad temporal se ve fuertemente afectada por la eficiencia de la **poda**. Las mejores optimizaciones vienen dadas por las podas en los primeros pasos de la recursion
+- La idea de "podar" consiste en buscar propiedades que permitan identificar soluciones invalidas en los niveles mas altos del arbol de recursion
+
+## Ejemplo: Problema de las N reinas
+
+Fijada una fila, se itera por las columnas y se trata de colocar una reina. Si no se puede, se avanza a la siguiente columna (poda), caso contrario, se coloca una reina en esa posicion, se la marca y se avanza a la siguiente fila aunque tambien se explora la opcion de colocar la reina en la siguiente columna. Finalmente, si se pudo poner una reina por columna, eso significa que llegamos a una solucion y la variable `count` (que inicialmente es 0) se actualiza indicando que se hallo una nueva solucion.
+
+```c++
+void search(int y) {
+    if (y == n) {
+        count++;
+        return;
+    }
+    for (int x = 0; x < n; x++) {
+        if (column[x] || diag1[x+y] || diag2[x-y+n-1]) continue;
+        column[x] = diag1[x+y] = diag2[x-y+n-1] = 1;
+        search(y+1);
+        column[x] = diag1[x+y] = diag2[x-y+n-1] = 0;
+    }
+}
+```
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^3] utilizando un algoritmo de Backtracking*
+
+Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
+![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
+
+# Greedy
+
+Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar la solucion optima en algun paso para poder elegir otra mejor luego, Greedy no lo detecta.
+
 # Programacion dinamica
 
 ## Tecnicas comunes
 
 - **Rangos** 
-- **Bitmasks[^3]**
+- **Bitmasks[^4]**
 
 ## Requisitos
 
@@ -1527,10 +1660,7 @@ forr(i,1,n)
 }
 ```
 
-# Greddy
-
-Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar la solucion optima en algun paso para poder elegir otra mejor luego, Greedy no lo detecta.
-
 [^1]: *Un conjunto de puntos es convexo si contiene todos los segmentos entre todo par de puntos del conjunto.*
 [^2]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
-[^3]: *Una bitmask es un numero entero visto por su valor en binario*
+[^3]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
+[^4]: *Una bitmask es un numero entero visto por su valor en binario*
