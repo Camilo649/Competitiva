@@ -1,85 +1,3 @@
-# Librerias god 
-
-- bits/stdc++.h
-
-## Usando *sort()*
-
-- **vectores:**
-
-```c++
-vector<int> v = {4,2,5,3,5,8,3};
-sort(v.begin(),v.end());   // <-- DE MENOR A MAYOR
-sort(v.rbegin(),v.rend()); // <-- DE MAYOR A MENOR
-```
-
-- **arreglos:**
-
-```c++
-int n = 7;
-int a[] = {4,2,5,3,5,8,3};
-sort(a,a+n);
-```
-
-- **strings:**
-
-```c++
-string s = "monkey";
-sort(s.begin(), s.end());
-```
-
-- *Lo mismo aplica para la funcion **random_shuffle()** que ordena los elementos de manera aleatoria*
-
-### Funcion de Comparacion
-
-Tambien podemos utilizar la funcion *sort()* con una comparacion *ad-hoc*.
-
-Por ejemplo, definimos la funcion *comp()* que ordena strings primero por su longitud y luego alfabeticamente:
-
-```c++
-bool comp(string a, string b) {
-    if (a.size() != b.size()) 
-        return a.size() < b.size();
-    return a < b;
-}
-```
-
-Luego, dado `v` un vector de strings, podemos ordenar utilizando *comp()* llamando a *sort()* como sigue:
-
-```c++
-sort(v.begin(), v.end(), comp);
-```
-
-## Funciones de Busqueda
-
-**NOTAS**:
-- Las siguientes funciones requieren que la estructura a iterar se encuentre **ordenada de menor a mayor**
-- Al estar implementadas con busqueda lineal, su complejidad es **O(log(n))**
-
-### *lower_bound()* 
-
-Devuelve un puntero al primer elemento cuyo valor es >= a `x`.
-
-```c++
-auto a = lower_bound(array, array+n, x);
-```
-
-### *upper_bound()*
-
-Devuelve un puntero al primer elemento cuyo valor es > a `x`
-
-```c++
-auto b = upper_bound(array, array+n, x);
-```
-
-### *equal_range()*
-
-Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente.
-
-```c++
-auto r = equal_range(array, array+n, x);
-cout << r.second-r.first << "\n";
-```
-
 # Estimado de Eficiencia
 
 | Input size | Required time complexity |
@@ -90,7 +8,6 @@ cout << r.second-r.first << "\n";
 | n <= 5000  | O(n^2)                   |
 | n <= 10^6  | O(n*log(n)) or O(n)      |
 | n > 10^6   | O(log(n)) or O(1)        |
-
 
 # Indice Algoritmos
 
@@ -166,6 +83,88 @@ cout << r.second-r.first << "\n";
 | [Grafos: Lista de aristas](#lista-de-aristas)         | (#aristas)8B para grafos direccionales o (#aristas)12B para grafos direccionales pesados |
 | [Grafos: Matriz de adyacencia](#matriz-de-adyacencia) | ((#nodos)^2)*4B                                                                          |
 > *La memoria total se multiplica por 2 si los elementos son `long long`*
+
+# Librerias god 
+
+- bits/stdc++.h
+
+# Usando *sort()*
+
+- **vectores:**
+
+```c++
+vector<int> v = {4,2,5,3,5,8,3};
+sort(v.begin(),v.end());   // <-- DE MENOR A MAYOR
+sort(v.rbegin(),v.rend()); // <-- DE MAYOR A MENOR
+```
+
+- **arreglos:**
+
+```c++
+int n = 7;
+int a[] = {4,2,5,3,5,8,3};
+sort(a,a+n);
+```
+
+- **strings:**
+
+```c++
+string s = "monkey";
+sort(s.begin(), s.end());
+```
+
+- *Lo mismo aplica para la funcion **random_shuffle()** que ordena los elementos de manera aleatoria*
+
+## Funcion de Comparacion
+
+Tambien podemos utilizar la funcion *sort()* con una comparacion *ad-hoc*.
+
+Por ejemplo, definimos la funcion *comp()* que ordena strings primero por su longitud y luego alfabeticamente:
+
+```c++
+bool comp(string a, string b) {
+    if (a.size() != b.size()) 
+        return a.size() < b.size();
+    return a < b;
+}
+```
+
+Luego, dado `v` un vector de strings, podemos ordenar utilizando *comp()* llamando a *sort()* como sigue:
+
+```c++
+sort(v.begin(), v.end(), comp);
+```
+
+# Funciones de Busqueda
+
+**NOTAS**:
+- Las siguientes funciones requieren que la estructura a iterar se encuentre **ordenada de menor a mayor**
+- Al estar implementadas con busqueda lineal, su complejidad es **O(log(n))**
+
+## *lower_bound()* 
+
+Devuelve un puntero al primer elemento cuyo valor es >= a `x`.
+
+```c++
+auto a = lower_bound(array, array+n, x);
+```
+
+## *upper_bound()*
+
+Devuelve un puntero al primer elemento cuyo valor es > a `x`
+
+```c++
+auto b = upper_bound(array, array+n, x);
+```
+
+## *equal_range()*
+
+Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente.
+
+```c++
+auto r = equal_range(array, array+n, x);
+cout << r.second-r.first << "\n";
+```
 
 # Tips
 
@@ -399,6 +398,14 @@ set<int> s = {2,5,6,8}; // set con valores arbitrarios
 **s.lower_bound(x):** // puntero (iterador) al primer elemento >= `x` o `end` en caso contrario
 **s.upper_bound(x):** // puntero (iterador) al primer elemento > `x` o `end` en caso contrario
 
+<u>Como iterar un set:</u>
+
+```c
+for (auto it = s.begin(); it != s.end(); it++) {
+    cout << *it << "\n";
+}
+```
+
 - *Se maneja internamente con **punteros***
 - *Es mas costoso de insertar (**O(log(n))**) que un vector pero es mas rapido de buscar (**O(log(n))**)*
 - *Iterar el set es **O(n)**. No se puede indexar como un arreglo o vector*
@@ -460,6 +467,14 @@ M[5] = “V”; // asociamos el 5 con la string “V”
 M[7] = “VII”; // asociamos el 7 con la string “VII”
 M.size(); // 2. if (M[10] == “X”) { … } OJO: este patrón agrega el elemento 10
 // if (M.count(3) > 0 && M[3] == “III”) { … } este patrón si funciona como esperamos
+
+<u>Como iterar un map:</u>
+
+```c++
+for (auto it = m.begin(); it != m.end(); it++) {
+    cout << it->first << ": " << it->second << "\n";
+}
+```
 
 ## Unordered Sets & Unordered Maps
 
@@ -1570,6 +1585,9 @@ Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 # Greedy
 
 Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar la solucion optima en algun paso para poder elegir otra mejor luego, Greedy no lo detecta.
+
+- Son muy **eficientes**
+- Es **dificil** encontrar la estrategia que siempre devuelva la solucion optima y mas aun demostrar que esa estrategia funciona. Una buena forma para obtener mayor confiabilidad es ver si existen **contraejemplos** a la estrategia propuesta
 
 # Programacion dinamica
 
