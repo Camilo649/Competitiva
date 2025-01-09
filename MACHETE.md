@@ -1591,6 +1591,13 @@ Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar 
 
 # Programacion dinamica
 
+Es un metodo que combina la **correctitud** de la busqueda completa (fuerza bruta) y la **eficiencia** de los algoritmos greedy. 
+
+## Aplicaciones
+
+- **Encontrar la solucion optima:** Queremos encontrar una solucion que sea lo mas grande o lo mas pequeña posible.
+- **Contar el numero de soluciones:** Queremos calcular el valor total de posibles soluciones.
+
 ## Tecnicas comunes
 
 - **Rangos** 
@@ -1601,7 +1608,8 @@ Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar 
 - La funcion debe ser **determinisitica** (mismo input, mismo output)
 - La funcion debe ser **pura** (no depender de una variable global)
 - El dominio de la funcion debe ser lo suficientemente chico para que entre en memoria (en mi experiencia no mas de 10^4 o 10^5)
-- Es necesario que el problema tenga una **subestructura optima** (se tiene que poder alcanzar la solución del problema, utilizando soluciones de subproblemas, i.e. EVITAR CASOS BORDES por construccion)
+- Es necesario que el problema tenga una **subestructura optima** (EVITAR CASOS BORDES por construccion)
+- El problema debe poder partirse en **subproblemas** que puedan resolverse independientemente (las soluciones a los subproblemas son MEMORIZADAS y solo se calculan UNA VEZ)
 
 ## Enfoques
 
