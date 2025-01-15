@@ -32,24 +32,47 @@ int main()
     #endif
     ios::sync_with_stdio(0);
     cin.tie(0);
+    cout.tie(0);
     
     cin >> t;
 
     while (t--)
     {
-        ll l,r;
-        cin >> l >> r;
+        string s;
+        cin >> s;
 
-        int shift = 31 - __builtin_clz(l ^ r);
-        
-        ll a,b,c;
+        int dp[s.size()+1];
+        dp[0] = 0;
+        dp[1] = 1;
+        forr(i,1,s.size())
+        {
+            if (s[i] != s[i-1])
+            {
+                dp[i+1] = dp[i]+1;
+            }
+            else
+            {
+                dp[i+1] = dp[i];
+            }
+        }
 
-        a = l | ((1 << shift) - 1);
-        b = a + 1;
-        c = (a == l ? r : l);
+        int i = 0;
+        while (i<s.size() && s[i]!= '0')
+        {
+            i++;
+        }
+        while (i<s.size() && s[i] == '0')
+        {
+            i++;
+        }
+        if (i<s.size() && s[i] == '1')
+        {
+            dp[s.size()]--;
+        }
 
-        cout << a << ' ' << b << ' ' << c << nl;
-    } 
+        cout << dp[s.size()] << nl;
+    }
+    
 
     return 0;
 }

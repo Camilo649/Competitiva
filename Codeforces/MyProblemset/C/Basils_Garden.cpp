@@ -37,19 +37,39 @@ int main()
 
     while (t--)
     {
-        ll l,r;
-        cin >> l >> r;
+        int n;
+        cin >> n;
+        ll h[n];
+        forn(i,n)
+        {
+            cin >> h[i];
+        }
 
-        int shift = 31 - __builtin_clz(l ^ r);
+        ll seconds[n];
+        seconds[n-1] = h[n-1];
+        for (int i = n-2; i >= 0; i--)
+        {
+            if (h[i] > h[i+1])
+            {
+                if (h[i] > seconds[i+1])
+                {
+                    seconds[i] = h[i];
+                }
+                else
+                {
+                    seconds[i] = seconds[i+1] + 1;
+                }
+            }            
+            else
+            {
+                seconds[i] = seconds[i+1] + 1;
+            }
+        }
+
+        cout << seconds[0] << nl;
         
-        ll a,b,c;
-
-        a = l | ((1 << shift) - 1);
-        b = a + 1;
-        c = (a == l ? r : l);
-
-        cout << a << ' ' << b << ' ' << c << nl;
-    } 
+    }
+    
 
     return 0;
 }

@@ -32,24 +32,27 @@ int main()
     #endif
     ios::sync_with_stdio(0);
     cin.tie(0);
+    cout.tie(0);
     
     cin >> t;
 
     while (t--)
     {
-        ll l,r;
-        cin >> l >> r;
-
-        int shift = 31 - __builtin_clz(l ^ r);
-        
-        ll a,b,c;
-
-        a = l | ((1 << shift) - 1);
-        b = a + 1;
-        c = (a == l ? r : l);
-
-        cout << a << ' ' << b << ' ' << c << nl;
-    } 
+        int n,m;
+        cin >> n >> m;
+        int x[n], y[n];
+        int sumx=0, sumy=0;
+        forn(i,n)
+        {
+            cin >> x[i] >> y[i];
+            sumx += x[i];
+            sumy += y[i];
+        }
+        pair<int,int> startpos = make_pair(x[0],y[0]);
+        pair<int,int> endpos = make_pair(sumx+m-1,sumy+m-1);
+        cout << (endpos.first - startpos.first + 1 + endpos.second - startpos.second + 1) * 2 << nl;
+    }
+    
 
     return 0;
 }

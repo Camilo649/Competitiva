@@ -32,24 +32,27 @@ int main()
     #endif
     ios::sync_with_stdio(0);
     cin.tie(0);
+    cout.tie(0);
     
     cin >> t;
 
     while (t--)
     {
-        ll l,r;
-        cin >> l >> r;
+        int n,a,b;
 
-        int shift = 31 - __builtin_clz(l ^ r);
+        cin >> n >> a >> b;
+        if (abs(b-a)%2==1)
+        {
+            cout << "NO" << nl;
+        }
+        else
+        {
+            cout << "YES" << nl;
+        }
         
-        ll a,b,c;
-
-        a = l | ((1 << shift) - 1);
-        b = a + 1;
-        c = (a == l ? r : l);
-
-        cout << a << ' ' << b << ' ' << c << nl;
-    } 
+        
+    }
+    
 
     return 0;
 }

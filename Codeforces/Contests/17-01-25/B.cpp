@@ -19,11 +19,19 @@ typedef long double ld;
 
 using u64 = uint64_t;
 
-const int MAXN = -1;
+const int MAXN = 1000;
 
 using namespace std;
  
 int t;
+string g[MAXN];
+
+bool comp(int a, int b) {
+    if (g[a][b] == '1')
+        return a<b;
+    else    
+        return a>b;
+}
 
 int main()
 {
@@ -32,24 +40,31 @@ int main()
     #endif
     ios::sync_with_stdio(0);
     cin.tie(0);
+    cout.tie(0);
     
     cin >> t;
-
     while (t--)
     {
-        ll l,r;
-        cin >> l >> r;
+        int n;
+        cin >> n;
+        forn(i,n){
+            cin >> g[i];
+        }
+        int a[n];
+        forn(i,n)
+        {
+            a[i] = i;
+        }
+        sort(a,a+n,comp);
 
-        int shift = 31 - __builtin_clz(l ^ r);
-        
-        ll a,b,c;
+        forn(i,n)
+        {
+            cout << a[i]+1 << ' ';
+        }
 
-        a = l | ((1 << shift) - 1);
-        b = a + 1;
-        c = (a == l ? r : l);
-
-        cout << a << ' ' << b << ' ' << c << nl;
-    } 
+        cout << nl;
+    }
+    
 
     return 0;
 }

@@ -63,7 +63,10 @@
 |-------------------------------------------------------|------------------------------------------------------------------------------------------|
 | [Arrays](#arrays)                                     | (4*#elementos)B                                                                          |
 | [Bitsets](#bitsets)                                   | (#elementos)b                                                                            |
-| [Prefix sum/Tabla aditiva](#prefix-sum)               | (8*#elementos+4)B                                                                        |
+| [Prefix Sum/Tabla Aditiva](#prefix-sum)               | (8*#elementos+4)B                                                                        |
+| [Prefix Sum of Matrix](#prefix-sum-of-matrix)         | (8*#filas*#columnas)B                                                                    |
+| [Sparse Table](#sparse-table)                         | (4*#elementos*log(#elementos))B                                                          |
+| [Difference Array](#difference-array)                 | (8*#elementos+4)B                                                                        |
 | [Vectors](#vectors)                                   | (4*#elementos)B                                                                          |
 | [Strings](#strings)                                   | (#elementos + 1)B                                                                        |
 | [Deques](#deques)                                     | (4*#elementos)B                                                                          |
@@ -74,7 +77,8 @@
 | [Indexed Sets](#indexed-sets)                         | (4*#elementos)B                                                                          |
 | [Maps](#maps)                                         | (8*#elementos)B                                                                          |
 | [Iteradores](#iteradores)                             | 4B                                                                                       |
-| [Segment Tree](#segment-tree)                         | (16*#elementos)B                                                                         |
+| [Binary Index Tree/Fenwick Tree](#fenwick-tree)       | (8*#elementos)B                                                                          |
+| [Segment Tree](#segment-tree)                         | (12*#elementos-4)B                                                                       |
 | [Geometria: Punto](#punto)                            | 8B                                                                                       |
 | [Geometria: Vector](#vector)                          | 8B                                                                                       |
 | [Geometria: Recta](#recta)                            | 16B                                                                                      |
@@ -213,6 +217,8 @@ cout << r.second-r.first << "\n";
 
 - **Siempre es preferible utilizar la funcion `sort()` que mantener una estructura ordenada (como sets o maps)**
 
+- **Si necesitamos valores de indices grandes pero no necesariamente todos ellos, se puede utilizar una funcion `c(i)` que dado un indice `i` comprima el valor del indice en uno mas pequeño que podamos manejar. La funcion debe respetar que, dados dos indices `i` y `j`, tal que `i < j`,  `c(i) < c(j)`. Notar que debemos conocer los indices de antemano**
+
 # Estructuras de datos
 
 ## Arrays
@@ -275,9 +281,231 @@ void sumaAditiva  (vector<int > &A) {
 ```
 > *Complejidad construccion: O(n)*
 > *Complejidad consulta: O(1)*
+> *Complejidad actualizacion: O(n)*
 
 **NOTAS**:
 - Se necesitan **dos arreglos/vectores** (uno con los elementos y otro con la suma de los primeros i elementos) - El arreglo de la suma tiene un elemento mas el cual es el 0
+
+## Prefix Sum of Matrix
+
+Especialmente eficiente para:
+
+- Responder consultas de area
+
+![Prefix Sum of Matrix](Imagenes/prefix-sum-matrix.jpg) 
+
+```c++
+#define R 4 
+#define C 5 
+  
+// calculating new array 
+void prefixSum2D(int a[][C]) 
+{ 
+    int psa[R][C]; 
+    psa[0][0] = a[0][0]; 
+  
+    // Filling first row and first column 
+    for (int i = 1; i < C; i++) 
+        psa[0][i] = psa[0][i - 1] + a[0][i]; 
+    for (int i = 1; i < R; i++) 
+        psa[i][0] = psa[i - 1][0] + a[i][0]; 
+  
+    // updating the values in the cells 
+    // as per the general formula 
+    for (int i = 1; i < R; i++) { 
+        for (int j = 1; j < C; j++) 
+  
+            // values in the cells of new 
+            // array are updated 
+            psa[i][j] = psa[i - 1][j] + psa[i][j - 1] 
+                        - psa[i - 1][j - 1] + a[i][j]; 
+    } 
+}  
+```
+
+Luego, para calcular la suma del area `A`
+
+![Prefix Sum of Matrix query example](Imagenes/EjemploQuerySumaDePrefijosMatriz.png)
+
+solamente devemos devolver `psa[posiA][posjA]` - `psa[posiB][posjB]` - `psa[posiC][posjC]` + `psa[posiD][posjD]`.
+
+> *Complejidad construccion: O(RC)*
+> *Complejidad consulta: O(1)*
+> *Complejidad actualizacion: O(n)*
+
+## Sparse Table
+
+Especialmente eficiente para:
+
+- Responder consultas de rango o subintervalos donde se desea hallar el minimo o maximo elemento
+
+> *Complejidad construccion: O(nlog(n))*
+> *Complejidad consulta: O(1)* 
+> *Complejidad actualizacion: O(nlog(n))*
+
+### Minimo
+
+```c++
+// lookup[i][j] is going to store minimum 
+// value in arr[i..j]. Ideally lookup table 
+// size should not be fixed and should be 
+// determined using n Log n. It is kept 
+// constant to keep code simple. 
+int lookup[MAXN][MAXN]; 
+  
+// Fills lookup array lookup[][] in bottom up manner. 
+void buildSparseTable(int arr[], int n) 
+{ 
+    // Initialize M for the intervals with length 1 
+    for (int i = 0; i < n; i++) 
+        lookup[i][0] = arr[i]; 
+  
+    // Compute values from smaller to bigger intervals 
+    for (int j = 1; (1 << j) <= n; j++) { 
+  
+        // Compute minimum value for all intervals with 
+        // size 2^j 
+        for (int i = 0; (i + (1 << j) - 1) < n; i++) { 
+  
+            // For arr[2][10], we compare arr[lookup[0][7]]  
+            // and arr[lookup[3][10]] 
+            if (lookup[i][j - 1] <  
+                        lookup[i + (1 << (j - 1))][j - 1]) 
+                lookup[i][j] = lookup[i][j - 1]; 
+            else
+                lookup[i][j] =  
+                         lookup[i + (1 << (j - 1))][j - 1]; 
+        } 
+    } 
+} 
+  
+// Returns minimum of arr[L..R] 
+int query(int L, int R) 
+{ 
+    // Find highest power of 2 that is smaller 
+    // than or equal to count of elements in given 
+    // range. For [2, 10], k = 3 
+    int k = (int)log2(R - L + 1); 
+  
+    // Compute minimum of last 2^k elements with first 
+    // 2^k elements in range. 
+    // For [2, 10], we compare arr[lookup[0][3]] and 
+    // arr[lookup[3][3]], 
+    if (lookup[L][k] <= lookup[R - (1 << k) + 1][k]) 
+        return lookup[L][k]; 
+  
+    else
+        return lookup[R - (1 << k) + 1][k]; 
+} 
+```
+
+### Maximo
+
+```c++
+// lookup[i][j] is going to store maximum
+// value in arr[i..j]. Ideally lookup table 
+// size should not be fixed and should be 
+// determined using n Log n. It is kept 
+// constant to keep code simple. 
+int lookup[MAXN][MAXN]; 
+  
+// Fills lookup array lookup[][] in bottom up manner. 
+void buildSparseTable(int arr[], int n) 
+{ 
+    // Initialize M for the intervals with length 1 
+    for (int i = 0; i < n; i++) 
+        lookup[i][0] = arr[i]; 
+  
+    // Compute values from smaller to bigger intervals 
+    for (int j = 1; (1 << j) <= n; j++) { 
+  
+        // Compute maximum value for all intervals with 
+        // size 2^j 
+        for (int i = 0; (i + (1 << j) - 1) < n; i++) { 
+  
+            // For arr[2][10], we compare arr[lookup[0][7]]  
+            // and arr[lookup[3][10]] 
+            if (lookup[i][j - 1] >  
+                        lookup[i + (1 << (j - 1))][j - 1]) 
+                lookup[i][j] = lookup[i][j - 1]; 
+            else
+                lookup[i][j] =  
+                         lookup[i + (1 << (j - 1))][j - 1]; 
+        } 
+    } 
+} 
+  
+// Returns maximum of arr[L..R] 
+int query(int L, int R) 
+{ 
+    // Find highest power of 2 that is smaller 
+    // than or equal to count of elements in given 
+    // range. For [2, 10], k = 3 
+    int k = (int)log2(R - L + 1); 
+  
+    // Compute maximum of last 2^k elements with first 
+    // 2^k elements in range. 
+    // For [2, 10], we compare arr[lookup[0][3]] and 
+    // arr[lookup[3][3]], 
+    if (lookup[L][k] >= lookup[R - (1 << k) + 1][k]) 
+        return lookup[L][k]; 
+  
+    else
+        return lookup[R - (1 << k) + 1][k]; 
+} 
+```
+
+## Difference Array
+
+Especialmente eficiente para:
+
+- Actualizar rangos
+
+```c++
+// Creates a diff array D[] for A[] and returns 
+// it after filling initial values. 
+vector<int> initializeDiffArray(vector<int>& A) 
+{ 
+    int n = A.size(); 
+  
+    // We use one extra space because 
+    // update(l, r, x) updates D[r+1] 
+    vector<int> D(n + 1); 
+  
+    D[0] = A[0], D[n] = 0; 
+    for (int i = 1; i < n; i++) 
+        D[i] = A[i] - A[i - 1]; 
+    return D; 
+} 
+```
+
+<u>Consulta:</u>
+
+```c++ 
+int retrieveDiffArray(vector<int>& D, int index) 
+{ 
+    int sum = 0;
+    for (int i = 0; i < index; i++) 
+        sum += D[i]; 
+    return s; 
+} 
+```
+>*`index` debe estar indexado desde 1*
+
+<u>Actualizacion:</u>
+
+```c++
+void updateDiffArray(vector<int>& D, int l, int r, int x) 
+{ 
+    D[l] += x; 
+    D[r + 1] -= x; 
+} 
+```
+>*`l` y `r` debe estar indexado desde 0*
+
+> *Complejidad construccion: O(n)*
+> *Complejidad consulta: O(n)* 
+> *Complejidad actualizacion: O(1)*
 
 ## Vectors
 
@@ -494,17 +722,61 @@ Es una variable que a punta a un elemento en una estructura de datos. Los iterad
 - *Los iteradores pueden irse moviendo (de a un elemento) en la estructura por medio de `++` y `--`*
 - *Tambein se pueden utilizar los iteradores **rbegin** y **rend** que apuntan al ultimo elemento y a la posicion anterior al primer elemento respectivamente*
 
+## Fenwick tree
+
+Especialmente eficiente para:
+
+- Responder consultas de rango o subintervalos donde se aplican operaciones de prefijos (como la suma, el producto, AND, OR, XOR, MCD, MCM, etc.)
+
+```c++
+int tree[MAXN] = {};
+
+void constructBITree(int arr[], int n)
+{
+    for (int i=0; i<n; i++)
+        add(i, arr[i]);
+
+    //for (int i=1; i<=n; i++)
+    //     cout << tree[i] << " ";
+}
+
+void add(int k, int x) {
+    while (k <= n) {
+        tree[k] += x;
+        k += k&-k;
+    }
+}
+
+int sum(int k) {
+    int s = 0;
+    while (k >= 1) {
+        s += tree[k];
+        k -= k&-k;
+    }
+    return s;
+}
+```
+
+Toda consulta de rango puede resolverse de la siguiente manera: **`sum(r) - sum(l-1)`**
+
+> *Complejidad construccion: O(nlog(n))*
+> *Complejidad consulta: O(log(n))* 
+> *Complejidad actualizacion: O(log(n))*
+
+**NOTA**:
+- A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** para implementarlo
+
 ## Segment Tree
 
-Es un arbol que responde consultas sobre rangos (no solo sumas!).
+Es un arreglo que responde tanto consultas de operaciones de prefijos sobre rangos (suma, producto, AND, OR, XOR, MCD, MCM, etc.) como consultas sobre minimos y maximos de rangos.
 
 Espcialmente eficiente para:
 
-- Modificar y consultar valores -> O(log(n))
-- Responder consultass (*querys*) sobre sub intervalos -> O(4*log(n))
+- Modificar y consultar/buscar valores -> O(log(n))
+- Responder consultas (*querys*) sobre subintervalos -> O(4*log(n))
 
 <u>Proceso de creacion:</u>
-1. Dado un arreglo A con N elementos, extender A con "elementos neutros" (sule ser 0 generalmente) hasta que tenga tamaño potencia de 2.
+1. Dado un arreglo `A` con `N` elementos, extender `A` con "elementos neutros" (sule ser 0 generalmente) hasta que tenga tamaño potencia de 2.
 2. Crear un arbol binario completo cuyas hojas sean los elementos de A.
 
 Luego, cada hoja representa el rango [i, i + 1), y los nodos internos representan la unión de los rangos de los hijos.
@@ -513,7 +785,7 @@ Luego, cada hoja representa el rango [i, i + 1), y los nodos internos representa
 > *Este segment tree esta orientado a responder querys relacionadas con la suma de los subarreglos*
 
 ``` c++
-int n, t[4*MAXN];
+int n, t[2*MAXN];
 void buildst(int a[], int v, int tl, int tr) { // arreglo, nodo raiz, 0, n
     if (tl == tr) {
         t[v] = a[tl];
@@ -527,45 +799,54 @@ void buildst(int a[], int v, int tl, int tr) { // arreglo, nodo raiz, 0, n
 }
 ```
 
+Los nodos se almacenan desde abajo hacia arriba. Por ejemplo, el segment tree
+
+![Segment Tree Example](Imagenes/SegmentTreeExample.png)
+
+se guarda como:
+
+![Segment Tree Representation Example](Imagenes/SegmentTreeRepresentationExample.png)
+>*Usando esta representacion, el padre del nodo `tree[k]` es `tree[floor(k/2)]`, y sus hijos son `tree[2k]` and `tree[2k+1]`. Notar que esto implica que la posicion de un nodo es impar si es un hijo izquierdo y par si es un hijo derecho*
+
 <u>Actualizacion:</u>
 1. Actualizo el valor del nodo actual.
-2. Si hay padre, convertirlo en el nodo actual y volver al paso 1.
+2. Actualizo todos los nodos internos hasta llegar a la raiz.
 
 ``` c++
-void updatest(int v, int tl, int tr, int pos, int newValue) { // nodo raiz, 0, n, posicion del elemento a actualizar en A, nuevo valor
-    if (tl == tr) {
-        t[v] = newValue;
-    }
-    else {
-        int tm = (tl + tr) / 2;
-        if (pos <= tm) {
-            updatest(v*2, tl, tm, pos, newValue);
-        }
-        else {
-            updatest(v*2+1, tm+1, tr, pos, newValue);
-        }
-        t[v] = t[v*2] + t[v*2+1]
+void updatest(int k, int x) { // posicion del elemento a actualizar en A, nuevo valor
+    k += n;
+    tree[k] += x;
+    for (k /= 2; k >= 1; k /= 2) {
+        tree[k] = tree[2*k] + tree[2*k+1];
     }
 }
 ```
+>*`k` debe estar indexado desde 0*
 
 <u>Responder query:</u>
-1. Si el rango del nodo esta completamente incluido en la query, se retorna su valor.
-2. Si el rango del nodo interseca con el de la query, se suma el subproblema en ambos sub-arboles hijos.
-3. Si el rango no interseca con el de la query, se retorna 0.
+En cada paso, el rango se desplaza un nivel más arriba en el árbol, y antes se añaden a la suma los valores de los nodos que no pertenecen al rango superior.
 
 ``` c++
-void sumst(int v, int tl, int tr, int l, int r) { // nodo raiz, 0, n, indice izquiero del subarreglo, indice derecho del subarreglo
-    if (l > r) {
-        return 0;
+int sumst(int l, int r) { // indice izquiero del subarreglo, indice derecho del subarreglo
+    l += n; r += n;
+    int s = 0;
+    while (l <= r) {
+        if (l%2 == 1) s += tree[l++];
+        if (r%2 == 0) s += tree[r--];
+        l /= 2; r /= 2;
     }
-    if (l == tl && r == tr) {
-        return t[v];
-    }
-    int tm = (tl + tr) / 2;
-    return sumst(v*2, tl, tm, l, min(r, tm)) + sumst(v*2+1, tm+1, tr, max(l, tm + 1), r);  
+    return s;
 }
 ```
+>*`l` y `r` deben estar indexados desde 0*
+
+> *Complejidad construccion: O(nlog(n))*
+> *Complejidad consulta: O(log(n))* 
+> *Complejidad actualizacion: O(log(n))*
+
+**NOTAS**:
+- A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** de tamaño `(n+k)*2` para implementarlo, donde `k` son los elementos neutros agregados para lograr que `n` sea potencia de 2
+- Si bien es una estructura **mas general** que un *fenwick tree*, **requiere mas memoria** y es un poco **mas dificil de implementar**
 
 # Matematicas
 
@@ -1177,7 +1458,7 @@ void sum2  (vector<int > &A, int x, int &iR , int &jR) {
     int i, j;
     i = 0;
     j = A.size()-1;
-    while((j > i) && ((A[i] + A[j]) == x)) {
+    while((j > i) && ((A[i] + A[j]) != x)) {
         if((A[i] + A[j]) < x)) ++i;
         else --j;
     }
@@ -1455,7 +1736,7 @@ for(int k = 0; k < n, k++) {
 **NOTAS**:
 - "dist" es la representacion del grafo en forma de una **matriz de adyacencia**
 - **Permite arsitas con peso negativo**
-- Floyd-Warshall detecta si hay un **ciclo negativo**, pero se vuelve no determinista.
+- Floyd-Warshall detecta si hay un **ciclo negativo**, pero se vuelve no determinista
 
 # Fuerza Bruta
 
