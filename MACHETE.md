@@ -85,7 +85,7 @@
 | [Geometria: Punto](#punto)                            | 8B                                                                                       |
 | [Geometria: Vector](#vector)                          | 8B                                                                                       |
 | [Geometria: Recta](#recta)                            | 16B                                                                                      |
-| [Geometria: Poligono](#poligono)                      | (#vectores/puntos).8B                                                                    |
+| [Geometria: Poligono](#poligono)                      | (#vectores/puntos)8B                                                                    |
 | [Grafos: Lista de adyacencias](#lista-de-adyacencias) | (#nodos)4B + (#aristas)4B grafo direccional o (#aristas)8B grafo direccional pesado      |
 | [Grafos: Lista de aristas](#lista-de-aristas)         | (#aristas)8B para grafos direccionales o (#aristas)12B para grafos direccionales pesados |
 | [Grafos: Matriz de adyacencia](#matriz-de-adyacencia) | ((#nodos)^2)*4B                                                                          |
@@ -1682,6 +1682,15 @@ void sum2  (vector<int > &A, int x, int &iR , int &jR) {
 
 ### Lista de Adyacencias
 
+En la representación de lista de adyacencia, a cada nodo `x` del grafo se le asigna una lista de adyacencia que consiste en nodos a los que existe una arista desde `x`.
+
+- **ventaja:** brindan una forma eficiente de encontrar todos los nodos a los que se puede viajar desde un nodo en particular
+``` c++
+for (auto u : adj[x]) {
+    // process node u
+}
+```
+
 #### Grafo Dirigido
 
 ``` c++
@@ -1706,6 +1715,8 @@ adj[1].push_back({2,5}) // Si existe una arista de 1 a 2 con peso 5;
 
 ### Lista de Aristas
 
+Una lista de aristas contiene todos las aristas del grafo en algun orden. Resulta conveniente utilizar esta representacion cuando el algortimo procesa todas las aristas y no es necesario encontrar aristas relacionadas a un nodo determinado.
+
 #### Grafo Dirigido
 
 ``` c++
@@ -1729,6 +1740,12 @@ edges.push_back({1,2,5}) // Si existe una arista de 1 a 2 con peso 5;
 ```
 
 ### Matriz de Adyacencia
+
+Una matriz de adyacencia es un arreglo de dos dimensiones que representa las aristas existentes en el grafo.
+
+- **ventaja:** se pueden realizar chequeos eficientes sobre existencias de aristas
+
+- **desventaja:** inviable en memoria para grafos grandes
 
 #### Grafo Dirigido 
 
