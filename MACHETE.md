@@ -11,7 +11,7 @@
 
 # Indice Algoritmos
 
-| Seccion                                                                                                  | Complejidad                                      |
+| Algoritmo                                                                                                | Complejidad                                      |
 |----------------------------------------------------------------------------------------------------------|--------------------------------------------------|
 | [Progresiones: Sumas Gaussianas](#sumas-gaussianas)                                                      | O(1)                                             |
 | [Progresiones: Formula de Faulhaber](#formula-de-faulhaber-hasta-6)                                      | O(1)                                             |
@@ -56,10 +56,12 @@
 | [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | O(tamaño(matriz))                                |
 | [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | O(tamaño(matriz))                                |
 | [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(#elementos)                                    |
+| [Operaciones de Bits: Setear el k-esimo Bit](#setear-el-k-esimo-bit)                                     | O(1)                                             |
+| [Operaciones de Bits: Chequear Potencia de 2](#chequear-potencia-de-2)                                   | O(1)                                             |
 
 # Indice Estructuras
 
-| Seccion                                               | Memoria Total(usando `int`)                                                              |
+| Estructura                                            | Memoria Total(usando `int`)                                                              |
 |-------------------------------------------------------|------------------------------------------------------------------------------------------|
 | [Arrays](#arrays)                                     | (4*#elementos)B                                                                          |
 | [Bitsets](#bitsets)                                   | (#elementos)b                                                                            |
@@ -75,6 +77,7 @@
 | [Sets](#sets)                                         | (4*#elementos)B                                                                          |
 | [Multisets](#multisets)                               | (4*#elementos)B                                                                          |
 | [Indexed Sets](#indexed-sets)                         | (4*#elementos)B                                                                          |
+| [Bitmask Sets](#bitmask-sets)                         | 4B                                                                                       |
 | [Maps](#maps)                                         | (8*#elementos)B                                                                          |
 | [Iteradores](#iteradores)                             | 4B                                                                                       |
 | [Binary Index Tree/Fenwick Tree](#fenwick-tree)       | (8*#elementos)B                                                                          |
@@ -88,11 +91,28 @@
 | [Grafos: Matriz de adyacencia](#matriz-de-adyacencia) | ((#nodos)^2)*4B                                                                          |
 > *La memoria total se multiplica por 2 si los elementos son `long long`*
 
-# Librerias god 
+# Indice Funciones Builtin
+
+
+| Funcion                                                             | Descripcion                                                                                                   |
+|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
+| [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo `O(log(n))`                          |
+| [Funciones de Ordenacion: Random Shuffle](#random-shuffle)          | Ordena aleatoriamente estructuras de datos con iteradores de acceso aleatorio en tiempo `O(n)`                |
+| [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo `O(log(n))`                           |
+| [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo `O(log(n))`                            |
+| [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo `O(log(n))` |
+| [Funciones de Bits: Counting Leading Zeros](#count-leading-zeros)   | Retorna la cantidad de ceros antes del 1 mas significativo de `x` en tiempo `O(1)`                            |
+| [Funciones de Bits: Counting Trailing Zeros](#count-trailing-zeros) | Retorna la cantidad de ceros despues del 1 menos significativo de `x` en tiempo `O(1)`                        |
+| [Funciones de Bits: Popcount](#popcount)                            | Retorna la cantidad de bits en 1 de `x` en tiempo `O(1)`                                                      |
+| [Funciones de Bits: Parity](#parity)                                | Retorna 1 si `x` es par y 0 en caso contrario en tiempo `O(1)`                                                |
+
+# Librerias God 
 
 - bits/stdc++.h
 
-# Usando *sort()*
+# Funciones de Ordenacion
+
+## Sort
 
 - **vectores:**
 
@@ -117,10 +137,6 @@ string s = "monkey";
 sort(s.begin(), s.end());
 ```
 
-- *Lo mismo aplica para la funcion **random_shuffle()** que ordena los elementos de manera aleatoria*
-
-## Funcion de Comparacion
-
 Tambien podemos utilizar la funcion *sort()* con una comparacion *ad-hoc*.
 
 Por ejemplo, definimos la funcion *comp()* que ordena strings primero por su longitud y luego alfabeticamente:
@@ -139,21 +155,42 @@ Luego, dado `v` un vector de strings, podemos ordenar utilizando *comp()* llaman
 sort(v.begin(), v.end(), comp);
 ```
 
+## Random Shuffle
+
+- **vectores:**
+
+```c++
+vector<int> v = {4,2,5,3,5,8,3};
+random_shuffle(v.begin(),v.end());
+```
+
+- **arreglos:**
+
+```c++
+int n = 7;
+int a[] = {4,2,5,3,5,8,3};
+random_shuffle(a,a+n);
+```
+
+- **strings:**
+
+```c++
+string s = "monkey";
+random_shuffle(s.begin(), s.end());
+```
+
 # Funciones de Busqueda
 
 **NOTAS**:
 - Las siguientes funciones requieren que la estructura a iterar se encuentre **ordenada de menor a mayor**
-- Al estar implementadas con busqueda lineal, su complejidad es **O(log(n))**
 
-## *lower_bound()* 
-
-Devuelve un puntero al primer elemento cuyo valor es >= a `x`.
+## Lower Bound 
 
 ```c++
 auto a = lower_bound(array, array+n, x);
 ```
 
-## *upper_bound()*
+## Upper Bound
 
 Devuelve un puntero al primer elemento cuyo valor es > a `x`
 
@@ -161,14 +198,72 @@ Devuelve un puntero al primer elemento cuyo valor es > a `x`
 auto b = upper_bound(array, array+n, x);
 ```
 
-## *equal_range()*
-
-Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente.
+## Equal Range
 
 ```c++
 auto r = equal_range(array, array+n, x);
 cout << r.second-r.first << "\n";
 ```
+
+# Funciones de Bits
+
+## Count Leading Zeros
+
+- **enteros**
+```cpp
+int x = 5328; // 00000000000000000001010011010000
+cout << __builtin_clz(x) << "\n"; // 19
+```
+
+- **long long**
+```cpp
+long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
+cout << __builtin_clzll(x) << "\n"; // 51
+```
+
+## Count Trailing Zeros
+
+- **enteros**
+```cpp
+int x = 5328; // 00000000000000000001010011010000
+cout << __builtin_ctz(x) << "\n"; // 4
+```
+
+- **long long**
+```cpp
+long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
+cout << __builtin_ctzll(x) << "\n"; // 4
+```
+
+## Popcount
+
+- **enteros**
+```cpp
+int x = 5328; // 00000000000000000001010011010000
+cout << __builtin_popcount(x) << "\n"; // 5
+```
+
+- **long long**
+```cpp
+long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
+cout << __builtin_popcountll(x) << "\n"; // 5
+```
+
+## Parity
+
+- **enteros**
+```cpp
+int x = 5328; // 00000000000000000001010011010000
+cout << __builtin_parity(x) << "\n"; // 1
+```
+
+- **long long**
+```cpp
+long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
+cout << __builtin_parityll(x) << "\n"; // 1
+```
+
+> *Es la manera **mas eficiente** para chequear paridad!*
 
 # Tips
 
@@ -201,7 +296,7 @@ cout << r.second-r.first << "\n";
 
 - **Encarar los problemas de calcular los estados posibles como problemas de grafos**
 
-- **Setear MAXN en un valor ligeramente mayor a 'n' para evitar casos borde de una manera sencilla**
+- **Setear MAXN en un valor ligeramente mayor a `n` para evitar casos borde de una manera sencilla**
 
 - **Si se va a recorrer una matriz, poner un marco con valores inalcanzables para detectar/evitar casos bordes**
 
@@ -217,11 +312,15 @@ cout << r.second-r.first << "\n";
 
 - **Siempre es preferible utilizar la funcion `sort()` que mantener una estructura ordenada (como sets o maps)**
 
-- **Si necesitamos valores de indices grandes pero no necesariamente todos ellos, se puede utilizar una funcion `c(i)` que dado un indice `i` comprima el valor del indice en uno mas pequeño que podamos manejar. La funcion debe respetar que, dados dos indices `i` y `j`, tal que `i < j`,  `c(i) < c(j)`. Notar que debemos conocer los indices de antemano**
+- **Si necesitamos valores de indices grandes pero no necesariamente todos ellos, se puede utilizar una funcion `c(i)` que dado un indice `i` comprima el valor del indice en uno mas pequeño que podamos manejar. La funcion debe respetar que, dados dos indices `i` y `j`, tal que `i < j`,  `c(i) < c(j)`. NOTAR que debemos conocer los indices de antemano**
 
-# Estructuras de datos
+- **Chequear divisibilidad para potencias de 2 utilizando la operacion AND: un numero `x` es divisible por `2^k` si y solo si `x & (2^k - 1) == 0`. NOTAR que podemos chequear facilmente paridad utilizando esta tecnica**
 
-## Arrays
+- **Multiplicar y dividir por potencias de 2 utilizando shifteos**
+
+- **Representar la data en binario cuando los datos solo pueden tomar 2 valores**
+
+# Arrays
 
 Lista de elementos.
 
@@ -239,31 +338,48 @@ int A[10] = {}; // inicializado a 0
 int B[200]; // inicializado con la memoria que ya estaba (basura)
 ```
 
-- *Tamaño fijo*
-- *Su memoria se aloja de manera contigua por lo cual es ligeramente mas rapido que un vector de su mismo tamaño*
+> *Tamaño fijo*
 
-## Bitsets
+> *Su memoria se aloja de manera contigua por lo cual es ligeramente mas rapido que un vector de su mismo tamaño*
+
+# Bitsets
 
 Un areglo cuyos elementos solo pueden ser 1 o 0.
 
 Especialmente eficiente para:
 
 - Reducir memoria (cada entrada solo ocupa 1 bit)
-- Utilizar operadores de bits, como `&` (and), `|` (or) o `^` (xor)
+- Utilizar operadores de bits, como `&` (and), `|` (or), `^` (xor), `~` (not) `<< >>` (shifts)
 
 <u>Inicializacion:</u>
 
 ```c++
-bitset<10> b; // inicializado a 0
-bitset<10> b(string("0010011010")); // inicializado de derecha a izquierda arbitrariamente
+bitset<10> bs; // inicializado a 0
+bitset<10> bs(string("0010011010")); // inicializado de derecha a izquierda arbitrariamente
 ```
 
 <u>Funciones:</u>
-**b.count():** Devuelve el numero de 1s presentes en el bitset
+**bs.set():** Pone todos los bits en 1
+**bs.set(k)** Pone solo el k-esimo bit en 1 (el orden es de derecha a izquierda y se indexa desde 0)
+**bs.reset():** Pone todos los bits en 0
+**bs.reset(k)** Pone solo el k-esimo bit en 0 (el orden es de derecha a izquierda y se indexa desde 0)
+**bs.flip():** Invierte todos los bits
+**bs.flip(k)** Invierte solamente el k-esimo bit (el orden es de derecha a izquierda y se indexa desde 0)
+**bs.any():** Devuelve *true* si hay al menos un bit en 1
+**bs.none():** Devuelve *true* si todos los bits estan en 0
+**bs.all():** Devuelve *true* si todos los bits están en 1
+**bs.size():** Devuelve el numero total de bits en el bitset
+**bs.count():** Devuelve el numero de 1s presentes en el bitset (NOTAR que `bs.size() - bs.count()` es la cantidad de 0s)
+**bs.to_ulong()/bs.to_ullong():** Convierte el bitset a un entero o long long no signado respectivamente. El tamaño del bitset no debe exceder de 32 para enteros o de 64 para long longs
+**bs.to_string():** Convierte el bitset en un string
 
-- *El tamaño debe ser una **constante***
+> *El tamaño debe ser una **constante***
 
-## Prefix Sum
+> *Para poder operar entre bitsets, estos deben tener el **mismo tamaño***
+
+> *La conversion del bitset a un numero negativo debe realizarse manualmente*
+
+# Prefix Sum
 
 Especialmente eficiente para:
 
@@ -280,13 +396,16 @@ void sumaAditiva  (vector<int > &A) {
 }
 ```
 > *Complejidad construccion: O(n)*
+
 > *Complejidad consulta: O(1)*
+
 > *Complejidad actualizacion: O(n)*
 
 **NOTAS**:
-- Se necesitan **dos arreglos/vectores** (uno con los elementos y otro con la suma de los primeros i elementos) - El arreglo de la suma tiene un elemento mas el cual es el 0
+- Se necesitan **dos arreglos/vectores** (uno con los elementos y otro con la suma de los primeros i elementos)
+- El arreglo de la suma tiene un elemento mas el cual es el 0
 
-## Prefix Sum of Matrix
+# Prefix Sum of Matrix
 
 Especialmente eficiente para:
 
@@ -330,20 +449,24 @@ Luego, para calcular la suma del area `A`
 solamente devemos devolver `psa[posiA][posjA]` - `psa[posiB][posjB]` - `psa[posiC][posjC]` + `psa[posiD][posjD]`.
 
 > *Complejidad construccion: O(RC)*
+
 > *Complejidad consulta: O(1)*
+
 > *Complejidad actualizacion: O(n)*
 
-## Sparse Table
+# Sparse Table
 
 Especialmente eficiente para:
 
 - Responder consultas de rango o subintervalos donde se desea hallar el minimo o maximo elemento
 
 > *Complejidad construccion: O(nlog(n))*
+
 > *Complejidad consulta: O(1)* 
+
 > *Complejidad actualizacion: O(nlog(n))*
 
-### Minimo
+## Minimo
 
 ```c++
 // lookup[i][j] is going to store minimum 
@@ -399,7 +522,7 @@ int query(int L, int R)
 } 
 ```
 
-### Maximo
+## Maximo
 
 ```c++
 // lookup[i][j] is going to store maximum
@@ -455,7 +578,7 @@ int query(int L, int R)
 } 
 ```
 
-## Difference Array
+# Difference Array
 
 Especialmente eficiente para:
 
@@ -504,10 +627,12 @@ void updateDiffArray(vector<int>& D, int l, int r, int x)
 >*`l` y `r` debe estar indexado desde 0*
 
 > *Complejidad construccion: O(n)*
+
 > *Complejidad consulta: O(n)* 
+
 > *Complejidad actualizacion: O(1)*
 
-## Vectors
+# Vectors
 
 Es como un arreglo pero con la posibilidad de tener un tamaño dinamico.
 
@@ -528,10 +653,11 @@ vector<int> v(9, 3); // vector de 9 ints, todos con valor 3
 **v.pop_back():** Eliminar el ultimo elemento
 **v.back():** Devuelve el valor del ultimo elemento
 
-- *Se puede acceder como si fuese un array*
-- *Las funciones `push_back` y `pop_back` se pueden utilizar para simular el comportamiento de un **stack** (pila), aunque la funcion `top` debe reemplazarse por `v.back()` o `v[v.size()-1]`*
+> *Se puede acceder como si fuese un array*
 
-## Strings
+> *Las funciones `push_back` y `pop_back` se pueden utilizar para simular el comportamiento de un **stack** (pila), aunque la funcion `top` debe reemplazarse por `v.back()` o `v[v.size()-1]`*
+
+# Strings
 
 Tienen las mismas funciones que los vectores pero cuentan con caracteristicas adicionales.
 
@@ -547,48 +673,50 @@ string s; // cadena vacia
 **find(t):** Devuelve la posicion en la que aparece el primer caracter (de izquierda a derecha) del primer substring `t` o `string::npos` en su defecto --> **O(∣s∣*∣t∣)**
 **rfind(t):** Devuelve la posicion en la que aparece el primer caracter (de derecha a izquierda) del primer substring `t` o `string::npos` en su defecto --> **O(∣s∣*∣t∣)**
 
-## Deques
+# Deques
 
 Es como un vector pero se pueden insertar y eliminar elementos por delante y por detras en **O(1)**.
 
 <u>Inicializacion:</u>
 
 ```c++
-deque<int> d;
+deque<int> dq;
 ```
 
 <u>Funciones (particulares):</u>
-**d.push_front():** Insertar un elemento al comienzo
-**d.pop_front():** Eliminar el primer elemento
+**dq.push_front():** Insertar un elemento al comienzo
+**dq.pop_front():** Eliminar el primer elemento
 
-- *Suelen ser ligeramente mas lentos que los vectores pero en promedio la insercion y la eliminacion son **O(1)***
+> *Suelen ser ligeramente mas lentos que los vectores pero en promedio la insercion y la eliminacion son **O(1)***
 
-## Stacks
+# Stacks
 
 En las competencias ICPC conviene utilizar un vector en vez de un stack debido a que tiene mas flexibilidad.
 
-## Queues
+# Queues
 
 Simula una cola/fila. Tiene un comportamiento FIFO (First In, First Out).
 
-- *Resulta util cuando queremos agregar cosas para procesarlas luego en un orden FIFO*
-- *Es preferible antes que un **set***
-- *Inserciones, eliminaciones y accesos -> **O(1)***
+> *Resulta util cuando queremos agregar cosas para procesarlas luego en un orden FIFO*
+
+> *Es preferible antes que un **set***
+
+> *Inserciones, eliminaciones y accesos -> **O(1)***
 
 <u>Inicializacion:</u>
 
 ```c++
-queue<int> Q;
+queue<int> q;
 ```
 
 <u>Funciones:</u>
-**Q.push():** // Q.push(5); Q.push(3); Q.push(-1);
-**Q.front():** // 5
-**Q.pop():** // chau 5
-**Q.front():** // 3
-**Q.back():** // -1
+**q.push():** // q.push(5); q.push(3); q.push(-1);
+**q.front():** // 5
+**q.pop():** // chau 5
+**q.front():** // 3
+**q.back():** // -1
 
-## Priority Queues
+# Priority Queues
 
 Como una *queue* normal, pero ordena internamente los elementos de mayor a menor.
 
@@ -604,9 +732,9 @@ priority_queue<int, vector<int>, greater<int>> PQ; // cola de prioridades invers
 **PQ.top():** // 10
 **PQ.pop():** // chau 10
 
-- *Ojo! insertar y remover elementos aqui es **O(log(n))***
+> *Ojo! insertar y remover elementos aqui es **O(log(n))***
 
-## Sets
+# Sets
 
 Es una coleccion **ordenada** de menor a mayor de elementos **unicos**.
 
@@ -634,12 +762,17 @@ for (auto it = s.begin(); it != s.end(); it++) {
 }
 ```
 
-- *Se maneja internamente con **punteros***
-- *Es mas costoso de insertar (**O(log(n))**) que un vector pero es mas rapido de buscar (**O(log(n))**)*
-- *Iterar el set es **O(n)**. No se puede indexar como un arreglo o vector*
-- *La gran mayoria de sus operaciones son **O(log(n))***
+> *Se maneja internamente con **punteros***
 
-## Multisets
+> *Es mas costoso de insertar (**O(log(n))**) que un vector pero es mas rapido de buscar (**O(log(n))**)*
+
+> *Iterar el set es **O(n)**. No se puede indexar como un arreglo o vector*
+
+> *La gran mayoria de sus operaciones son **O(log(n))***
+
+> *Considerar utilizar [bitsets](#bitsets) si se requiere de poca memoria*
+
+# Multisets
 
 Es como un set, pero permite meter mas de una vez un elemento.
 
@@ -654,11 +787,11 @@ multiset<int> MS;
 **MS.erase():** // MS.erase(3); OJO: esto borra todas las repeticiones!
 **MS.size():** // 0. MS.insert(10); MS.insert(10); MS.erase(MS.find(10)); MS.size(); // 1
 
-## Indexed Sets
+# Indexed Sets
 
 Es como un set, pero podemos utilizar funciones adicionales.
 
-Como un indexed set es una policy-based data structure, debemos agregar lo siguiente para poder utilizarlo para numeros enteros:
+Como un indexed set es una *policy-based data structure*, debemos agregar lo siguiente para poder utilizarlo para numeros enteros:
 
 ```c++
 #include <ext/pb_ds/assoc_container.hpp>
@@ -677,9 +810,71 @@ indexed_set is;
 **is.find_by_order(i):** Devuelve un puntero (iterador) al elemento i-esimo 
 **is.find_by_order(x):** Devuelve la posicion en la que deberia estar `x`; No hace falta que `x` pertenezca al set
 
-- *La complejidad de estas funciones es **O(log(n))***
+> *La complejidad de estas funciones es **O(log(n))***
 
-## Maps
+# Bitmask Sets
+
+La idea se basa en utilizar **numeros enteros** como conjuntos.
+
+<u>Inicializacion:</u>
+
+```c++
+int x = 0;
+x |= (1<<1);
+x |= (1<<3);
+x |= (1<<4);
+x |= (1<<8);
+// x = {1, 3, 4, 8}
+```
+
+<u>Funciones:</u>
+**Interseccion:** `x & y;`
+**Union:** `x | y;`
+**Complemento:** `~x;`
+**Diferencia:** `x & ~(y);`
+
+<u>Como iterar un bitmask set:</u>
+
+```c++
+for (int i = 0; i < 32; i++) {
+    if (x&(1<<i)) 
+        cout << i << " ";
+}
+```
+
+<u>Como iterar subsets:</u>
+
+- **Desde {0, 1, ... , n − 1}:**
+
+```c++
+for (int b = 0; b < (1<<n); b++) {
+    // process subset b
+}
+```
+
+- **Subsets de longitud fija `k`:**
+
+```c++
+for (int b = 0; b < (1<<n); b++) {
+    if (__builtin_popcount(b) == k) {
+        // process subset b
+    }
+}
+```
+
+- **Subsets de un bitmask set `x`:**
+
+```c++
+int b = 0;
+do {
+    // process subset b
+} while (b=(b-x)&x);
+```
+
+**NOTA**:
+- Este tipo de conjuntos solamente puede almacenar **hasta 64 elementos** (utilizando *long long*)
+
+# Maps
 
 Es como un arreglo de pares clave-valor, pero lo podes indexar con la estructura que quieras y ordena los indices de mayor a menor.
 
@@ -704,13 +899,13 @@ for (auto it = m.begin(); it != m.end(); it++) {
 }
 ```
 
-## Unordered Sets & Unordered Maps
+# Unordered Sets & Unordered Maps
 
 Como set y map, pero sus elementos no están ordenados.
 
-- *Muchas operaciones pasan a ser **O(1)** (en promedio) en vez de O(log(n))*
+> *Muchas operaciones pasan a ser **O(1)** (en promedio) en vez de O(log(n))*
 
-## Iteradores
+# Iteradores
 
 Es una variable que a punta a un elemento en una estructura de datos. Los iteradores `begin` y `end` definen el rango que contiene todos los elementos de una estructura de datos.
 
@@ -719,10 +914,11 @@ Es una variable que a punta a un elemento en una estructura de datos. Los iterad
 
 ![Iteradores begin y end](Imagenes/begin-end.png) 
 
-- *Los iteradores pueden irse moviendo (de a un elemento) en la estructura por medio de `++` y `--`*
-- *Tambein se pueden utilizar los iteradores **rbegin** y **rend** que apuntan al ultimo elemento y a la posicion anterior al primer elemento respectivamente*
+> *Los iteradores pueden irse moviendo (de a un elemento) en la estructura por medio de `++` y `--`*
 
-## Fenwick tree
+> *Tambien se pueden utilizar los iteradores **rbegin** y **rend** que apuntan al ultimo elemento y a la posicion anterior al primer elemento respectivamente*
+
+# Fenwick Tree
 
 Especialmente eficiente para:
 
@@ -760,13 +956,15 @@ int sum(int k) {
 Toda consulta de rango puede resolverse de la siguiente manera: **`sum(r) - sum(l-1)`**
 
 > *Complejidad construccion: O(nlog(n))*
+
 > *Complejidad consulta: O(log(n))* 
+
 > *Complejidad actualizacion: O(log(n))*
 
 **NOTA**:
 - A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** para implementarlo
 
-## Segment Tree
+# Segment Tree
 
 Es un arreglo que responde tanto consultas de operaciones de prefijos sobre rangos (suma, producto, AND, OR, XOR, MCD, MCM, etc.) como consultas sobre minimos y maximos de rangos.
 
@@ -841,7 +1039,9 @@ int sumst(int l, int r) { // indice izquiero del subarreglo, indice derecho del 
 >*`l` y `r` deben estar indexados desde 0*
 
 > *Complejidad construccion: O(nlog(n))*
+
 > *Complejidad consulta: O(log(n))* 
+
 > *Complejidad actualizacion: O(log(n))*
 
 **NOTAS**:
@@ -892,7 +1092,7 @@ $$
 Donde *a* es el primer numero, *b* el ultimo y *n* la cantidad total de numeros.
 
 **NOTA**:
-- La formula es **independiente de la constante de separacion** entre los sumandos
+- La formula es **independiente de la constante de separacion** entre los Vdos
 
 ### Progresion Geometrica
 
@@ -1023,15 +1223,15 @@ vector<pto> PolygonB; // dinamica
 ```
 > *Se representa por una lista ordenada de puntos*
 
-### Algebra vectorial
+### Algebra Vectorial
 
-#### Suma y resta de vectores
+#### Suma y Resta de Vectores
 
 ![Suma y resta de vectores](Imagenes/SumaYRestaDeVectores.png) 
 
 El valor absoluto de la diferencia de vectores nos permite calcular la distancia entre dos puntos!
 
-#### Multiplacion y division por escalares
+#### Multiplacion y Division por Escalares
 
 ![Suma y resta de vectores](Imagenes/MultiplicacionYDivisionDeVectores.png)
 
@@ -1067,7 +1267,7 @@ ld proyeccionUV =  (Vx + Vy)*((Ux*Vx + Uy*Vy)/abs(sqrtl(Ux*Ux + Uy*Uy)));
 - Dado un punto P y una linea/segmento L, podemos encontrar el punto en L mas cercano a P si calculamo la proyeccion de P sobre L.
 
 
-#### Producto punto
+#### Producto Punto
 
 - Dos vectores son perpendiculares **<=>** su producto escalar es 0
 
@@ -1084,7 +1284,7 @@ int escalar = Ux*Vx + Uy*Vy;
 
 - Por teorema, el producto punto entre dos vectores alcanza un maximo cuando U y V tienen igual direccion (*cos(α) = 1*) y un minimo cuando tienene direccion opuesta  (*cos(α) = -1*)
 
-#### Producto cruz
+#### Producto Cruz
 
 - Dos vectores son paralelos **<=>** el valor absoluto de su producto vectorial es 0
 
@@ -1101,7 +1301,7 @@ int vectorial = Ux*Vy - Uy*Vx;
 
 ### Algoritmos
 
-#### Calculo de perimetro
+#### Calculo de Perimetro
 
 ``` c++
 double dist(pto A, pto B) {
@@ -1122,7 +1322,7 @@ per += dist(Poly[n-1], Poly[0]);
 
 ![Calculo de perimetro](Imagenes/CalculoDePerimetro.png)
 
-#### Calculo de area
+#### Calculo de Area
 
 - Un polígono se puede separar en triángulos. Luego se puede calcular el área como suma de muchas áreas pequeñas.
 
@@ -1214,7 +1414,7 @@ for(ll i = 1; i < MAXN; i++) F[i] = F[i-1]*i %M;
 > *Aqui M es un numero primo GRANDE*
 > *Complejidad O(MAXN)*
 
-#### Computo de factoriales inversos
+#### Computo de Factoriales Inversos
 
 - Le llamamos “factorial inverso” de 𝑛 módulo 𝑀, al inverso modular del factorial de 𝑛 módulo 𝑀.
 
@@ -1234,11 +1434,11 @@ FI[0] = 1; forr(i, 1, MAXN) FI[i] = FI[i-1]*INV[i] %M;
 ```
 > *Complejidad O(3.MAXN)*
 
-## Teoria de numeros
+## Teoria de Numeros
 
 ### Divisibilidad
 
-#### Numeros primos
+#### Numeros Primos
 
 - Un número primo es aquel que tiene como únicos divisores el 1 y sí mismo.
 
@@ -1291,7 +1491,7 @@ int mcm(int a, int b) { return (a / mcd(a, b)) * b; }
 **PROPIEDAD**: 
 - mcd(a,b) = mcd (a,b+a*k) para cualquier k entero.
 
-#### Divisores de un numero
+#### Divisores de un Numero
 
 ``` c++
 vector<int> Div;
@@ -1309,7 +1509,7 @@ void getDiv(int n) {
 ```
 > *Complejidad: O(log(n)) (+ O(n.log(n)) si se ordena segun ChatGPT)*
 
-#### Factorizacion de un numero
+#### Factorizacion de un Numero
 
 ``` c++
 map<int, int> F;
@@ -1326,11 +1526,11 @@ void fact(int n) {
 ```
 *Complejidad: O(log(n))*
 
-### Aritmetica modular
+### Aritmetica Modular
 
 - a es congruente a b en modulo m (a≡b mod(m)) **<=>** a tiene el mismo resto que b **<=>** |a - b| % m == 0
 
-### Inverso modular
+### Inverso Modular
 
 - El Pequeño Teorema de Fermat dice que sea **𝑝 primo** y **𝑎 coprimo a 𝑝**:
 
@@ -1348,7 +1548,7 @@ ll invmod(ll a){ return expmod(a, M-2); }
 ```
 > *Complejidad: O(e)*
 
-### Computo de inversos modulares
+### Computo de Inversos Modulares
 
 - Cuando el módulo **𝑀 es un número primo** se satisface la siguiente fórmula:
 
@@ -1365,9 +1565,9 @@ for(ll a = 2; a < MAXN; a++) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
 ```
 > *Complejidad: O(MAXN)*
 
-# Algoritmos de busqueda
+# Algoritmos de Busqueda
 
-## Busqueda lineal
+## Busqueda Lineal
 
 ``` c++
 for (int i = 0; i < n ; i ++) {
@@ -1378,7 +1578,7 @@ for (int i = 0; i < n ; i ++) {
 ```
 > *Complejidad: O(n)*
 
-## Busqueda binaria
+## Busqueda Binaria
 
 Especialmente eficiente para:
 
@@ -1415,7 +1615,7 @@ if (array [k] == x) {
 **NOTA**: 
 - Para poder utilizar estos algoritmos se deben **ordenar** los elementos.
 
-## Ventana deslizante
+## Ventana Deslizante
 
 Especialmente eficiente para:
 
@@ -1480,9 +1680,9 @@ void sum2  (vector<int > &A, int x, int &iR , int &jR) {
 
 **NOTA**: Las siguientes estructuras son para grafos dirigidos. Para grafos no dirigidos o bidireccionales, simplemente duplicar la cantidad de aristas
 
-### Lista de adyacencias
+### Lista de Adyacencias
 
-#### Grafo dirigido
+#### Grafo Dirigido
 
 ``` c++
 vector<int> adj[N];
@@ -1493,7 +1693,7 @@ adj[1].push_back(2) // Si existe una arista de 1 a 2;
 ⁝
 ```
 
-#### Grafo dirigido pesado
+#### Grafo Dirigido Pesado
 
 ``` c++
 vector<pair<int,int>> adj[N];
@@ -1504,9 +1704,9 @@ adj[1].push_back({2,5}) // Si existe una arista de 1 a 2 con peso 5;
 ⁝
 ```
 
-### Lista de aristas
+### Lista de Aristas
 
-#### Grafo dirigido
+#### Grafo Dirigido
 
 ``` c++
 vector<pair<int,int>> edges;
@@ -1517,7 +1717,7 @@ edges.push_back({1,2}) // Si existe una arista de 1 a 2;
 ⁝
 ```
 
-#### Grafo dirigido pesado
+#### Grafo Dirigido Pesado
 
 ``` c++
 vector<tuple<int,int,int>> edges;
@@ -1528,9 +1728,9 @@ edges.push_back({1,2,5}) // Si existe una arista de 1 a 2 con peso 5;
 ⁝
 ```
 
-### Matriz de adyacencia
+### Matriz de Adyacencia
 
-#### Grafo dirigido 
+#### Grafo Dirigido 
 
 ``` c++
 int adj[n][n];
@@ -1549,7 +1749,7 @@ for(int i = 0; i < n; ++i) {
 }
 ```
 
-#### Grafo dirigido pesado
+#### Grafo Dirigido Pesado
 
 ``` c++
 int adj[n][n];
@@ -1568,7 +1768,7 @@ for(int i = 0; i < n; ++i) {
 }
 ```
 
-## Algoritmos de recorrido
+## Algoritmos de Recorrido
 
 ### DFS
 
@@ -1628,7 +1828,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
 - "adj" es la representacion del grafo en forma de una **lista de adayacencia**
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 
-## Algoritmos para obtener el camino minimo
+## Algoritmos para Obtener el Camino Minimo
 
 ### BFS
 
@@ -1870,7 +2070,7 @@ Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar 
 - Son muy **eficientes**
 - Es **dificil** encontrar la estrategia que siempre devuelva la solucion optima y mas aun demostrar que esa estrategia funciona. Una buena forma para obtener mayor confiabilidad es ver si existen **contraejemplos** a la estrategia propuesta
 
-# Programacion dinamica
+# Programacion Dinamica
 
 Es un metodo que combina la **correctitud** de la busqueda completa (fuerza bruta) y la **eficiencia** de los algoritmos greedy. 
 
@@ -1879,7 +2079,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 - **Encontrar la solucion optima:** Queremos encontrar una solucion que sea lo mas grande o lo mas pequeña posible.
 - **Contar el numero de soluciones:** Queremos calcular el valor total de posibles soluciones.
 
-## Tecnicas comunes
+## Tecnicas Comunes
 
 - **Rangos** 
 - **Bitmasks[^4]**
@@ -1941,6 +2141,8 @@ for (int n = 2; n < MAXN; ++n) {
 
 La complejidad de una dp esta dada por la suma de sus estados. Aqui un estado es una tupla con informacion particular de un subproblema (ej, n = 3).
 
+> *Podemos mejorar la eficiencia si representamos los estados que sean subconjuntos de elementos en forma de **bitmasks**, como por ejemplo: `dp[1<<K][N]`. Solo funciona para conjuntos con **no mas de 64 elementos** (utilizando long long)*
+
 ### Algoritmo de Kadane
 
 Obtener la maxima suma de subarreglos:
@@ -1964,6 +2166,34 @@ forr(i,1,n)
 {
     curmn = min(a[i], curmn + a[i]);
     glmn = min(glmn, curmn);
+}
+```
+
+# Operaciones de Bits
+
+## Setear el k-esimo Bit
+
+- **a 1**
+```c++
+x = x | (1 << k);
+```
+
+- **a 0**
+```c++
+x = x & ~(1 << k);
+```
+
+- **invertir**
+```c++
+x = x ^ (1 << k);
+```
+
+## Chequear Potencia de 2
+
+```c++
+if(x & (x-1) == 0)
+{
+    /* Hacer algo cuando x sea potencia de 2 */
 }
 ```
 

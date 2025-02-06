@@ -23,7 +23,7 @@ const int MAXN = -1;
 
 using namespace std;
  
-int tests;
+int t;
 
 int main()
 {
@@ -34,12 +34,32 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    cin >> tests;
+    cin >> t;
 
-    while (tests--)
+    while (t--)
     {
-        
+        ll n,a,b,c;
+        cin >> n >> a >> b >> c;
+        ll q = n/(a+b+c);
+        ll res = q*3;
+        ll km = n-q*(a+b+c);
+        if (km > 0)
+        {
+            res++;
+            km -= a;
+            if (km > 0)
+            {
+                res++;
+                km -= b;
+                if (km > 0)
+                {
+                    res++;
+                }
+            }
+        }
+        cout << res << nl;
     }
     
+
     return 0;
 }

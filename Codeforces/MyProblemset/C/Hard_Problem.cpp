@@ -38,7 +38,14 @@ int main()
 
     while (tests--)
     {
-        
+        int m,a,b,c;
+        cin >> m >> a >> b >> c;
+        int res = 0;
+        res += min(a,m);
+        res += min(b,m);
+        res += min(c,m*2-res);
+
+        cout << res << nl;
     }
     
     return 0;

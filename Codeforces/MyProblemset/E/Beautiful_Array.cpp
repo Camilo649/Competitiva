@@ -34,11 +34,17 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    cin >> tests;
+    int a,b;
+    cin >> a >> b;
+    int res[3];
+    res[1] = b;
+    res[0] = -1e5;
+    res[2] = a*3 - res[0] - res[1];
 
-    while (tests--)
+    cout << 3 << nl;
+    forn(i,3)
     {
-        
+        cout << res[i] << ' ';
     }
     
     return 0;

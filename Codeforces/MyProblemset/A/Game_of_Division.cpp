@@ -38,7 +38,42 @@ int main()
 
     while (tests--)
     {
-        
+        int n,k;
+        cin >> n >> k;
+        int a[n];
+        forn(i,n)
+        {
+            cin >> a[i];
+        }
+
+        bool flag;
+        int index;
+        forn(i,n)
+        {
+            flag = true;
+            forn(j,n)
+            {
+                if (i==j)
+                {
+                    continue;
+                }
+                flag = flag && abs(a[i]-a[j])%k != 0;
+            }
+            if (flag)
+            {
+                index = i+1;
+                break;
+            }
+        }
+        if (flag)
+        {
+            cout << "YES" << nl;
+            cout << index << nl;
+        }
+        else
+        {
+            cout << "NO" << nl;
+        }
     }
     
     return 0;

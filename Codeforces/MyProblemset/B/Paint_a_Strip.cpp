@@ -38,7 +38,21 @@ int main()
 
     while (tests--)
     {
-        
+        int n;
+        cin >> n;
+        int ops = 1;
+        int painted = 1;
+        while (n>painted)
+        {
+            painted++;
+            ops++;
+            if (n==painted)
+            {
+                break;
+            }
+            painted*=2;
+        }
+        cout << ops << nl;
     }
     
     return 0;

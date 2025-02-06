@@ -38,7 +38,22 @@ int main()
 
     while (tests--)
     {
-        
+        int n;
+        cin >> n;
+
+        int a[n];
+        a[n-1] = 1;
+        a[n-2] = 1;
+        forn(i,n-2)
+        {
+            a[i] = i+1;
+        }
+
+        forn(i,n)
+        {
+            cout << a[i] << ' ';
+        }
+        cout << nl;
     }
     
     return 0;

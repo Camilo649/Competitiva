@@ -38,7 +38,25 @@ int main()
 
     while (tests--)
     {
-        
+        int n;
+        cin >> n;
+        int icount = 0, pcount = 0;
+        forn(i,n)
+        {
+            int a;
+            cin >> a;
+            if(a%2==0)
+            {
+                pcount++;
+            }
+            else
+            {
+                icount++;
+            }
+        }
+        int res ;
+        pcount == 0? res = icount - 1 : res = icount + 1;
+        cout << res << nl;
     }
     
     return 0;

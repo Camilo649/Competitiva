@@ -38,7 +38,25 @@ int main()
 
     while (tests--)
     {
-        
+        string a;
+        cin >> a;
+        string b = a;
+        forn(i,a.size())
+        {
+            if (a[i] == 'q')
+            {
+                b[a.size()-i-1] = 'p';
+            }
+            else if (a[i] == 'p')
+            {
+                b[a.size()-i-1] = 'q';
+            }
+            else
+            {
+                b[a.size()-i-1] = 'w';
+            }
+        }
+        cout << b << nl;
     }
     
     return 0;

@@ -38,7 +38,26 @@ int main()
 
     while (tests--)
     {
-        
+        int n;
+        cin >> n;
+        int pieces = 0;
+        int square = 1;
+        int happines = 0;
+        forn(i,n)
+        {
+            int a;
+            cin >> a;
+            pieces += a;
+            while (pieces > square*square)
+            {
+                square += 2;
+            }
+            if (pieces == square*square)
+            {
+                happines++;
+            }
+        }
+        cout << happines << nl;
     }
     
     return 0;

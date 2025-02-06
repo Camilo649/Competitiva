@@ -23,7 +23,7 @@ const int MAXN = -1;
 
 using namespace std;
  
-int tests;
+int t;
 
 int main()
 {
@@ -34,12 +34,35 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    cin >> tests;
+    cin >> t;
 
-    while (tests--)
+    while (t--)
     {
+        int n,k;
+        cin >> n >> k;
+        multiset<int> ms;
+        forn(i,n)
+        {
+            int x;
+            cin >> x;
+            ms.insert(x);
+        }
         
+        int score = 0;
+
+        forn(i,k/2)
+        {
+            int a = i+1;
+            int b = k-a;
+            if (ms.count(a) > 0 && ms.count(b) > 0)
+            {
+                a==b? score += ms.count(a)/2 : score += min(ms.count(a),ms.count(b));
+            }
+        }
+
+        cout << score << nl;
     }
     
+
     return 0;
 }

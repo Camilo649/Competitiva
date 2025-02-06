@@ -38,7 +38,18 @@ int main()
 
     while (tests--)
     {
-        
+        int n;
+        cin >> n;
+        int res = 0;
+        int a = 1;
+        int b = n-a;
+        while (b>=1)
+        {
+            res++;
+            a++;
+            b--;
+        }
+        cout << res << nl;
     }
     
     return 0;

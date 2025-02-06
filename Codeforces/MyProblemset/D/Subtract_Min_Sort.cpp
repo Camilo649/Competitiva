@@ -38,7 +38,34 @@ int main()
 
     while (tests--)
     {
+        int n;
+        cin >> n;
+        int a[n];
+        forn(i,n)
+        {
+            cin >> a[i];
+        }
         
+        bool flag = true;
+        forn(i,n-1)
+        {
+            int mn = min(a[i],a[i+1]);
+            a[i] -= mn; a[i+1] -= mn;
+            if (a[i+1] == 0 && a[i] != 0)
+            {
+                flag = false;
+                break;
+            }
+        }
+
+        if (flag)
+        {
+            cout << "YES" << nl;
+        }
+        else
+        {
+            cout << "NO" << nl;
+        }
     }
     
     return 0;

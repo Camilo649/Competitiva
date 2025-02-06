@@ -38,7 +38,25 @@ int main()
 
     while (tests--)
     {
+        int n,k;
+        cin >> n >> k;
+        vector<int> v(n);
+        forn(i,n)
+        {
+            cin >> v[i];
+        }
+
+        sort(v.rbegin(),v.rend());
+
+        int i = 0;
+        int sum = 0;
+        while (i < n && sum + v[i] <= k)
+        {
+            sum+=v[i];
+            i++;
+        }
         
+        cout << k-sum << nl;
     }
     
     return 0;

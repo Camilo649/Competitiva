@@ -22,7 +22,7 @@ using u64 = uint64_t;
 const int MAXN = -1;
 
 using namespace std;
- 
+
 int tests;
 
 int main()
@@ -38,7 +38,19 @@ int main()
 
     while (tests--)
     {
-        
+        int w,b;
+        cin >> w >> b;
+
+        int n = w+b;
+        int length = 1;
+        int res = 0;
+        while(n>=length)
+        {
+            n-=length;
+            res++;
+            length++;
+        }
+        cout << res << nl;
     }
     
     return 0;

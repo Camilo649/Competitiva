@@ -23,7 +23,7 @@ const int MAXN = -1;
 
 using namespace std;
  
-int tests;
+int t;
 
 int main()
 {
@@ -34,12 +34,33 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    cin >> tests;
+    cin >> t;
 
-    while (tests--)
+    while (t--)
     {
-        
+        ll n,x,y;
+        cin >> n >> x >> y;
+        int a[n];
+        ll sum = 0;
+        forn(i,n)
+        {
+            cin >> a[i];
+            sum += a[i];
+        }
+
+        sort(a, a+n);
+
+        ll res = 0;
+        forn(i,n)
+        {
+            auto it_min = lower_bound(a+i+1, a+n, sum-a[i]-y);
+            auto it_max = upper_bound(a+i+1, a+n, sum-a[i]-x);
+            res += (it_max - it_min);
+        }
+
+        cout << res << nl;
+
     }
-    
+
     return 0;
 }

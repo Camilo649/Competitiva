@@ -38,7 +38,46 @@ int main()
 
     while (tests--)
     {
-        
+        int n;
+        cin >> n;
+        int a[n];
+        set<int> s;
+        forn(i,n)
+        {
+            cin >> a[i];
+            s.insert(a[i]);
+        }
+
+        queue<int> q;
+        forn(i,n)
+        {
+            if (s.count(i+1) == 0)
+            {
+                q.push(i+1);
+            }
+        }
+
+        int b[n];
+        s.clear();
+        forn(i,n)
+        {
+            if (s.count(a[i]) == 1)
+            {
+                b[i] = q.front();
+                q.pop();
+            }
+            else
+            {
+                s.insert(a[i]);
+                b[i] = a[i];
+            }
+        }
+
+        forn(i,n)
+        {
+            cout << b[i] << ' ';
+        }
+        cout << nl;
     }
     
     return 0;

@@ -38,7 +38,21 @@ int main()
 
     while (tests--)
     {
+        ll x,m;
+        cin >> x >> m;
+
+        int res = 0;
+        int y = 1;
+        while (y<2*x && y<=m)
+        {
+            if (y!=x)
+            {
+                x%(x^y) == 0 || y%(x^y) == 0 ? res++ : res = res;
+            }
+            y++;
+        }
         
+        cout << res << nl;
     }
     
     return 0;
