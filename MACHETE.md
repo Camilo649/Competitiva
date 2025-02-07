@@ -1787,6 +1787,13 @@ for(int i = 0; i < n; ++i) {
 
 ## Algoritmos de Recorrido
 
+Suelen ser usados para:
+
+- Chequear conectividad[^2]
+- Hallar componentes[^3]
+- Encontrar ciclos
+- Chequear Biparticidad[^4]
+
 ### DFS
 
 Ve los vecinos en algun orden.
@@ -1808,15 +1815,15 @@ void dfs(int r) { // <-- pasamos la raiz como parametro
     }
 }
 ```
-> *Complejidad O(m)*
+> *Complejidad O(n+m)*
 
 **NOTAS**:
-- adj es la representacion del grafo en forma de una **lista de adayacencia**
+- adj es la representacion del grafo en forma de una [lista de adayacencia](#lista-de-adyacencias)
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 
 ### BFS
 
-Encuentra el **el camino mas corto** a cada vertice desde la raiz "r".
+Encuentra **el camino mas corto** a cada vertice desde la raiz `r`.
 
 ``` c++
 queue<int> q;
@@ -1839,7 +1846,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
     }
 }
 ```
-> *Complejidad O(m)*
+> *Complejidad O(n+m)*
 
 **NOTAS**:
 - "adj" es la representacion del grafo en forma de una **lista de adayacencia**
@@ -1947,7 +1954,7 @@ for(int k = 0; k < n, k++) {
     }
 }
 ```
-> *Invariante: luego de la k-esima iteracion, computa los caminos k-internos[^2] minimos.*
+> *Invariante: luego de la k-esima iteracion, computa los caminos k-internos[^5] minimos.*
 > *Complejidad O(n^3)*
 
 **NOTAS**:
@@ -2075,7 +2082,7 @@ void search(int y) {
     }
 }
 ```
-> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^3] utilizando un algoritmo de Backtracking*
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^6] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
@@ -2099,7 +2106,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 ## Tecnicas Comunes
 
 - **Rangos** 
-- **Bitmasks[^4]**
+- **Bitmasks[^7]**
 
 ## Requisitos
 
@@ -2215,6 +2222,9 @@ if(x & (x-1) == 0)
 ```
 
 [^1]: *Un conjunto de puntos es convexo si contiene todos los segmentos entre todo par de puntos del conjunto.*
-[^2]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
-[^3]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
-[^4]: *Una bitmask es un numero entero visto por su valor en binario*
+[^2]: *Un grafo es conexo si existe un camino entre cualquier par de nodos*
+[^3]: *Se denomina componente de un grafo a un subconjunto conexo de los nodos del mismo*
+[^4]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
+[^5]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
+[^6]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
+[^7]: *Una bitmask es un numero entero visto por su valor en binario*
