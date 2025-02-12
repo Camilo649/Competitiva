@@ -11,53 +11,53 @@
 
 # Indice Algoritmos
 
-| Algoritmo                                                                                                | Complejidad                                      |
-|----------------------------------------------------------------------------------------------------------|--------------------------------------------------|
-| [Progresiones: Sumas Gaussianas](#sumas-gaussianas)                                                      | O(1)                                             |
-| [Progresiones: Formula de Faulhaber](#formula-de-faulhaber-hasta-6)                                      | O(1)                                             |
-| [Progresiones: Progresion Aritmetica](#progresion-aritmetica)                                            | O(1)                                             |
-| [Progresiones: Progresion Geometrica](#progresion-geometrica)                                            | O(1)                                             |
-| [Algebra: Raiz](#raices)                                                                                 | O(log(numero))                                   |
-| [Algebra: Exponenciacion](#exponenciacion)                                                               | O(#potencias)                                    |
-| [Algebra: Formula de Binet](#formula-de-binet)                                                           | O(1)                                             |
-| [Geometria: Suma y resta de vectores](#suma-y-resta-de-vectores)                                         | O(1)                                             |
-| [Geometria: Multiplicacion y division de vectores por escalares](#multiplacion-y-division-por-escalares) | O(1)                                             |
-| [Geometria: Norma de un vector](#norma)                                                                  | O(log(U^2))                                      |
-| [Geometria: Proyeccion de un vector sobre otro](#producto-vectorial)                                     | O(log(U^2))                                      |
-| [Geometria: Producto punto](#producto-punto)                                                             | O(1)                                             |
-| [Geometria: Producto cruz](#producto-cruz)                                                               | O(1)                                             |
-| [Geometria: Calculo de perimetro](#calculo-de-perimetro)                                                 | O(#lados del poligono)                           |
-| [Geometria: Calculo de area](#calculo-de-area)                                                           | O(#lados del poligono)                           |
-| [Geometria: Polar Sort](#polar-sort)                                                                     | O(#puntos∗log(#puntos))                          |
-| [Geometria: Convex Hull](#convex-hull)                                                                   | O(#puntos∗log(#puntos))                          |
-| [Combinatoria: Computo de factoriales](#computo-de-factoriales)                                          | O(numero)                                        |
-| [Combinatoria: Computo de factoriales inversos](#computo-de-factoriales-inversos)                        | O(3∗numero)                                      |
-| [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | O(raiz(numero))                                  |
-| [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | O(numero∗log(numero))                            |
-| [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | O(log(numero))                                   |
-| [Teoria de Numeros: Divisores de un numero](#divisores-de-un-numero)                                     | O(log(numero))                                   |
-| [Teoria de Numeros: Factorizacion de un numero](#factorizacion-de-un-numero)                             | O(log(numero))                                   |
-| [Teoria de Numeros: Ver si un numero es congruente a otro](#aritmetica-modular)                          | O(1)                                             |
-| [Teoria de Numeros: Inverso modular](#inverso-modular)                                                   | O(#potencias)                                    |
-| [Teoria de Numeros: Computo de inversos modulares](#computo-de-inversos-modulares)                       | O(3∗numero)                                      |
-| [Busqueda: Busqueda lineal](#busqueda-lineal)                                                            | O(#elementos)                                    |
-| [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | O(log(#elementos))                               |
-| [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | O(2∗#elementos)                                  |
-| [Busqueda: 2SUM](#2sum)                                                                                  | O(2∗#elementos)                                  |
-| [Grafos: DFS](#dfs)                                                                                      | O(#aristas)                                      |
-| [Grafos: BFS](#bfs)                                                                                      | O(#aristas)                                      |
-| [Grafos: Bellman Ford](#bellman-ford)                                                                    | O(#vertices∗#aristas)                            |
-| [Grafos: Dijkstra](#dijkstra)                                                                            | O(min{(#vertices)^2, (#aristas)∗log(#vertices)}) |
-| [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                                 |
-| [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                            |
-| [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | O(#elementos!)                                   |
-| [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | O(raiz(2^#elementos))                            |
-| [Bactracking: Ejemplo Problema de las N Reinas](#ejemplo-problema-de-las-n-reinas)                       | O(#reinas!)                                      |
-| [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | O(tamaño(matriz))                                |
-| [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | O(tamaño(matriz))                                |
-| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(#elementos)                                    |
-| [Operaciones de Bits: Setear el k-esimo Bit](#setear-el-k-esimo-bit)                                     | O(1)                                             |
-| [Operaciones de Bits: Chequear Potencia de 2](#chequear-potencia-de-2)                                   | O(1)                                             |
+| Algoritmo                                                                                                | Complejidad                           |
+|----------------------------------------------------------------------------------------------------------|---------------------------------------|
+| [Progresiones: Sumas Gaussianas](#sumas-gaussianas)                                                      | O(1)                                  |
+| [Progresiones: Formula de Faulhaber](#formula-de-faulhaber-hasta-6)                                      | O(1)                                  |
+| [Progresiones: Progresion Aritmetica](#progresion-aritmetica)                                            | O(1)                                  |
+| [Progresiones: Progresion Geometrica](#progresion-geometrica)                                            | O(1)                                  |
+| [Algebra: Raiz](#raices)                                                                                 | O(log(numero))                        |
+| [Algebra: Exponenciacion](#exponenciacion)                                                               | O(#potencias)                         |
+| [Algebra: Formula de Binet](#formula-de-binet)                                                           | O(1)                                  |
+| [Geometria: Suma y resta de vectores](#suma-y-resta-de-vectores)                                         | O(1)                                  |
+| [Geometria: Multiplicacion y division de vectores por escalares](#multiplacion-y-division-por-escalares) | O(1)                                  |
+| [Geometria: Norma de un vector](#norma)                                                                  | O(log(U^2))                           |
+| [Geometria: Proyeccion de un vector sobre otro](#producto-vectorial)                                     | O(log(U^2))                           |
+| [Geometria: Producto punto](#producto-punto)                                                             | O(1)                                  |
+| [Geometria: Producto cruz](#producto-cruz)                                                               | O(1)                                  |
+| [Geometria: Calculo de perimetro](#calculo-de-perimetro)                                                 | O(#lados del poligono)                |
+| [Geometria: Calculo de area](#calculo-de-area)                                                           | O(#lados del poligono)                |
+| [Geometria: Polar Sort](#polar-sort)                                                                     | O(#puntos∗log(#puntos))               |
+| [Geometria: Convex Hull](#convex-hull)                                                                   | O(#puntos∗log(#puntos))               |
+| [Combinatoria: Computo de factoriales](#computo-de-factoriales)                                          | O(numero)                             |
+| [Combinatoria: Computo de factoriales inversos](#computo-de-factoriales-inversos)                        | O(3∗numero)                           |
+| [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | O(raiz(numero))                       |
+| [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | O(numero∗log(numero))                 |
+| [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | O(log(numero))                        |
+| [Teoria de Numeros: Divisores de un numero](#divisores-de-un-numero)                                     | O(log(numero))                        |
+| [Teoria de Numeros: Factorizacion de un numero](#factorizacion-de-un-numero)                             | O(log(numero))                        |
+| [Teoria de Numeros: Ver si un numero es congruente a otro](#aritmetica-modular)                          | O(1)                                  |
+| [Teoria de Numeros: Inverso modular](#inverso-modular)                                                   | O(#potencias)                         |
+| [Teoria de Numeros: Computo de inversos modulares](#computo-de-inversos-modulares)                       | O(3∗numero)                           |
+| [Busqueda: Busqueda lineal](#busqueda-lineal)                                                            | O(#elementos)                         |
+| [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | O(log(#elementos))                    |
+| [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | O(2∗#elementos)                       |
+| [Busqueda: 2SUM](#2sum)                                                                                  | O(2∗#elementos)                       |
+| [Grafos: DFS](#dfs)                                                                                      | O(#aristas)                           |
+| [Grafos: BFS](#bfs)                                                                                      | O(#aristas)                           |
+| [Grafos: Bellman-Ford](#bellman-ford)                                                                    | O(#vertices∗#aristas)                 |
+| [Grafos: Dijkstra](#dijkstra)                                                                            | O(#vertices + #aristas∗log(#aristas)) |
+| [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                      |
+| [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                 |
+| [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | O(#elementos!)                        |
+| [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | O(raiz(2^#elementos))                 |
+| [Bactracking: Ejemplo Problema de las N Reinas](#ejemplo-problema-de-las-n-reinas)                       | O(#reinas!)                           |
+| [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | O(tamaño(matriz))                     |
+| [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | O(tamaño(matriz))                     |
+| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(#elementos)                         |
+| [Operaciones de Bits: Setear el k-esimo Bit](#setear-el-k-esimo-bit)                                     | O(1)                                  |
+| [Operaciones de Bits: Chequear Potencia de 2](#chequear-potencia-de-2)                                   | O(1)                                  |
 
 # Indice Estructuras
 
@@ -101,10 +101,12 @@
 | [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo `O(log(n))`                           |
 | [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo `O(log(n))`                            |
 | [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo `O(log(n))` |
+| [Funciones de Conversion: To String](#to-string)                    | Convierte un numero real en una cadena en tiempo `O(digitos(n))`                                              |    
+| [Funciones de Conversion: Atoi](#atoi)                              | Convierte una arreglo de caracteres en un entero en tiempo `O(s.size())`                                      |    
 | [Funciones de Bits: Counting Leading Zeros](#count-leading-zeros)   | Retorna la cantidad de ceros antes del 1 mas significativo de `x` en tiempo `O(1)`                            |
 | [Funciones de Bits: Counting Trailing Zeros](#count-trailing-zeros) | Retorna la cantidad de ceros despues del 1 menos significativo de `x` en tiempo `O(1)`                        |
 | [Funciones de Bits: Popcount](#popcount)                            | Retorna la cantidad de bits en 1 de `x` en tiempo `O(1)`                                                      |
-| [Funciones de Bits: Parity](#parity)                                | Retorna 1 si `x` es par y 0 en caso contrario en tiempo `O(1)`                                                |
+| [Funciones de Bits: Parity](#parity)                                | Retorna 1 si la cantidad de bits en 1 de `x` es par y 0 en caso contrario en tiempo `O(1)`                    |
 
 # Librerias God 
 
@@ -192,7 +194,6 @@ auto a = lower_bound(array, array+n, x);
 
 ## Upper Bound
 
-Devuelve un puntero al primer elemento cuyo valor es > a `x`
 
 ```c++
 auto b = upper_bound(array, array+n, x);
@@ -205,18 +206,82 @@ auto r = equal_range(array, array+n, x);
 cout << r.second-r.first << "\n";
 ```
 
+# Funciones de Conversion
+
+## To String
+
+```c++
+int x = 1000;
+string s = to_string(x);
+cout << s << "\n"; // "1000"
+```
+
+**NOTA**:
+- Para los **tipos de coma flotante**, solo **se mostraran 6 digitos** donde se **redondea** el ultimo
+
+### Flotantes con Precision Fijada
+
+- **notacion fija**
+
+```c++
+double d = 3.141592653589793;
+ostringstream oss;
+oss.precision(10);          // Configurar precisión
+oss << d;                   // Convertir número a string con la precisión dada
+string s = oss.str();
+cout << scientific << "\n"; // "3.141592654"
+```
+
+- **notacion cientifica**
+```c++
+double d = 3.141592653589793;
+ostringstream oss;
+oss << scientific << setprecision(4) << d;
+string scientific = oss.str();
+cout << scientific << "\n"; // "3.1416e+00"
+```
+
+**NOTA**:
+- El ultimo digito siempre es **redondeado**
+
+## Atoi
+
+- **enteros**
+```c++
+string s1 = "123";
+const char* s2 = "-456";
+
+int x = atoi(s1);
+int y = atoi(s2);
+int z = atoi("789");
+```
+
+- **long long**
+```c++
+string s1 = "123";
+const char* s2 = "-456";
+
+ll x = atoll(s1);
+ll y = atoll(s2);
+ll z = atoll("789");
+```
+
+**NOTAS**:
+- Si el string comienza con numeros y luego cualquier otro tipo de caracter, solo se convertira hasta antes del primer caracter no numerico
+- Si el string no comienza con caracteres numericos, la funcion devolvera 0
+
 # Funciones de Bits
 
 ## Count Leading Zeros
 
 - **enteros**
-```cpp
+```c++
 int x = 5328; // 00000000000000000001010011010000
 cout << __builtin_clz(x) << "\n"; // 19
 ```
 
 - **long long**
-```cpp
+```c++
 long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
 cout << __builtin_clzll(x) << "\n"; // 51
 ```
@@ -224,13 +289,13 @@ cout << __builtin_clzll(x) << "\n"; // 51
 ## Count Trailing Zeros
 
 - **enteros**
-```cpp
+```c++
 int x = 5328; // 00000000000000000001010011010000
 cout << __builtin_ctz(x) << "\n"; // 4
 ```
 
 - **long long**
-```cpp
+```c++
 long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
 cout << __builtin_ctzll(x) << "\n"; // 4
 ```
@@ -238,13 +303,13 @@ cout << __builtin_ctzll(x) << "\n"; // 4
 ## Popcount
 
 - **enteros**
-```cpp
+```c++
 int x = 5328; // 00000000000000000001010011010000
 cout << __builtin_popcount(x) << "\n"; // 5
 ```
 
 - **long long**
-```cpp
+```c++
 long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
 cout << __builtin_popcountll(x) << "\n"; // 5
 ```
@@ -252,18 +317,16 @@ cout << __builtin_popcountll(x) << "\n"; // 5
 ## Parity
 
 - **enteros**
-```cpp
+```c++
 int x = 5328; // 00000000000000000001010011010000
 cout << __builtin_parity(x) << "\n"; // 1
 ```
 
 - **long long**
-```cpp
+```c++
 long long x = 5328; // 0000000000000000000000000000000000000000000000000001010011010000
 cout << __builtin_parityll(x) << "\n"; // 1
 ```
-
-> *Es la manera **mas eficiente** para chequear paridad!*
 
 # Tips
 
@@ -894,8 +957,8 @@ M.size(); // 2. if (M[10] == “X”) { … } OJO: este patrón agrega el elemen
 <u>Como iterar un map:</u>
 
 ```c++
-for (auto it = m.begin(); it != m.end(); it++) {
-    cout << it->first << ": " << it->second << "\n";
+for (auto [key, value] : m) {
+    cout << key << ": " << value;
 }
 ```
 
@@ -1849,7 +1912,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
 > *Complejidad O(n+m)*
 
 **NOTAS**:
-- "adj" es la representacion del grafo en forma de una **lista de adayacencia**
+- "adj" es la representacion del grafo en forma de una [lista de adayacencia](#lista-de-adyacencias)
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 
 ## Algoritmos para Obtener el Camino Minimo
@@ -1861,7 +1924,7 @@ Mismo algoritmo de la seccion anterior.
 **NOTA**:
 - **solo funciona si el peso de todas las aristas son iguales**
 
-### Bellman Ford
+### Bellman-Ford
 
 Calcula el camino minimo desde un vertice hacia todos.
 
@@ -1885,40 +1948,36 @@ void bf (int v) {
 > *Complejidad: O(nm)*
 
 **NOTAS**:
-- "edges" es la representacion del grafo en forma de una **lista de aristas**
-- **no funciona para grafos pesados**
-- Bellman Ford detecta si hay un **ciclo negativo**, pero se vuelve **no determinista**
+- `edges` es la representacion del grafo en forma de una [lista de aristas](#lista-de-aristas)
+- **funciona PARA TODO tipo de grafos**
+
+#### Ciclos Negativos
+
+El algoritmo de Bellman-Ford puede ser utilizado para hallar ciclos negativos en el grafo. Si se realiza una iteracion extra y alguna distancia es reducida, signifca que existe al menos un ciclo negativo.
 
 ### Dijkstra
 
 Devuelve el camino minimo de un vertice a todos.
 
 ``` c++
-priority_queue<int> q;
+priority_queue<pair<int,int>> q;
 bitset(MAXN) visited;
 int distance[n];
 for(int i = 0; i < n; ++i) {
     distance[i] = INF; // INF es un valor enorme
 }
 
-void dijkstra( int v ) {
-    q.push(v);
-    distance[v] = 0;
-    int a, b, w;
-    while( !q.empty() ){                   
-        a = q.top().first;            
-        q.pop();                           
-        if(visited[a]) continue;
-        visited[a] = 1;
-
-        for(int i = 0; i < adj[a].size() ; ++i ) {
-            if(!visited[a]) {
-                b = adj[a][i].first;
-                w = adj[a][i].second;
-                if(distance[a] + w < distance[b]) {
-                    distance[b] = distance[a] + w;
-                    q.push(b);
-                }
+void dijkstra(int v) {
+    pq.push({0,x});
+    while (!pq.empty()) {
+        int a = pq.top().second; pq.pop();
+        if (processed[a]) continue;
+            processed[a] = true;
+        for (auto u : adj[a]) {
+            int b = u.first, w = u.second;
+            if (distance[a]+w < distance[b]) {
+                distance[b] = distance[a]+w;
+                pq.push({-distance[b],b});
             }
         }
     }
@@ -1926,10 +1985,10 @@ void dijkstra( int v ) {
 ```
 > *Invariante: Antes de la k-esima iteracion, calcula correctamente la distancia hacia los k vertices mas cercanos al origen*
 > *Invariante: En cada iteracion, toma al vertice no procesado que este a distancia minima del origen*
-> *Complejidad: O(min{n^2, m.log(n)})*
+> *Complejidad: O(n + mlog(m))*
 
 **NOTAS**:
-- "adj" es la representacion del grafo en forma de una **lista de adyacencia**
+- `adj` es la representacion del grafo en forma de una [lista de adayacencia](#lista-de-adyacencias)
 - **Requiere que el costo de las aristas sea no negativo**
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 - Util para **grafos densos**
@@ -1940,9 +1999,11 @@ Computa la distancia entre todo par de vertices.
 
 ``` c++
 int dist[n][n];
-for(int i = 0; i < n; ++i) {
-    for(int j = 0; j < n; ++j) {
-        dist[i][j] = INF; // INF es un valor enorme
+for (int i = 1; i <= n; i++) {
+    for (int j = 1; j <= n; j++) {
+        if (i == j) dist[i][j] = 0;
+        else if (adj[i][j]) dist[i][j] = adj[i][j];
+        else dist[i][j] = INF; // INF es un valor enorme
     }
 }
 
@@ -1958,9 +2019,12 @@ for(int k = 0; k < n, k++) {
 > *Complejidad O(n^3)*
 
 **NOTAS**:
-- "dist" es la representacion del grafo en forma de una **matriz de adyacencia**
+- `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
 - **Permite arsitas con peso negativo**
-- Floyd-Warshall detecta si hay un **ciclo negativo**, pero se vuelve no determinista
+
+#### Ciclos Negativos
+
+Tras haber ejecutado el algoritmo de Floyd-Warshall, podemos detectar la existencia de ciclos negativos ne tiempo `O(n)`, solamente debemos iterar la diagonal de la matriz con la distancias en busqueda de un valor negativo. De ser ese el caso, sabremos que existe al menos un ciclo negativo presente en el grafo
 
 # Fuerza Bruta
 
