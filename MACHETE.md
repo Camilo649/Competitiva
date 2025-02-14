@@ -49,6 +49,8 @@
 | [Grafos: Bellman-Ford](#bellman-ford)                                                                    | O(#vertices∗#aristas)                 |
 | [Grafos: Dijkstra](#dijkstra)                                                                            | O(#vertices + #aristas∗log(#aristas)) |
 | [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                      |
+| [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
+| [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
 | [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                 |
 | [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | O(#elementos!)                        |
 | [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | O(raiz(2^#elementos))                 |
@@ -85,7 +87,7 @@
 | [Geometria: Punto](#punto)                            | 8B                                                                                       |
 | [Geometria: Vector](#vector)                          | 8B                                                                                       |
 | [Geometria: Recta](#recta)                            | 16B                                                                                      |
-| [Geometria: Poligono](#poligono)                      | (#vectores/puntos)8B                                                                    |
+| [Geometria: Poligono](#poligono)                      | (#vectores/puntos)8B                                                                     |
 | [Grafos: Lista de adyacencias](#lista-de-adyacencias) | (#nodos)4B + (#aristas)4B grafo direccional o (#aristas)8B grafo direccional pesado      |
 | [Grafos: Lista de aristas](#lista-de-aristas)         | (#aristas)8B para grafos direccionales o (#aristas)12B para grafos direccionales pesados |
 | [Grafos: Matriz de adyacencia](#matriz-de-adyacencia) | ((#nodos)^2)*4B                                                                          |
@@ -2026,6 +2028,64 @@ for(int k = 0; k < n, k++) {
 
 Tras haber ejecutado el algoritmo de Floyd-Warshall, podemos detectar la existencia de ciclos negativos ne tiempo `O(n)`, solamente debemos iterar la diagonal de la matriz con la distancias en busqueda de un valor negativo. De ser ese el caso, sabremos que existe al menos un ciclo negativo presente en el grafo
 
+## Arboles
+
+Un arbol es un grafo conexo[^2] y aciclico que consta de `n` nodos y `n-1` aristas. Cuenta con las siguientes propiedades:
+
+- Remover una arista divide el arbol en dos componentes
+- Agregar una arista crea un ciclo
+- Existe un unico camino entre cada par de nodos
+
+### Nodos de cada Subarbol
+
+La funcion toma dos parametros: `s` que es el nodo a procesar y `e` que es el nodo previamente procesado. El proposito del parametro `e` es que no se visiten nodos ya visitados (notar que esto solamente es valido para arboles).
+
+```c++
+void dfs(int s, int e) {
+    count[s] = 1;
+    for (auto u : adj[s]) {
+        if (u == e) continue;
+        dfs(u, s);
+        count[s] += count[u];
+    }
+}
+
+dfs(x,-1); // La primera llamada es con -1 puesto que no hay nodo previo
+```
+
+> *Complejidad O(n)*
+
+### Calcular Diametro[^6] del Arbol
+
+Dado un nodo arbitrario `a` (en el algortimo tomamos 0 por simplicidad), encontramos el nodo `b` mas alejado de `a` y luego el nodo `c` mas alejado de `b`. Finalmente, el diametro del arbol esta dado por la distancia entre `b` y `c` el cual guardamos en la variable `diameter`. En este algoritmo, el arbol es visto de la siguiente forma:
+
+![Vista del Arbol para Hallar el Diametro](Imagenes/TreeDiameter.png)
+> *`x` representa el nodo donde el camino hacia el nodo `a` se une al del diametro*
+
+```c++
+int farthestNode = 0;
+int diameter = 0;
+
+void dfs(int s, int e, int l) {
+    if (l > diameter) {
+        diameter = l;
+        farthestNode = s;
+    }
+    for (auto u : adj[s]) {
+        if (u != e) continue; 
+        dfs(u, s, l + 1);
+    }
+}
+
+// Primera DFS desde el nodo 0
+dfs(0, -1, 0);
+// Segunda DFS desde el nodo mas alejado encontrado
+diameter = 0;
+dfs(farthestNode, -1, 0);
+```
+
+> *Complejidad O(n)*
+
 # Fuerza Bruta
 
 Solo es util cuando el `n` lo permite, en caso contrario deberia optarse por utilizar [greedy](#greedy) o [programacion dinamica](#programacion-dinamica).
@@ -2146,7 +2206,7 @@ void search(int y) {
     }
 }
 ```
-> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^6] utilizando un algoritmo de Backtracking*
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^7] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
@@ -2170,7 +2230,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 ## Tecnicas Comunes
 
 - **Rangos** 
-- **Bitmasks[^7]**
+- **Bitmasks[^8]**
 
 ## Requisitos
 
@@ -2290,5 +2350,6 @@ if(x & (x-1) == 0)
 [^3]: *Se denomina componente de un grafo a un subconjunto conexo de los nodos del mismo*
 [^4]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
 [^5]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
-[^6]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
-[^7]: *Una bitmask es un numero entero visto por su valor en binario*
+[^6]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
+[^7]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
+[^8]: *Una bitmask es un numero entero visto por su valor en binario*
