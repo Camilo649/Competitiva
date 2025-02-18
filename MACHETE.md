@@ -51,6 +51,8 @@
 | [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                      |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
 | [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
+| [Grafos: Kruskal](#kruskal)                                                                              | O(#aristas*log(#vertices))            |
+| [Grafos: Prim](#prim)                                                                                    | O(#vertices + #aristas*log(#aristas)) |
 | [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                 |
 | [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | O(#elementos!)                        |
 | [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | O(raiz(2^#elementos))                 |
@@ -80,6 +82,7 @@
 | [Multisets](#multisets)                               | (4*#elementos)B                                                                          |
 | [Indexed Sets](#indexed-sets)                         | (4*#elementos)B                                                                          |
 | [Bitmask Sets](#bitmask-sets)                         | 4B                                                                                       |
+| [Disjoint Set Union](#disjoint-set-union)             | (8*#elementos)B                                                                          |
 | [Maps](#maps)                                         | (8*#elementos)B                                                                          |
 | [Iteradores](#iteradores)                             | 4B                                                                                       |
 | [Binary Index Tree/Fenwick Tree](#fenwick-tree)       | (8*#elementos)B                                                                          |
@@ -938,6 +941,63 @@ do {
 
 **NOTA**:
 - Este tipo de conjuntos solamente puede almacenar **hasta 64 elementos** (utilizando *long long*)
+
+# Disjoint Set Union
+
+Un DSU mantiene una coleccion de conjuntos disjuntos. Cada conjunto tiene un elemento **representativo** y una **cadena** que une a cualquier elemento con el rerpesentativo.
+
+![Ejemplo DSU](Imagenes/DSU.png) 
+> *Representacion grafica de los sets {1, 4, 7}, {5} y {2, 3, 6, 8}*
+
+Especialmente eficiente para:
+
+- Ver si dos nodos pertenecen a la misma componente
+
+<u>Inicializacion:</u>
+
+El arreglo `link` indica, para cada elemento, el siguiente elemento en la cadena o el mismo elemento si este es representativo. El arreglo `size` indica el tamaño de cada conjunto para cada elemento representativo. Inicilamente, cada conjunto contiene solo un elemento.
+
+```c++
+int link[n], size[n];
+for (int i = 0; i < n; i++) link[i] = i;
+for (int i = 0; i < n; i++) size[i] = 1;
+```
+
+<u>Funciones:</u>
+
+- **find:** Retorna el representativo para un elemento `x`
+
+```c++
+int find(int x) {
+    while (x != link[x]) x = link[x];
+    return x;
+}
+```
+> *Complejidad: O(log(n))*
+
+- **same:** Devuelve true si los elementos `x` e `y` pertenecen al mismo conjunto. Decimos que dos elementos pertenecen al mismo conjunto si y solo si sus representativos son los mismos
+
+PRECONDICION: `x` e `y` deben pertenecer a diferentes sets
+
+```c++
+bool same(int x, int y) {
+    return find(x) == find(y);
+}
+```
+> *Complejidad: O(log(n))*
+
+- **unite:** Une el set mas chico de los elementos `x` e `y` al mas grande
+
+```c++
+void unite(int x, int y) {
+    a = find(x);
+    b = find(y);
+    if (size[x] < size[y]) swap(x,y);
+    size[x] += size[y];
+    link[y] = x;
+}
+```
+> *Complejidad: O(log(n))*
 
 # Maps
 
@@ -1973,8 +2033,8 @@ void dijkstra(int v) {
     pq.push({0,x});
     while (!pq.empty()) {
         int a = pq.top().second; pq.pop();
-        if (processed[a]) continue;
-            processed[a] = true;
+        if (visited[a]) continue;
+            visited[a] = 1;
         for (auto u : adj[a]) {
             int b = u.first, w = u.second;
             if (distance[a]+w < distance[b]) {
@@ -2086,6 +2146,129 @@ dfs(farthestNode, -1, 0);
 
 > *Complejidad O(n)*
 
+### Spanning Tree
+
+El arbol de expansion de un grafo consiste de todos los nodos del grafo y algunas de sus aristas, de forma tal que existe un unico camino entre cualesquiera dos nodos.
+El **peso** de un spanning tree esta dado por la suma del peso de sus aristas.
+
+**NOTA:**
+- Existe mas de una forma de crear un spanning tree dado un grafo, por lo que estos arboles **no son unicos**
+
+#### Kruskal
+
+En el algoritmo de Kruskal, el arbol de expansion inicialmente contiene los nodos del grafo sin ninguna arista. Luego, el algoritmo recorre todas las aristas, las cuales deben estar ordenadas por peso, y luego añade la arista siempre que esta no cree un ciclo.
+
+- Preferible para **grafos dispersos** (n≈m)
+
+```c++
+sort(edges.begin(), edges.end());
+for (int i = 0; i < edges.size(); i++) {
+    if (!same(get<1>(edges[i]), get<2>(edges[i])) 
+        unite(get<1>(edges[i], get<2>(edges[i]))));
+}
+```
+> *Complejidad O (mlog(n))*
+
+**NOTAS:**
+- `edges` es la representacion del grafo en forma de una [lista de aristas](#lista-de-aristas) que **contiene primero el peso** y luego los nodos
+- Las funciones `same` y `unite` pertenecen a la estructura [DSU](#disjoint-set-union) la cual debe ser inicializada previamente
+- El algoritmo resuelve el problema de hallar un **minimum spanning tree**; para resolver el problema de hallar un **maximum spanning tree**, solamente hay que cambiar el ordenamiento
+
+#### Prim
+
+En el algoritmo de Prim, inicialmente el arbol de expansion comienza con un nodo arbitario. Luego, siempre se añade la arista de peso minimo que agrega un nuevo nodo.
+
+- Preferible para **grafos densos** (n<<m)
+
+##### Minimum Spanning Tree
+
+```c++
+bitset(MAXN) visited; // Indica si un nodo ya está en el MST
+int minEdge[MAXN];    // Peso mínimo para alcanzar un nodo desde el MST
+int parent[MAXN];     // Para reconstruir el MST
+
+void prim(int start) {
+    fill(minEdge, minEdge + n, INT_MAX);
+    fill(parent, parent + n, -1);
+
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // Priority queue para minimos
+    pq.push({0, start}); // Iniciamos desde el nodo `start` con peso 0
+    minEdge[start] = 0;
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        if (visited[u]) continue;
+        visited[u] = 1;
+
+        // Procesamos las aristas del nodo `u`
+        for (int v = 0; v < n; v++) {
+            if (adj[u][v] && !visited[v] && adj[u][v] < minEdge[v]) {
+                minEdge[v] = adj[u][v];
+                parent[v] = u;
+                pq.push({minEdge[v], v});
+            }
+        }
+    }
+
+    // Mostramos el MST
+    cout << "Aristas del MST:\n";
+    for (int i = 1; i < n; i++) { // Empezamos desde 1 porque el nodo raíz no tiene padre
+        cout << parent[i] << " - " << i << " con peso " << adj[i][parent[i]] << "\n";
+    }
+}
+```
+> *Complejidad O(n + mlog(m))*
+
+**NOTA:**
+- `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
+
+###### Maximum Spanning Tree
+
+```c++
+bitset(MAXN) visited; // Indica si un nodo ya está en el MST
+int maxEdge[MAXN];    // Peso máximo para alcanzar un nodo desde el MST
+int parent[MAXN];     // Para reconstruir el MST
+
+void primMax(int start) {
+    fill(maxEdge, maxEdge + n, INT_MIN);
+    fill(parent, parent + n, -1);
+
+    // Priority queue para seleccionar la arista de mayor peso (default: max-heap)
+    priority_queue<pair<int, int>> pq; 
+    pq.push({0, start}); // Iniciamos desde el nodo `start` con peso 0
+    maxEdge[start] = 0;
+
+    while (!pq.empty()) {
+        int u = pq.top().second;
+        pq.pop();
+
+        if (visited[u]) continue;
+        visited[u] = 1;
+
+        // Procesamos las aristas del nodo `u`
+        for (int v = 0; v < n; v++) {
+            if (adj[u][v] && !visited[v] && adj[u][v] > maxEdge[v]) {
+                maxEdge[v] = adj[u][v];
+                parent[v] = u;
+                pq.push({maxEdge[v], v});
+            }
+        }
+    }
+
+    // Mostramos el MST máximo
+    cout << "Aristas del MST Máximo:\n";
+    for (int i = 1; i < n; i++) { // Empezamos desde 1 porque el nodo raíz no tiene padre
+        cout << parent[i] << " - " << i << " con peso " << adj[i][parent[i]] << "\n";
+    }
+}
+```
+> *Complejidad O(n + mlog(m))*
+
+**NOTA:**
+- `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
+
 # Fuerza Bruta
 
 Solo es util cuando el `n` lo permite, en caso contrario deberia optarse por utilizar [greedy](#greedy) o [programacion dinamica](#programacion-dinamica).
@@ -2177,7 +2360,7 @@ do {
 
 ## Reunion en el Centro
 
-Cuando el problema permita dividr el espacio de busqueda en dos partes de igual tamaño y exista una forma eficiente de combinarlas, conviene utilizar la tecnica de reunion en el centro.
+Cuando el problema permita dividir el espacio de busqueda en dos partes de igual tamaño y exista una forma eficiente de combinarlas, conviene utilizar la tecnica de reunion en el centro.
 
 Por ejemplo, considerese el problema de que dada una lista de `n` elementos se debe determinar si es posible tomar algunos numeros de ella de forma tal que su suma sea `x`. Sea *n = 4*, la lista *[2, 4, 5, 9]* y *x = 15*. En vez de calcular todos los subconjuntos posibles y sumar su elementos (lo cual tendria complejidad O(2^n)), podemos dividir la lista en dos sublistas *A = [2, 4]* y *B = [5, 9]*, quedandonos los subconjuntos *SA = [0, 2, 4, 6]* y *SB = [0, 5, 9, 14]*. Solo resta chequear si la suma de algun elemento de `SA` con un elemento de `SB` es igual a 15, lo cual puede hacer en O((n/2)^2). En este caso es posible ya que 6 + 9 = 15, lo cual se corresponde con haber sumado 2 + 4 + 9 en la lista original. Este enfoque reduce la complejidad temporal de O(2^n) a O(2^(n/2)) lo cual es lo mismo que **O(raiz(2^n))**.
 
