@@ -26,13 +26,13 @@
     int tests;
 
     ll powmod(ll base, ll exp, ll mod) {
-        ll res = 1;
+        ll val = 1;
         while (exp > 0) {
-            if (exp & 1) res = res * base % mod;
+            if (exp & 1) val = val * base % mod;
             base = base * base % mod;
             exp >>= 1;
         }
-        return res;
+        return val;
     }
 
     int main()
@@ -68,30 +68,32 @@
                 m--;
             }
             
-            int count2 = 0;
+            int count1 = 0;
             int j = i;
             while(j<=m)
             {
-                if (a[j] == 2)
+                if (a[j] == 1)
                 {
-                    count2++;
+                    count1++;
                 }
                 j++;
             }
 
-            int count1 = 0;
+            int count2 = 0, count3 = 0;
             while(i<=m)
             {
-                if (a[i] == 1)
+                if (a[m] == 1)
                 {
-                    count1++;
-                    res += count1 * (powmod(2,count2,MAXN) - 1);
+                    res += count1*(powmod(2,count2,MAXN) - 1);
+                    count2 = 0;
+                    count3 = 0;
+                    count1--;
                 }
-                else if (a[i] == 2)
+                else if (a[m] == 2)
                 {
-                    count2--;
+                    count2++;
                 }
-                i++;
+                m--;
             }
 
             cout << res << nl;

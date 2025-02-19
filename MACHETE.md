@@ -44,11 +44,15 @@
 | [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | O(log(#elementos))                    |
 | [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | O(2∗#elementos)                       |
 | [Busqueda: 2SUM](#2sum)                                                                                  | O(2∗#elementos)                       |
-| [Grafos: DFS](#dfs)                                                                                      | O(#aristas)                           |
-| [Grafos: BFS](#bfs)                                                                                      | O(#aristas)                           |
+| [Grafos: DFS](#dfs)                                                                                      | O(#nodos + #aristas)                  |
+| [Grafos: BFS](#bfs)                                                                                      | O(#nodos + #aristas)                  |
 | [Grafos: Bellman-Ford](#bellman-ford)                                                                    | O(#vertices∗#aristas)                 |
 | [Grafos: Dijkstra](#dijkstra)                                                                            | O(#vertices + #aristas∗log(#aristas)) |
 | [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                      |
+| [Grafos: Topological Sorting](#topological-sorting)                                                      | O(#nodos + #aristas)                  |
+| [Grafos: Contar el Numero de Caminos en un DAG](#contar-el-numero-de-caminos-en-un-dag)                  | O(#nodos + #aristas)                  |
+| [Grafos: Calcular Destino en un Grafo Sucesor](#calcular-destino-en-un-grafo-sucesor)                    | O(#nodos*log(#nodos))                 |
+| [Grafos: Floyd](#floyd)                                                                                  | O(#nodos)                             |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
 | [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
 | [Grafos: Kruskal](#kruskal)                                                                              | O(#aristas*log(#vertices))            |
@@ -388,6 +392,8 @@ cout << __builtin_parityll(x) << "\n"; // 1
 
 - **Representar la data en binario cuando los datos solo pueden tomar 2 valores**
 
+- **Siempre que las caracteristicas del problema lo permitan, podemos plantear los estados de un problema de [programacion dinamica](#programacion-dinamica) como un [DAG](#grafos-dirigidos)**
+
 # Arrays
 
 Lista de elementos.
@@ -720,6 +726,7 @@ vector<int> v(9, 3); // vector de 9 ints, todos con valor 3
 **v.push_back():** Insertar un elemento al final del vector
 **v.pop_back():** Eliminar el ultimo elemento
 **v.back():** Devuelve el valor del ultimo elemento
+**v.assign(k,x):** Modifica el vector para que tenga tamaño `k` elementos con valor `x`
 
 > *Se puede acceder como si fuese un array*
 
@@ -1803,7 +1810,7 @@ void sum2  (vector<int > &A, int x, int &iR , int &jR) {
 
 ## Representacion
 
-**NOTA**: Las siguientes estructuras son para grafos dirigidos. Para grafos no dirigidos o bidireccionales, simplemente duplicar la cantidad de aristas
+**NOTA**: Las siguientes estructuras son para [grafos dirigidos](#grafos-dirigidos). Para grafos no dirigidos o bidireccionales, simplemente duplicar la cantidad de aristas
 
 ### Lista de Adyacencias
 
@@ -1943,7 +1950,7 @@ void dfs(int r) { // <-- pasamos la raiz como parametro
 > *Complejidad O(n+m)*
 
 **NOTAS**:
-- adj es la representacion del grafo en forma de una [lista de adayacencia](#lista-de-adyacencias)
+- adj es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 
 ### BFS
@@ -1974,7 +1981,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
 > *Complejidad O(n+m)*
 
 **NOTAS**:
-- "adj" es la representacion del grafo en forma de una [lista de adayacencia](#lista-de-adyacencias)
+- "adj" es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 
 ## Algoritmos para Obtener el Camino Minimo
@@ -2050,7 +2057,7 @@ void dijkstra(int v) {
 > *Complejidad: O(n + mlog(m))*
 
 **NOTAS**:
-- `adj` es la representacion del grafo en forma de una [lista de adayacencia](#lista-de-adyacencias)
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
 - **Requiere que el costo de las aristas sea no negativo**
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 - Util para **grafos densos**
@@ -2087,6 +2094,150 @@ for(int k = 0; k < n, k++) {
 #### Ciclos Negativos
 
 Tras haber ejecutado el algoritmo de Floyd-Warshall, podemos detectar la existencia de ciclos negativos ne tiempo `O(n)`, solamente debemos iterar la diagonal de la matriz con la distancias en busqueda de un valor negativo. De ser ese el caso, sabremos que existe al menos un ciclo negativo presente en el grafo
+
+## Grafos Dirigidos
+
+Los grafos dirigidos poseen aristas que solo pueden ser recorridas en un solo sentido.
+
+### Topological Sorting
+
+Un orden topologico es una forma de ordenacion para los nodos del grafo de forma tal que si existe un camino que lleva desde el nodo `a` al nodo `b`, entonces `a` aparece antes que `b` en la ordenacion.
+
+| ![DAG](Imagenes/DAG.png) | ![Ejemplo de Topological Sorting](Imagenes/TopologicalSortingExample.png) |
+|--------------------------|---------------------------------------------------------------------------|
+> *A la izquierda vemos un DAG (Directed Acyclic Graph) y a la derecha su ordenamiento topologico*
+
+El algoritmo recorre el grafo con [DFS](#dfs) comenzando desde un nodo no procesado. Decimos que un nodo ha sido procesado si todos sus sucesores han sido procesados. Tras cada DFS, todos los nodos procesados se agregan al orden. Finalmente, debemos ivertir el orden para obtener el orden topologico.
+
+PRECONDICION: El grafo debe ser un DAG
+
+```c++
+bitset(MAXN) visited;
+vector<int> ans;
+
+void dfs(int v) {
+    visited[v] = 1;
+    for (int u : adj[v]) {
+        if (!visited[u])
+            dfs(u);
+    }
+    ans.push_back(v);
+}
+
+void topological_sort() {
+    visited.reset();
+    ans.clear();
+    for (int i = 0; i < n; ++i) {
+        if (!visited[i]) {
+            dfs(i);
+        }
+    }
+    reverse(ans.begin(), ans.end());
+}
+```
+> *Complejidad: O(n+m)*
+
+**NOTA**:
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
+
+### Contar el Numero de Caminos en un DAG
+
+El siguiente algoritmo almacena en `paths[a]` la cantidad de caminos desde un nodo dado (en este caso el nodo 0) hacia el nodo `a`.
+
+```c++
+ll paths[n] = {};
+paths[0] = 1;
+for(int i = 1; i<n; i++)
+{
+    for (int u : adj[ans[i]]) 
+    {
+        paths[ans[i]] += paths[u];
+    }
+}
+```
+> *Complejidad: O(n+m)*
+
+**NOTAS**:
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
+- `ans` es el orden topologico del grafo
+
+### Calcular Destino en un Grafo Sucesor
+
+Un grafo sucesor es un grafo dirigido donde de cada nodo sale exactamente una arista. Estos grafos consisten de una o mas componentes conexas donde cada una contiene un ciclo y caminos que llevan a dicho ciclo, por lo tanto **n=m**.
+
+![Ejemplo de Grafo Sucesor](Imagenes/SuccessorGraphExample.png)
+> *Representacion grafica de un Grafo Sucesor*
+
+El algoritmo primero preprocesa la tabla `succ[x][k]` que nos indica para cada nodo `x` el destino luego de realizar `2^k` pasos. Luego podemos recorrer cualquier cantidad de pasos `m` realizando `log(m)` consultas a la tabla.
+
+```c++
+int succ[MAXN][LOG];   // succ[x][j] = nodo alcanzado desde x en 2^j pasos
+
+int n; // Número de nodos
+
+void preprocess(vector<int>& next) {
+    // Inicializamos los pasos de 2^0
+    for (int i = 0; i < n; i++)
+        succ[i][0] = next[i];
+
+    for (int j = 1; j < LOG; j++) {
+        for (int i = 0; i < n; i++) {
+            succ[i][j] = succ[succ[i][j-1]][j-1];
+        }
+    }
+}
+
+int get_successor(int x, int k) {
+    for (int j = 0; j < LOG; j++) {
+        if (k & (1 << j)) {
+            x = succ[x][j];  // Avanzamos 2^j pasos si el bit j está activo
+        }
+    }
+    return x;
+}
+```
+> *Complejidad construccion: O(nlog(n))*
+
+> *Complejidad consulta: O(log(n))* 
+
+**NOTAS**:
+- `next` es un vector que indicia en la posicion `i-esima`, el sucesor inmediato del nodo `i`
+- `LOG` debe ser la **maxima potencia de 2** alcanzada por `MAXN`
+
+### Floyd
+
+El algoritmo de Floyd sirve para detectar ciclos en grafos sucesores. En particular, el algoritmo devuelve el primer nodo del ciclo y la longitud del ciclo.
+El algoritmo de Floyd itera el grafo mediante dos punteros, `a` y `b`. Ambos comienzan desde el nodo `x`, el cual es el nodo inicial del grafo (aquel sin aristas de entrada), y luego `a` avanza un paso y `b` dos hasta que finalmente apunten al mismo nodo. Esto nos indica que `a` ha avanzado `k` pasos y que `b` avanzo `2k` pasos, por lo que la longitud del ciclo divide a `k`. Gracias a esto es que si cambiamos el valor de `a` nuevamente a `x` y avanzamos de a un paso a la vez a `a` y a `b`, eventualmente estos se juntaran en el nodo que da inicio al ciclo. Finalemente, para calcular la longitud del ciclo, simplemente debemos contar la cantidad de pasos unitarios que necesita `b` hasta llegar nuevamente hasta `a`.
+
+```c++
+// Primer avance
+a = next(x);
+b = next(next(x));
+while (a != b) {
+    a = next(a);
+    b = next(next(b));
+}
+
+// Calculamos first
+a = x;
+while (a != b) {
+    a = next(a);
+    b = next(b);
+}
+int first = a;
+
+// Calculamos length
+b = next(a);
+int length = 1;
+while (a != b) {
+    b = next(b);
+    length++;
+}
+```
+> *Complejidad: O(n)*
+
+**NOTA**:
+- `next` es un vector que indicia en la posicion `i-esima`, el sucesor inmediato del nodo `i`
 
 ## Arboles
 
