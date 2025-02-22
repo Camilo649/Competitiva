@@ -53,6 +53,8 @@
 | [Grafos: Contar el Numero de Caminos en un DAG](#contar-el-numero-de-caminos-en-un-dag)                  | O(#nodos + #aristas)                  |
 | [Grafos: Calcular Destino en un Grafo Sucesor](#calcular-destino-en-un-grafo-sucesor)                    | O(#nodos*log(#nodos))                 |
 | [Grafos: Floyd](#floyd)                                                                                  | O(#nodos)                             |
+| [Grafos: Kosaraju](#kosaraju)                                                                            | O(#nodos + #aristas)                  |
+| [Grafos: 2SAT](#2sat)                                                                                    | O(#nodos + #aristas)                  |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
 | [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
 | [Grafos: Kruskal](#kruskal)                                                                              | O(#aristas*log(#vertices))            |
@@ -829,6 +831,28 @@ set<int> s = {2,5,6,8}; // set con valores arbitrarios
 **s.lower_bound(x):** // puntero (iterador) al primer elemento >= `x` o `end` en caso contrario
 **s.upper_bound(x):** // puntero (iterador) al primer elemento > `x` o `end` en caso contrario
 
+<u>Operaciones:</u>
+
+- **union**
+
+```c++
+set1.insert(set2.begin(), set2.end());
+```
+> *Complejidad: O(mlog(n))*
+
+- **interseccion**
+
+```c++
+set_intersection(A.begin(), A.end(), B.begin(), B.end(), inserter(A∩B, A∩B.begin()));
+```
+> *Complejidad: O(n + m)*
+
+- **diferencia**
+```c++
+set_difference(A.begin(), A.end(), B.begin(), B.end(), inserter(A/B, A/B.begin()));
+```
+> *Complejidad: O(nlog(n))*
+
 <u>Como iterar un set:</u>
 
 ```c
@@ -1036,6 +1060,39 @@ for (auto [key, value] : m) {
 Como set y map, pero sus elementos no están ordenados.
 
 > *Muchas operaciones pasan a ser **O(1)** (en promedio) en vez de O(log(n))*
+
+## Diferencias
+
+<u>Operaciones en Unordered Sets</u>
+
+- **union**
+
+```c++
+uset1.insert(uset2.begin(), uset2.end());
+```
+> *Complejidad: O(m) caso promedio, O(nm) caso peor (colisiones de hash extremas)*
+
+- **interseccion**
+
+```c++
+for (int x : A) {
+    if (B.count(x)) {
+        A∩B.insert(x);
+    }
+}
+```
+> *Complejidad: O(n) caso promedio, O(nm) caso peor (colisiones de hash extremas)*
+
+- **diferencia**
+
+```c++
+for (int x : A) {
+    if (!B.count(x)) {
+        A/B.insert(x);
+    }
+}
+```
+> *Complejidad: O(n) caso promedio, O(nm) caso peor (colisiones de hash extremas)*
 
 # Iteradores
 
@@ -1936,7 +1993,7 @@ Especialmente eficiente para:
 - Resolver puntos de articulacion
 
 ``` c++
-bitset(MAXN) visited;
+bitset<MAXN> visited;
 
 void dfs(int r) { // <-- pasamos la raiz como parametro
     if(visited[r]) return;
@@ -1959,7 +2016,7 @@ Encuentra **el camino mas corto** a cada vertice desde la raiz `r`.
 
 ``` c++
 queue<int> q;
-bitset(MAXN) visited;
+bitset<MAXN> visited;
 int distance[n];
 
 void bfs(int r) { // <-- pasamos la raiz como parametro
@@ -2030,7 +2087,7 @@ Devuelve el camino minimo de un vertice a todos.
 
 ``` c++
 priority_queue<pair<int,int>> q;
-bitset(MAXN) visited;
+bitset<MAXN> visited;
 int distance[n];
 for(int i = 0; i < n; ++i) {
     distance[i] = INF; // INF es un valor enorme
@@ -2112,7 +2169,7 @@ El algoritmo recorre el grafo con [DFS](#dfs) comenzando desde un nodo no proces
 PRECONDICION: El grafo debe ser un DAG
 
 ```c++
-bitset(MAXN) visited;
+bitset<MAXN> visited;
 vector<int> ans;
 
 void dfs(int v) {
@@ -2239,6 +2296,149 @@ while (a != b) {
 **NOTA**:
 - `next` es un vector que indicia en la posicion `i-esima`, el sucesor inmediato del nodo `i`
 
+### Kosaraju
+
+Encuentra las componentes fuertemente conexas[^6] de un grafo dirigido.
+
+| ![Ejemplo Grafo Dirigido](Imagenes/GrafoDirigidoKosaraju.png) | ![Ejemplo de Comoponentes Conexas](Imagenes/ComponentesFuertementeConexasKosaraju.png) |
+|---------------------------------------------------------------|---------------------------------------------------------------------------|
+> *A la izquierda vemos un grafo dirigido y a la derecha sus componentes fuertemenete conexas resaltadas con rojo*
+
+Notar que las componentes halladas forman un DAG:
+
+![Ejemplo de Grafo Condensado](Imagenes/CondensationGraph.png)
+> *Este tipo de grafos se nococen como "grafos condensados"*
+
+```c++
+bitset<MAXN> visited;
+vector<vector<int>> adj; // Lista de adyacencia del grafo
+vector<vector<int>> adj_cond; // Lista de adyacencia del grafo condensado
+vector<vector<int>> components; // Comoponentes fuertemente conexos del grafo
+
+void dfs(int v, vector<vector<int>> const& adj, vector<int> &output) {
+    visited[v] = 1;
+    for (auto u : adj[v])
+        if (!visited[u])
+            dfs(u, adj, output);    
+    output.push_back(v);
+}
+
+    vector<int> order; // Lista ordenada segun el tiempo de finalizacion de procesamiento de los nodos
+
+    // Primer DFS
+    for (int i = 0; i < n; i++)
+        if (!visited[i])
+            dfs(i, adj, order);
+
+    // Creamos las lista de adyacencia con las direcciones invertidas
+    vector<vector<int>> adj_rev(n);
+    for (int v = 0; v < n; v++)
+        for (int u : adj[v])
+            adj_rev[u].push_back(v);
+
+    visited.reset();
+    reverse(order.begin(), order.end());
+
+    vector<int> roots(n, 0); // Almacena la raiz de cada vertice en su propia componente fuertemente conexa
+
+    // Segundo DFS
+    for (auto v : order)
+        if (!visited[v]) {
+            vector<int> component;
+            dfs(v, adj_rev, component);
+            components.push_back(component);
+            int root = *min_element(begin(component), end(component)); // tomamos el elemento mas chico de la componente fuertemente conexa como raiz
+            for (auto u : component)
+                roots[u] = root;
+        }
+
+    // Añadimos los vertices al grafo condensado
+    for (int v = 0; v < n; v++)
+        for (auto u : adj[v])
+            if (roots[v] != roots[u])
+                adj_cond[roots[v]].push_back(roots[u]);
+```
+> *Complejidad: O(n + m)*
+
+### 2SAT
+
+En este tipo de problemas, nos dan una formula logica con la siguiente estructura: *(a1 ∨ b1) ∧ (a2 ∨ b2) ∧ · · · ∧ (am ∨ bm)*, donde cada `ai` y `bi` es una variable logica (*x1, x2, . . . , xn*) o la negacion de una variable (*¬x1 , ¬x2, . . . , ¬xn*). La tarea consiste en asignarle un valor de verdad a cada variable o indicar que no es posible, lo cual se logra mediante el siguiente algoritmo que hace uso del algoritmo de Tarjan:
+
+```c++
+bool truth[MAXN]; // truth[cmp[i]] = valor de la variable i en la solución (2SAT)
+int nvar; // Número de variables originales
+int neg(int x) { return MAXN - 1 - x; } // Retorna la negación de x en el grafo
+vector<int> g[MAXN]; // Grafo de implicaciones
+int n;
+int lw[MAXN]; // Representa el "low-link value" de cada nodo para Tarjan
+int idx[MAXN]; // Guarda el índice de descubrimiento en el DFS de Tarjan
+int qidx; // Contador de nodos visitados en el DFS de Tarjan
+int cmp[MAXN]; // Guarda la componente fuertemente conexa (SCC) a la que pertenece cada nodo
+int qcmp; // Contador de SCCs encontradas
+stack<int> st; // Pila utilizada por el algoritmo de Tarjan
+
+void tjn(int u) {
+    lw[u] = idx[u] = ++qidx; // Asigna índice único y low-link inicial
+    st.push(u);
+    cmp[u] = -2; // Marcamos como parte del stack
+
+    for (int v : g[u]) { // Recorremos vecinos
+        if (!idx[v] || cmp[v] == -2) { // Si no ha sido visitado o está en el stack
+            if (!idx[v]) tjn(v);
+            lw[u] = min(lw[u], lw[v]); // Actualizamos low-link
+        }
+    }
+
+    if (lw[u] == idx[u]) { // Si encontramos raíz de una SCC
+        int x, l = -1;
+        do {
+            x = st.top();
+            st.pop();
+            cmp[x] = qcmp; // Asigna SCC a los nodos
+            if (min(x, neg(x)) < nvar) l = x; // Identificamos una variable de la SCC
+        } while (x != u);
+
+        if (l != -1) truth[qcmp] = (cmp[neg(l)] < 0); // Determinamos el valor de verdad
+        qcmp++; // Pasamos a la siguiente SCC
+    }
+}
+
+/* Ejecuta Tarjan en todo el grafo */
+void scc() {
+    memset(idx, 0, sizeof(idx)); // Reseteamos idx
+    qidx = 0; // Reiniciamos contador de índices
+    memset(cmp, -1, sizeof(cmp)); // Inicializamos SCCs
+    qcmp = 0; // Reiniciamos contador de SCCs
+
+    for (int i = 0; i < n; i++) 
+        if (!idx[i]) tjn(i); // Ejecutamos Tarjan en cada nodo no visitado
+}
+
+/* Construye el grafo de implicaciones */
+void addor(int a, int b) {
+    g[neg(a)].push_back(b); // ¬a → b
+    g[neg(b)].push_back(a); // ¬b → a
+}
+
+/* Verificacion de satisfactibilidad */
+bool satisf(int _nvar) {
+    nvar = _nvar; // Guardamos número de variables originales
+    n = MAXN; // Definimos tamaño del grafo
+
+    scc(); // Encontramos SCCs
+
+    for (int i = 0; i < nvar; i++)
+        if (cmp[i] == cmp[neg(i)]) return false; // Si x y ¬x están en la misma SCC, es insatisfacible
+
+    return true; // Si no hay conflictos, es satisfacible
+}
+```
+> *Complejidad: O(n + m)*
+
+**NOTA:**
+
+- `g` debe ser cargado en un principio con la variables logicas utilizando la funcion `addor`
+
 ## Arboles
 
 Un arbol es un grafo conexo[^2] y aciclico que consta de `n` nodos y `n-1` aristas. Cuenta con las siguientes propiedades:
@@ -2266,7 +2466,7 @@ dfs(x,-1); // La primera llamada es con -1 puesto que no hay nodo previo
 
 > *Complejidad O(n)*
 
-### Calcular Diametro[^6] del Arbol
+### Calcular Diametro[^7] del Arbol
 
 Dado un nodo arbitrario `a` (en el algortimo tomamos 0 por simplicidad), encontramos el nodo `b` mas alejado de `a` y luego el nodo `c` mas alejado de `b`. Finalmente, el diametro del arbol esta dado por la distancia entre `b` y `c` el cual guardamos en la variable `diameter`. En este algoritmo, el arbol es visto de la siguiente forma:
 
@@ -2334,7 +2534,7 @@ En el algoritmo de Prim, inicialmente el arbol de expansion comienza con un nodo
 ##### Minimum Spanning Tree
 
 ```c++
-bitset(MAXN) visited; // Indica si un nodo ya está en el MST
+bitset<MAXN> visited; // Indica si un nodo ya está en el MST
 int minEdge[MAXN];    // Peso mínimo para alcanzar un nodo desde el MST
 int parent[MAXN];     // Para reconstruir el MST
 
@@ -2378,7 +2578,7 @@ void prim(int start) {
 ###### Maximum Spanning Tree
 
 ```c++
-bitset(MAXN) visited; // Indica si un nodo ya está en el MST
+bitset<MAXN> visited; // Indica si un nodo ya está en el MST
 int maxEdge[MAXN];    // Peso máximo para alcanzar un nodo desde el MST
 int parent[MAXN];     // Para reconstruir el MST
 
@@ -2540,7 +2740,7 @@ void search(int y) {
     }
 }
 ```
-> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^7] utilizando un algoritmo de Backtracking*
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^8] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
@@ -2564,7 +2764,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 ## Tecnicas Comunes
 
 - **Rangos** 
-- **Bitmasks[^8]**
+- **Bitmasks[^9]**
 
 ## Requisitos
 
@@ -2680,10 +2880,11 @@ if(x & (x-1) == 0)
 ```
 
 [^1]: *Un conjunto de puntos es convexo si contiene todos los segmentos entre todo par de puntos del conjunto.*
-[^2]: *Un grafo es conexo si existe un camino entre cualquier par de nodos*
+[^2]: *Un grafo es conexo si todos los nodos estan conectados por un camino*
 [^3]: *Se denomina componente de un grafo a un subconjunto conexo de los nodos del mismo*
 [^4]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
 [^5]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
-[^6]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
-[^7]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
-[^8]: *Una bitmask es un numero entero visto por su valor en binario*
+[^6]: *Decimos que un grafo es fuertemente conexo si existe un camino entre cada nodo y todos los demas*
+[^7]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
+[^8]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
+[^9]: *Una bitmask es un numero entero visto por su valor en binario*
