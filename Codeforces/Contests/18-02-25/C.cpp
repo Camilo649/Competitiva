@@ -25,16 +25,6 @@
      
     int tests;
      
-    ll powmod(ll base, ll exp, ll mod) {
-        ll val = 1;
-        while (exp > 0) {
-            if (exp & 1) val = val * base % mod;
-            base = base * base % mod;
-            exp >>= 1;
-        }
-        return val;
-    }
-     
     int main()
     {
         #ifdef MILF
@@ -50,45 +40,15 @@
         {
             int n;
             cin >> n;
-            int a[n];
-            forn(i,n)
-            {
-                cin >> a[i];
+            vector<int> dp(4, 0);
+            dp[0] = 1;
+            while (n--) {
+              int x;
+              cin >> x;
+              if (x == 2) dp[x] = (dp[x] + dp[x]) % MAXN;
+              dp[x] = (dp[x] + dp[x-1]) % MAXN;
             }
-     
-            ll res = 0;
-            int i = 0;
-            while (i<n && a[i] != 1)
-            {
-                i++;
-            }
-            
-            int count1 = 0;
-            int count2 = 0;
-            unordered_map<int,int> c2;
-            while (i<n)
-            {
-                if (a[i] == 2)
-                {
-                    count2++;
-                }
-                else if(a[i] == 3)
-                {
-                    for(int i = 1; i <= count1; i++)
-                    {
-                        res += powmod(2,count2+c2[i],MAXN) - 1;
-                        res = res%MAXN;
-                    }
-                }
-                else
-                {
-                    count1++;
-                    c2[count1] = -count2;
-                }
-                i++;
-            }
-     
-            cout << res << nl;
+            cout << dp[3] << '\n';
             
         }
         

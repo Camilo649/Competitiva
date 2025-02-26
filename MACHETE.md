@@ -57,6 +57,9 @@
 | [Grafos: 2SAT](#2sat)                                                                                    | O(#nodos + #aristas)                  |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
 | [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
+| [Grafos: Hallar Ancestros](#hallar-ancestros)                                                            | O(#nodos*log(#nodos))                 |
+| [Grafos: Ancestro Comun Menor](#ancestro-comun-menor)                                                    | O(#nodos*log(#nodos))                 |
+| [Grafos: Distancia entre Dos Nodos](#distancia-entre-dos-nodos)                                          | O(#nodos*log(#nodos))                 |
 | [Grafos: Kruskal](#kruskal)                                                                              | O(#aristas*log(#vertices))            |
 | [Grafos: Prim](#prim)                                                                                    | O(#vertices + #aristas*log(#aristas)) |
 | [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                 |
@@ -584,7 +587,7 @@ int query(int L, int R)
     // Find highest power of 2 that is smaller 
     // than or equal to count of elements in given 
     // range. For [2, 10], k = 3 
-    int k = (int)log2(R - L + 1); 
+    int k = 31 - __builtin_clz(R - L + 1);
   
     // Compute minimum of last 2^k elements with first 
     // 2^k elements in range. 
@@ -640,7 +643,7 @@ int query(int L, int R)
     // Find highest power of 2 that is smaller 
     // than or equal to count of elements in given 
     // range. For [2, 10], k = 3 
-    int k = (int)log2(R - L + 1); 
+    int k = 31 - __builtin_clz(R - L + 1);
   
     // Compute maximum of last 2^k elements with first 
     // 2^k elements in range. 
@@ -2038,7 +2041,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
 > *Complejidad O(n+m)*
 
 **NOTAS**:
-- "adj" es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 
 ## Algoritmos para Obtener el Camino Minimo
@@ -2228,6 +2231,7 @@ Un grafo sucesor es un grafo dirigido donde de cada nodo sale exactamente una ar
 El algoritmo primero preprocesa la tabla `succ[x][k]` que nos indica para cada nodo `x` el destino luego de realizar `2^k` pasos. Luego podemos recorrer cualquier cantidad de pasos `m` realizando `log(m)` consultas a la tabla.
 
 ```c++
+const int LOG = ceil(log2(MAXN));
 int succ[MAXN][LOG];   // succ[x][j] = nodo alcanzado desde x en 2^j pasos
 
 int n; // Número de nodos
@@ -2257,9 +2261,8 @@ int get_successor(int x, int k) {
 
 > *Complejidad consulta: O(log(n))* 
 
-**NOTAS**:
+**NOTA**:
 - `next` es un vector que indicia en la posicion `i-esima`, el sucesor inmediato del nodo `i`
-- `LOG` debe ser la **maxima potencia de 2** alcanzada por `MAXN`
 
 ### Floyd
 
@@ -2496,6 +2499,134 @@ dfs(farthestNode, -1, 0);
 ```
 
 > *Complejidad O(n)*
+
+### Hallar Ancestros
+
+El algoritmo primero preprocesa la tabla `up[x][k]` que nos indica para cada nodo `x` su ancestro despues de subir `2^j` niveles. Luego podemos obtener el `m-esimo` ancestro de cualquier nodo realizando `log(m)` consultas a la tabla o `-1` si es que no existe dicho ancestro.
+
+```c++
+const int LOG = ceil(log2(MAXN));
+int up[MAXN][LOG]; // up[x][j] = 2^j-ésimo ancestro de x
+memset(up, -1, sizeof(up));
+int n; // Número de nodos
+
+// **Preprocesamiento con DFS para construir la tabla up**
+void dfs(int node, int parent) {
+    up[node][0] = parent;  // El ancestro inmediato de node es su padre
+
+    for (int j = 1; j < LOG; j++) {
+        if (up[node][j-1] != -1)
+            up[node][j] = up[up[node][j-1]][j-1];  // Saltamos 2^(j-1) + 2^(j-1)
+        else
+            up[node][j] = -1;  // No tiene ancestro a esa altura
+    }
+
+    // Recorremos los hijos en DFS
+    for (int child : adj[node]) {
+        if (child != parent) {
+            dfs(child, node);
+        }
+    }
+}
+
+int get_ancestor(int x, int k) {
+    for (int j = 0; j < LOG; j++) {
+        if (k & (1 << j)) {  // Si el bit j está activo en k, saltamos 2^j
+            x = up[x][j];
+            if (x == -1) break;  // Si ya no tiene ancestro, salimos
+        }
+    }
+    return x;
+}
+
+// Preprocesar la tabla up con DFS desde la raíz (asumimos raíz en 0)
+dfs(0, -1);
+```
+> *Complejidad construccion: O(nlog(n))*
+
+> *Complejidad consulta: O(log(n))*
+
+**NOTA**:
+- `adj` es la representacion del arbol en forma de una [lista de adyacencias](#lista-de-adyacencias)
+
+### Ancestro Comun Menor
+
+El algoritmo comienza realizando un **Euler Tour**, el cual es un recorrido [DFS](#dfs) en el cual se va guardando el tiempo en el que aparece por primer vez cada nodo en el recorrido en el arreglo `first`, tambien se calcula la profundidad de cada nodo en el arreglo `depth` y ademas se guarda el recorrido DFS con los retornos en el arreglo `euler`. Luego, se construye una [sparse table](#sparse-table) con las profundidades para buscar eficientemente el ancestro comun menor de dos nodos (el cual sera el nodo de menor profundidad entre ambos). Finalmente, por medio de la funcion `lca`, podemos devolver el ancestro comun menor entre cualesquiera dos nodos.
+
+![Ejemplo LCA](Imagenes/EulerTour.png)
+> *Ejemplo de como se veria el arreglo `euler` y `depth` despues de realizar el DFS*
+
+![Ejemplo de query LCA](Imagenes/LCAQuery.png)
+> *Ejemplo de como obtener el LCA entre los nodos 5 y 8*
+
+```c++
+const int LOG = ceil(log2(MAXN));
+
+int euler[2 * MAXN], depth[2 * MAXN], first[MAXN]; 
+int lookup[2 * MAXN][LOG]; // Sparse Table para minimo
+int timer = 0;
+
+void dfs(int node, int parent, int d) {
+    first[node] = timer;
+    euler[timer] = node;
+    depth[timer] = d;
+    timer++;
+
+    for (int child : adj[node]) {
+        if (child == parent) continue;
+        dfs(child, node, d + 1);
+        euler[timer] = node;  // Volvemos a agregar el nodo al Euler Tour
+        depth[timer] = d;
+        timer++;
+    }
+}
+
+void buildSparseTable() {
+    int N = timer; 
+    for (int i = 0; i < N; i++)
+        lookup[i][0] = i;
+
+    for (int j = 1; (1 << j) <= N; j++) {
+        for (int i = 0; i + (1 << j) <= N; i++) {
+            int left = lookup[i][j - 1];
+            int right = lookup[i + (1 << (j - 1))][j - 1];
+            lookup[i][j] = (depth[left] < depth[right]) ? left : right;
+        }
+    }
+}
+
+int queryMin(int L, int R) {
+    int j = 31 - __builtin_clz(R - L + 1); // log2(R - L + 1)
+    int left = lookup[L][j];
+    int right = lookup[R - (1 << j) + 1][j];
+    return (depth[left] < depth[right]) ? left : right;
+}
+
+int lca(int u, int v) {
+    int L = first[u], R = first[v];
+    if (L > R) swap(L, R);
+    return euler[queryMin(L, R)];
+}
+
+dfs(0, -1, 0);  // Asumimos que el nodo 0 es la raíz
+build_sparse_table();
+```
+
+> *Complejidad construccion: O(nlog(n))*
+
+> *Complejidad consulta: O(1)*
+
+**NOTA**:
+- `adj` es la representacion del arbol en forma de una [lista de adyacencias](#lista-de-adyacencias)
+
+### Distancia entre Dos Nodos
+
+Podemos calcular la distancia entre dos nodos cualesquiera de una arbol enraizado simplemente si conocemos su [ancestro comun menor](#ancestro-comun-menor) y las profundidades de los nodos con la siguiente formula:
+
+```c++
+depth[a] + depth[b] − 2 * depth[c];
+```
+> *Aqui queremos calcular la distancia entre los nodos `a` y `b`, y `c` es el lca*
 
 ### Spanning Tree
 
