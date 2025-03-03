@@ -55,6 +55,8 @@
 | [Grafos: Floyd](#floyd)                                                                                  | O(#nodos)                             |
 | [Grafos: Kosaraju](#kosaraju)                                                                            | O(#nodos + #aristas)                  |
 | [Grafos: 2SAT](#2sat)                                                                                    | O(#nodos + #aristas)                  |
+| [Grafos: Hierholzer](#hierholzer)                                                                        | O(#nodos + #aristas)                  |
+| [Grafos: Encontrar Camino Hamiltoniano](#encontrar-camino-hamiltoniano)                                  | O(#intentos*#aristas*log(#nodos))     |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
 | [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
 | [Grafos: Hallar Ancestros](#hallar-ancestros)                                                            | O(#nodos*log(#nodos))                 |
@@ -398,6 +400,8 @@ cout << __builtin_parityll(x) << "\n"; // 1
 - **Representar la data en binario cuando los datos solo pueden tomar 2 valores**
 
 - **Siempre que las caracteristicas del problema lo permitan, podemos plantear los estados de un problema de [programacion dinamica](#programacion-dinamica) como un [DAG](#grafos-dirigidos)**
+
+- **Pensar en [busqueda binaria](#busqueda-binaria) para los problemas de minimizar un maximo o maximizar un minimo**
 
 # Arrays
 
@@ -1886,7 +1890,7 @@ for (auto u : adj[x]) {
 #### Grafo Dirigido
 
 ``` c++
-vector<int> adj[N];
+vector<int> adj[MAXN];
 
 // Para agregar usamos:
 
@@ -1897,7 +1901,7 @@ adj[1].push_back(2) // Si existe una arista de 1 a 2;
 #### Grafo Dirigido Pesado
 
 ``` c++
-vector<pair<int,int>> adj[N];
+vector<pair<int,int>> adj[MAXN];
 
 // Para agregar usamos:
 
@@ -2002,7 +2006,7 @@ void dfs(int r) { // <-- pasamos la raiz como parametro
     if(visited[r]) return;
     visited[r] = 1;
     // process node r
-    for(auto u:adj[s]) {
+    for(auto u:adj[r]) {
         dfs(u);
     }
 }
@@ -2442,6 +2446,593 @@ bool satisf(int _nvar) {
 
 - `g` debe ser cargado en un principio con la variables logicas utilizando la funcion `addor`
 
+## Caminos y Circuitos
+
+### Hierholzer
+
+Suele usarse para:
+
+- Secuencias de De Brujin
+
+El algoritmo de Hierholzer es un metodo para construir un circuito Euleriano[^7] (tambien se explica como construir un camino Euleriano en las notas).
+
+Para que exista un camino Euleriano en un grafo, este, ademas de ser conexo[^2], debe cumplir una de las siguientes dos condiciones dependiendo de si es dirigido o no:
+
+<u>Grafos no Dirigidos:</u>
+
+1. El grado de cada nodo es par
+2. El grado de exactamente dos nodos es impar, y el grado del resto de nodos es par
+
+Si se cumple la primera condicion, cada camino Euleriano es tambien un circuito Euleriano. Si la segunda condicion es la que se cumple, los nodos de grados impares son los nodos de inicio y fin de los unicos dos caminos Eulerianos que existen, los cuales no pueden ser circuitos Eulerianos.
+
+<u>Grafos Dirigidos:</u>
+
+1. La cantidad de aristas que entran al nodo es igual a la cantidad de aristas que salen del nodo para cada nodo
+2. Un nodo tiene una arista extra de entrada respecto a sus aristas de salida, mientras que otro nodo tiene una arista extra de salida respecto a sus aristas de entrada, y el resto de los nodos tiene la misma cantidad de aristas de entrada que de salida
+
+Similar a como sucede con los grafos no dirigidos, que se cumpla la primera condicion significa que cada camino Euleriano es tambien un circuito Euleriano. Y si se cumple la segunda condicion, resulta que existe un unico camino Euleriano que comienza desde el nodo con mas aristas de salida y termina en el nodo con mas aristas de entrada; por lo tanto, dicho camino no puede ser un circuito.
+
+<u>Algoritmo</u>
+
+El algoritmo primero verifica la existencia de un circuito Euleriano como indicamos arriba. Luego, si se cumple la primera condicion, vamos recorriendo con un [DFS](#dfs) todas las aristas comenzando desde el nodo `start` (en algoritmo llamamos a la funcion con el nodo 0). Cada vez que revisamos todas las aristas del nodo, agregamos el nodo al circuito (el cual guardamos en el vector `circuit`) y hacemos [backtracking](#backtracking) para tratar de extender el circuito con las aristas que todavia no se visitaron hasta haberlas visitado a todas.
+
+#### Grafos no Dirigidos
+
+PRECONDICION: El grafo debe ser conexo
+
+```c++
+vector<int> circuit;
+
+void hierholzer(int n, vector<unordered_set<int>> adj, int start) {
+    for (int i = 0; i < n; ++i) {
+        if (adj[i].size() % 2 == 1) {
+            return;
+        }
+    }
+
+    vector<int> currPath;
+    currPath.push_back(start);
+
+    while (!currPath.empty()) {
+        int currNode = currPath.back();
+        if (!adj[currNode].empty()) {
+            int nextNode = *adj[currNode].begin();
+            adj[currNode].erase(nextNode);
+            adj[nextNode].erase(currNode);
+            currPath.push_back(nextNode);
+        }
+        else {
+            circuit.push_back(currPath.back());
+            currPath.pop_back();
+        }
+    }
+    reverse(circuit.begin(), circuit.end());
+}
+
+hierholzer(n, adj, 0);
+```
+> *Complejidad O(n+m)*
+
+**NOTAS:**
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias) pero utilizando `unorder_set` para facilitar la eliminacion de aristas
+- Si queremos obtener un camino Euleriano, simplemente debemos hallar los dos nodos con grados impares y agregar un nodo extra entre esos nodos. Al final del circuito, debemos eliminar el nodo extra
+
+#### Grafos Dirigidos
+
+PRECONDICION: El grafo debe ser conexo
+
+```c++
+vector<int> circuit;
+
+void hierholzer(int n, vector<vector<int>> adj, int start) {
+    vector<int> in_degree(n, 0), out_degree(n, 0);
+    for (int u = 0; u < n; ++u) {
+        out_degree[u] = adj[u].size();
+        for (int v : adj[u]) {
+            in_degree[v]++;
+        }
+    }
+    for (int i = 0; i < n; ++i) {
+        if (in_degree[i] != out_degree[i]) {
+            return;
+        }
+    }
+
+    vector<int> currPath;
+    currPath.push_back(start);
+
+    while (!currPath.empty()) {
+        int currNode = currPath.back();
+        if (!adj[currNode].empty()) {
+            int nextNode = adj[currNode].back();
+            adj[currNode].pop_back();
+            currPath.push_back(nextNode);
+        }
+        else {
+            circuit.push_back(currPath.back());
+            currPath.pop_back();
+        }
+    }
+    reverse(circuit.begin(), circuit.end());
+}
+
+hierholzer(n, adj, 0);
+```
+> *Complejidad O(n+m)*
+
+**NOTAS:**
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias) pero utilizando `vector` para facilitar la eliminacion de aristas
+- Si queremos obtener un camino Euleriano, simplemente debemos hallar los dos nodos con diferencias en sus aristas de entrada y salida y agregar un nodo extra entre esos nodos de forma tal que se igualen la cantidad de aristas de entrada y salida. Al final del circuito, debemos eliminar el nodo extra
+
+### Encontrar Camino Hamiltoniano
+
+Suele usarse para:
+
+- Recorrido del Caballo
+
+El siguiente algoritmo es un metodo para construir un camino Hamiltoniano[^8].
+
+Chequear que exista un camino Hamiltoniano es un problema NP-Dificl, sin embargo, existen dos teoremas que son suficientes (pero no necesarios) para garantizar la existencia de un camino Hamiltoniano:
+
+- **Teorema de Dirac:** Si los grados de cado nodo son >= `⌊n/2⌋`, el grafo contiene un camino Hamiltoniano
+- **Teorema de Ore:** Si la suma de los grados de cada par de nodos no adyacentes es >= `n`, el grafo contiene un camino Hamiltoniano
+
+El algoritmo utiliza un enfoque probabilistico para reordenar el orden en el que se recorren las aristas y la estructura Link/Cut Tree. La cantidad de reordenamientos esta dado por `mx_ch`.
+
+#### Grafos no Dirigidos
+
+PRECONDICION: El grafo debe ser conexo
+
+```c++
+namespace hamil {
+    template <typename T> bool chkmax(T &x,T y){return x<y?x=y,true:false;}
+    template <typename T> bool chkmin(T &x,T y){return x>y?x=y,true:false;}
+    #define vi vector<int>
+    #define pb push_back
+    #define mp make_pair
+    #define pi pair<int, int>
+    #define fi first
+    #define se second
+    #define ll long long
+    namespace LCT {
+        vector<vi> ch;
+        vi fa, rev;
+        void init(int n) {
+            ch.resize(n + 1);
+            fa.resize(n + 1);
+            rev.resize(n + 1);
+            for (int i = 0; i <= n; i++)
+                ch[i].resize(2), 
+                ch[i][0] = ch[i][1] = fa[i] = rev[i] = 0;
+        }
+        bool isr(int a)
+        {
+            return !(ch[fa[a]][0] == a || ch[fa[a]][1] == a);
+        } 
+        void pushdown(int a)
+        {
+            if(rev[a])
+            {
+                rev[ch[a][0]] ^= 1, rev[ch[a][1]] ^= 1;
+                swap(ch[a][0], ch[a][1]);
+                rev[a] = 0;
+            }
+        }
+        void push(int a)
+        {
+            if(!isr(a)) push(fa[a]);
+            pushdown(a); 
+        }
+        void rotate(int a)
+        {
+            int f = fa[a], gf = fa[f];
+            int tp = ch[f][1] == a;
+            int son = ch[a][tp ^ 1];
+            if(!isr(f)) 
+                ch[gf][ch[gf][1] == f] = a;    
+            fa[a] = gf;
+
+            ch[f][tp] = son;
+            if(son) fa[son] = f;
+
+            ch[a][tp ^ 1] = f, fa[f] = a;
+        }
+        void splay(int a)
+        {
+            push(a);
+            while(!isr(a))
+            {
+                int f = fa[a], gf = fa[f];
+                if(isr(f)) rotate(a);
+                else
+                {
+                    int t1 = ch[gf][1] == f, t2 = ch[f][1] == a;
+                    if(t1 == t2) rotate(f), rotate(a);
+                    else rotate(a), rotate(a);    
+                } 
+            } 
+        }
+        void access(int a)
+        {
+            int pr = a;
+            splay(a);
+            ch[a][1] = 0;
+            while(1)
+            {
+                if(!fa[a]) break; 
+                int u = fa[a];
+                splay(u);
+                ch[u][1] = a;
+                a = u;
+            }
+            splay(pr);
+        }
+        void makeroot(int a)
+        {
+            access(a);
+            rev[a] ^= 1;
+        }
+        void link(int a, int b)
+        {
+            makeroot(a);
+            fa[a] = b;
+        }
+        void cut(int a, int b)
+        {
+            makeroot(a);
+            access(b);
+            fa[a] = 0, ch[b][0] = 0;
+        }
+        int fdr(int a)
+        {
+            access(a);
+            while(1)
+            {
+                pushdown(a);
+                if (ch[a][0]) a = ch[a][0];
+                else {
+                    splay(a);
+                    return a;
+                }
+            }
+        }
+    }
+    vi out, in;
+    vi work(int n, vector<pi> eg, ll mx_ch = -1) { 
+        // mx_ch : max number of adding/replacing  default is (n + 100) * (n + 50) 
+        // n : number of vertices. 1-indexed. 
+        // eg: vector<pair<int, int> > storing all the edges. 
+        // return a vector<int> consists of all indices of vertices on the path. return empty list if failed to find one.  
+        out.resize(n + 1), in.resize(n + 1);
+        LCT::init(n);
+        for (int i = 0; i <= n; i++) in[i] = out[i] = 0;
+        if (mx_ch == -1) mx_ch = 1ll * (n + 100) * (n + 50); //default
+        vector<vi> from(n + 1), to(n + 1);
+        for (auto v : eg)
+            from[v.fi].pb(v.se), 
+            to[v.se].pb(v.fi);  // Bidirectional connections
+        unordered_set<int> canin, canout;
+        for (int i = 1; i <= n; i++)
+            canin.insert(i), 
+            canout.insert(i); 
+        mt19937 x(chrono::steady_clock::now().time_since_epoch().count());
+        int tot = 0;
+        while (mx_ch >= 0) {
+            vector<pi> eg;
+            for (auto v : canout)
+                for (auto s : from[v])
+                    if (in[s] == 0) {
+                        assert(canin.count(s));
+                        continue;
+                    }
+                    else eg.pb(mp(v, s));
+            for (auto v : canin)
+                for (auto s : to[v])
+                    eg.pb(mp(s, v));  // Edge in both directions for undirected graph
+            shuffle(eg.begin(), eg.end(), x);
+            if (eg.size() == 0) break;
+            for (auto v : eg) {
+                mx_ch--;
+                if (in[v.se] && out[v.fi]) continue;
+                if (LCT::fdr(v.fi) == LCT::fdr(v.se)) continue;
+                if (in[v.se] || out[v.fi]) 
+                    if (x() & 1) continue;
+                if (!in[v.se] && !out[v.fi]) 
+                    tot++;
+                if (in[v.se]) {
+                    LCT::cut(in[v.se], v.se);
+                    canin.insert(v.se);
+                    canout.insert(in[v.se]);
+                    out[in[v.se]] = 0;
+                    in[v.se] = 0;
+                }
+                if (out[v.fi]) {
+                    LCT::cut(v.fi, out[v.fi]);
+                    canin.insert(out[v.fi]);
+                    canout.insert(v.fi);
+                    in[out[v.fi]] = 0;
+                    out[v.fi] = 0;
+                }
+                LCT::link(v.fi, v.se);
+                canin.erase(v.se);
+                canout.erase(v.fi);
+                in[v.se] = v.fi;
+                out[v.fi] = v.se;
+            }
+            if (tot == n - 1) {
+                vi cur;
+                for (int i = 1; i <= n; i++) 
+                    if (!in[i]) {
+                        int pl = i;
+                        while (pl) {
+                            cur.pb(pl), 
+                            pl = out[pl];
+                        }
+                        break;
+                    } 
+                return cur;
+            }
+        }
+        //failed to find a path
+        return vi();
+    }
+}
+
+int main() {
+    // Número de nodos en el grafo
+    int n = 5;  // Ejemplo con 5 nodos
+
+    // Representación de las aristas (grafos no dirigidos)
+    vector<pair<int, int>> edges = {
+        {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 1}  // Ejemplo de ciclo no dirigido
+    };
+
+    // Llamada a la función que devuelve el camino
+    hamil::vi path = hamil::work(n, edges);
+
+    // Imprimir el camino si se encontró
+    if (!path.empty()) {
+        cout << "Camino encontrado: ";
+        for (int v : path) {
+            cout << v << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "No se encontró un camino." << endl;
+    }
+
+    return 0;
+}
+```
+> *Complejidad: O(mx_ch m log(n))*
+
+#### Grafos Dirigidos
+
+PRECONDICION: El grafo debe ser conexo
+
+```c++
+namespace hamil {
+    template <typename T> bool chkmax(T &x,T y){return x<y?x=y,true:false;}
+    template <typename T> bool chkmin(T &x,T y){return x>y?x=y,true:false;}
+    #define vi vector<int>
+    #define pb push_back
+    #define mp make_pair
+    #define pi pair<int, int>
+    #define fi first
+    #define se second
+    #define ll long long
+    namespace LCT {
+        vector<vi> ch;
+        vi fa, rev;
+        void init(int n) {
+            ch.resize(n + 1);
+            fa.resize(n + 1);
+            rev.resize(n + 1);
+            for (int i = 0; i <= n; i++)
+                ch[i].resize(2), 
+                ch[i][0] = ch[i][1] = fa[i] = rev[i] = 0;
+        }
+        bool isr(int a)
+        {
+            return !(ch[fa[a]][0] == a || ch[fa[a]][1] == a);
+        } 
+        void pushdown(int a)
+        {
+            if(rev[a])
+            {
+                rev[ch[a][0]] ^= 1, rev[ch[a][1]] ^= 1;
+                swap(ch[a][0], ch[a][1]);
+                rev[a] = 0;
+            }
+        }
+        void push(int a)
+        {
+            if(!isr(a)) push(fa[a]);
+            pushdown(a); 
+        }
+        void rotate(int a)
+        {
+            int f = fa[a], gf = fa[f];
+            int tp = ch[f][1] == a;
+            int son = ch[a][tp ^ 1];
+            if(!isr(f)) 
+                ch[gf][ch[gf][1] == f] = a;    
+            fa[a] = gf;
+
+            ch[f][tp] = son;
+            if(son) fa[son] = f;
+
+            ch[a][tp ^ 1] = f, fa[f] = a;
+        }
+        void splay(int a)
+        {
+            push(a);
+            while(!isr(a))
+            {
+                int f = fa[a], gf = fa[f];
+                if(isr(f)) rotate(a);
+                else
+                {
+                    int t1 = ch[gf][1] == f, t2 = ch[f][1] == a;
+                    if(t1 == t2) rotate(f), rotate(a);
+                    else rotate(a), rotate(a);    
+                } 
+            } 
+        }
+        void access(int a)
+        {
+            int pr = a;
+            splay(a);
+            ch[a][1] = 0;
+            while(1)
+            {
+                if(!fa[a]) break; 
+                int u = fa[a];
+                splay(u);
+                ch[u][1] = a;
+                a = u;
+            }
+            splay(pr);
+        }
+        void makeroot(int a)
+        {
+            access(a);
+            rev[a] ^= 1;
+        }
+        void link(int a, int b)
+        {
+            makeroot(a);
+            fa[a] = b;
+        }
+        void cut(int a, int b)
+        {
+            makeroot(a);
+            access(b);
+            fa[a] = 0, ch[b][0] = 0;
+        }
+        int fdr(int a)
+        {
+            access(a);
+            while(1)
+            {
+                pushdown(a);
+                if (ch[a][0]) a = ch[a][0];
+                else {
+                    splay(a);
+                    return a;
+                }
+            }
+        }
+    }
+    vi out, in;
+    vi work(int n, vector<pi> eg, ll mx_ch = -1) { 
+        // mx_ch : max number of adding/replacing  default is (n + 100) * (n + 50) 
+        // n : number of vertices. 1-indexed. 
+        // eg: vector<pair<int, int> > storing all the edges. 
+        // return a vector<int> consists of all indices of vertices on the path. return empty list if failed to find one.  
+        out.resize(n + 1), in.resize(n + 1);
+        LCT::init(n);
+        for (int i = 0; i <= n; i++) in[i] = out[i] = 0;
+        if (mx_ch == -1) mx_ch = 1ll * (n + 100) * (n + 50); //default
+        vector<vi> from(n + 1), to(n + 1);
+        for (auto v : eg)
+            from[v.fi].pb(v.se), 
+            to[v.se].pb(v.fi);
+        unordered_set<int> canin, canout;
+        for (int i = 1; i <= n; i++)
+            canin.insert(i), 
+            canout.insert(i); 
+        mt19937 x(chrono::steady_clock::now().time_since_epoch().count());
+        int tot = 0;
+        while (mx_ch >= 0) {
+            vector<pi> eg;
+            for (auto v : canout)
+                for (auto s : from[v])
+                    if (in[s] == 0) {
+                        assert(canin.count(s));
+                        continue;
+                    }
+                    else eg.pb(mp(v, s));
+            for (auto v : canin)
+                for (auto s : to[v])
+                    eg.pb(mp(s, v));
+            shuffle(eg.begin(), eg.end(), x);
+            if (eg.size() == 0) break;
+            for (auto v : eg) {
+                mx_ch--;
+                if (in[v.se] && out[v.fi]) continue;
+                if (LCT::fdr(v.fi) == LCT::fdr(v.se)) continue;
+                if (in[v.se] || out[v.fi]) 
+                    if (x() & 1) continue;
+                if (!in[v.se] && !out[v.fi]) 
+                    tot++;
+                if (in[v.se]) {
+                    LCT::cut(in[v.se], v.se);
+                    canin.insert(v.se);
+                    canout.insert(in[v.se]);
+                    out[in[v.se]] = 0;
+                    in[v.se] = 0;
+                }
+                if (out[v.fi]) {
+                    LCT::cut(v.fi, out[v.fi]);
+                    canin.insert(out[v.fi]);
+                    canout.insert(v.fi);
+                    in[out[v.fi]] = 0;
+                    out[v.fi] = 0;
+                }
+                LCT::link(v.fi, v.se);
+                canin.erase(v.se);
+                canout.erase(v.fi);
+                in[v.se] = v.fi;
+                out[v.fi] = v.se;
+            }
+            if (tot == n - 1) {
+                vi cur;
+                for (int i = 1; i <= n; i++) 
+                    if (!in[i]) {
+                        int pl = i;
+                        while (pl) {
+                            cur.pb(pl), 
+                            pl = out[pl];
+                        }
+                        break;
+                    } 
+                return cur;
+            }
+        }
+        //failed to find a path
+        return vi();
+    }
+}
+
+int main() {
+    // Número de nodos en el grafo
+    int n = 5;  // Ejemplo con 5 nodos
+
+    // Representación de las aristas (grafos dirigidos)
+    vector<pair<int, int>> edges = {
+        {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 1}  // Ejemplo de ciclo dirigido
+    };
+
+    // Llamada a la función que devuelve el camino
+    hamil::vi path = hamil::work(n, edges);
+
+    // Imprimir el camino si se encontró
+    if (!path.empty()) {
+        cout << "Camino encontrado: ";
+        for (int v : path) {
+            cout << v << " ";
+        }
+        cout << endl;
+    } else {
+        cout << "No se encontró un camino." << endl;
+    }
+
+    return 0;
+}
+```
+> *Complejidad: O(mx_ch m log(n))*
+
 ## Arboles
 
 Un arbol es un grafo conexo[^2] y aciclico que consta de `n` nodos y `n-1` aristas. Cuenta con las siguientes propiedades:
@@ -2456,11 +3047,11 @@ La funcion toma dos parametros: `s` que es el nodo a procesar y `e` que es el no
 
 ```c++
 void dfs(int s, int e) {
-    count[s] = 1;
+    subs[s] = 1;
     for (auto u : adj[s]) {
         if (u == e) continue;
         dfs(u, s);
-        count[s] += count[u];
+        subs[s] += subs[u];
     }
 }
 
@@ -2469,7 +3060,7 @@ dfs(x,-1); // La primera llamada es con -1 puesto que no hay nodo previo
 
 > *Complejidad O(n)*
 
-### Calcular Diametro[^7] del Arbol
+### Calcular Diametro[^9] del Arbol
 
 Dado un nodo arbitrario `a` (en el algortimo tomamos 0 por simplicidad), encontramos el nodo `b` mas alejado de `a` y luego el nodo `c` mas alejado de `b`. Finalmente, el diametro del arbol esta dado por la distancia entre `b` y `c` el cual guardamos en la variable `diameter`. En este algoritmo, el arbol es visto de la siguiente forma:
 
@@ -2871,7 +3462,7 @@ void search(int y) {
     }
 }
 ```
-> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^8] utilizando un algoritmo de Backtracking*
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^10] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
@@ -2895,7 +3486,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 ## Tecnicas Comunes
 
 - **Rangos** 
-- **Bitmasks[^9]**
+- **Bitmasks[^11]**
 
 ## Requisitos
 
@@ -3016,6 +3607,8 @@ if(x & (x-1) == 0)
 [^4]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
 [^5]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
 [^6]: *Decimos que un grafo es fuertemente conexo si existe un camino entre cada nodo y todos los demas*
-[^7]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
-[^8]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
-[^9]: *Una bitmask es un numero entero visto por su valor en binario*
+[^7]: *Un camino Euleriano es un camino que recorre cada arista exactamente una vez. Por su parte, un circuito Euleriano es un camino Euleriano que comienza y termina en el mismo nodo*
+[^8]: *Un camino Hamiltoniano es un camino que recorre cada nodo exactamente una vez. Por su parte, un circuito Hamiltoniano es un camino Hamiltoniano que comienza y termina en el mismo nodo*
+[^9]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
+[^10]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
+[^11]: *Una bitmask es un numero entero visto por su valor en binario*
