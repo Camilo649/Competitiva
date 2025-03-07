@@ -27,22 +27,20 @@ int tests;
 
 vector<int> adj[MAXN];
 bitset<MAXN> visited;
-int p[MAXN];
-int st;
+deque<int> p;
+int st,en;
+unordered_map<int,vector<pair<int,int>>> subs;
+int sst;
 
-void dfs(int r, int &i) { // <-- pasamos la raiz como parametro
+void dfs(int r, int u, int d) {
     if(visited[r]) return;
+    if(r == st) sst = u;
     visited[r] = 1;
     
-    if (r!=st-1)
-    {
-        p[i] = r;
-        i--;
-    }
-    
+    subs[u].pb({d,r});
 
-    for(auto u:adj[r]) {
-        dfs(u,i);
+    for(auto v:adj[r]) {
+        dfs(v,u,d+1);
     }
 }
 
@@ -59,8 +57,9 @@ int main()
 
     while (tests--)
     {
-        int n,en;
+        int n;
         cin >> n >> st >> en;
+        st--; en--;
         forn(i,n-1)
         {
             int u,v;
@@ -70,46 +69,50 @@ int main()
             adj[u].pb(v);
         }
 
-        if (n==1)
+        visited[en] = 1;
+        for (auto u : adj[en])
         {
-            cout << 1 << nl;
-            continue;
+            dfs(u,u,1);
         }
 
-        p[0] = st-1;
-        
-        int index = n-1;
-        dfs(en-1,index);
-
-        bool flag = false;
-        for(auto v : adj[en-1])
+        visited.reset();
+        int max_sub = -1;
+        for (auto u : adj[en])
         {
-            if (v == p[n-2])
+            max_sub = max(max_sub, (int)subs[u].size());
+            sort(subs[u].begin(),subs[u].end());
+        }
+        forn(i,max_sub)
+        {
+            for (auto u : adj[en])
             {
-                flag = true;
-                break;
+                int j = subs[u].size() - 1;
+                while (j>=0 && visited[subs[u][j].second])
+                {
+                    j--;
+                }
+                if (j!=-1 && !visited[subs[u][j].second])
+                {
+                    p.pb(subs[u][j].second);
+                    subs[u].pop_back();
+                }
             }
         }
+        p.pb(en);
 
-        if (flag)
+        forn(i,p.size())
         {
-            forn(i,n)
-            {
-                cout << p[i]+1 << ' ';
-            }
-            cout << nl;
+            cout << p[i]+1 << ' ';
         }
-        else
-        {
-            cout << -1 << nl;
-        }
+        cout << nl;
 
         forn(i,n)
         {
             adj[i].clear();
         }
+        subs.clear();
         visited.reset();
-        memset(p,0,sizeof(p));
+        p.clear();
     }
     
     return 0;

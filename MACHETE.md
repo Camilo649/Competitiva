@@ -57,6 +57,7 @@
 | [Grafos: 2SAT](#2sat)                                                                                    | O(#nodos + #aristas)                  |
 | [Grafos: Hierholzer](#hierholzer)                                                                        | O(#nodos + #aristas)                  |
 | [Grafos: Encontrar Camino Hamiltoniano](#encontrar-camino-hamiltoniano)                                  | O(#intentos*#aristas*log(#nodos))     |
+| [Grafos: Dinic](#dinic)                                                                                  | O(#aristas*#nodos^2)                  |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
 | [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
 | [Grafos: Hallar Ancestros](#hallar-ancestros)                                                            | O(#nodos*log(#nodos))                 |
@@ -3033,6 +3034,172 @@ int main() {
 ```
 > *Complejidad: O(mx_ch m log(n))*
 
+## Flujos y Cortes
+
+Los algoritmos de esta seccion reciben como input un grafo dirigido donde el peso de cada arista es la **capacidad** de cada arista, i.e., la cantidad maxima de flujo que puede pasar por esa arista. Ademas, el grafo contiene dos nodos importantes: la **fuente** que no tiene aristas de entradas, y el **resumidero** que no tiene aristas de salida.
+
+- **Propiedad:** La cantidad maxima de flujo que se puede transportar desde la fuente hacia el resumiedero es igual a la suma de las capacidades de los nodos pertenecientes al corte.
+
+<u>Aplicaciones</u>
+
+- **Caminos con Aristas Disjuntas:** Se nos pide encontrar la maxima cantidad de caminos desde la fuente hacia el resumidero de forma tal que cada arista aparezca a lo sumo en un solo camino. Para ello, simplemente debemos cambiar la capacidad de todas las aristas a 1 y ejecutar [Dinic](#dinic). Como los caminos tienen capacidad 1, cada vez que enviamos flujo por una arista de ese camino, esta se satura por lo que no volvera a ser utilizada. Asi, el flujo maximo sera la cantidad maxima de caminos validos existentes.
+
+- **Caminos con Nodos Disjuntos:** Se nos pide encontrar la maxima cantidad de caminos desde la fuente hacia el resumidero de forma tal que cada nodo, con excepcion de la fuente y el resumidero, aparezca a lo sumo en un solo camino. Para ello, dividiremos cada nodo en 2, a excepcion de la fuente y el resumidero, donde una parte se queda con las aristas de entrada, mientras que la otra se queda con las aristas de salida; tambien agregamos una arista de capacidad 1 entre las dos mitades. Finalmente, corremos [Dinic](#dinic) en el nuevo grafo. Como la arista que conecta a las dos partes de cada nodo tiene capacidad 1, cada camino solo puede pertenecer a un unico nodo y asi, el flujo maximo sera la cantidad maxima de caminos validos existentes.
+
+| ![Grafo de Ejemplo para Caminos con Nodos Disjuntos](Imagenes/Node-disjointPathsGraph.png) | ![Grafo "Dividido" de Ejemplo para Caminos con Nodos Disjuntos](Imagenes/Node-disjointPathsDividedGraph.png) |
+|:------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
+> *A la izquierda el grafo original y a la derecha el grafo luego de haber realizado la "division"*
+
+- **Matching Maximo:** Dado un grafo **bipartito**[^4] no dirigido, se nos pide hallar el matching[^9] mas grande posible. Para lograrlo, basta extender el grafo con una fuente, un resumidero, aristas e interpretar todas las aristas como si tuvieran capacidad 1 y fueran dirigidas tal como se muestra en las imagenes de abajo. Luego, como la capacidad de todas las aristas es 1, al correr [Dinic](#dinic), el tamano del matching sera el mismo que el flujo maximo.
+
+| ![Grafo de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsGraph.png) | ![Grafo Extendido de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsExtendedGraph.png) |
+|:----------------------------------------------------------------------------:|:----------------------------------------------------------------:|
+> *A la izquierda el grafo original y a la derecha como debe quedar el grafo tras la extension*
+
+- **Matching Perfecto:** Dado un grafo **bipartito**[^4] no dirigido, se nos pide determinar si existe un matching[^9] perfecto en el grafo, i.e., sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, queremos hallar un matching `M` tal que `|M| = |X|` o `|M| = |Y|`. Ahora, el **teorema de Hall** nos dice que existe matching perfecto exactamente cuando cada subconjunto de `X` cumple que `|X| <= |vecinos(X)|` o cada subconjunto de `Y` cumple que `|X| <= |vecinos(X)|`. La idea es transformar el grafo igual que lo hicimos para el problema de obtener el matching maximo y correr [Dinic](#dinic) para obtener el flujo maximo. Luego, si el flujo maximo se corresponde con `|X|` o `|Y|` entonces, segun el teorema de Hall, existe matching perfecto.
+
+- **Cobertura Minima de Nodos/Conjunto Maximo Independiente:** Dado un grafo **bipartito**[^4] no dirigido, se nos pide hallar el minimo conjunto de nodos tales que cada arista tenga al menos un extremo en el conjunto (cobertura minima de nodos) y/o hallar el maximo conjunto de nodos tales que no haya dos nodos pertenecientes al conjunto que esten conectados por una arista. Ahora, el **teorema de Kőnig** nos dice que el tamaño de la cobertura minima de nodos es siempre igual al tamaño del maximo matching[^9], siempre que el grafo sea bipartito. La idea es transformar el grafo al igual que lo hicimos en el problema de obtener el matching maximo y posteriormente ejecutar [Dinic](#dinic). Sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, el siguiente paso es realizar una [DFS](#dfs) desde todos los nodos de `X` que quedaron sin matchear (aquellos cuyas aristas de salida no esten pasando flujo). Finalmente, el conjunto de todos los nodos de `X` que **no** fueron visitados y todos los nodos de `Y` que **si** fueron visitados componen la cobertura minima de nodos y los demas nodos son el conjunto maximo independiente.
+
+- **Cobertura por Caminos de Nodos Disjuntos:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a exactamente un camino. La idea es transformar el grafo como se muestra en la imagen de abajo y posteriormente ejecutar [Dinic](#dinic). Sea `n` la cantidad total de nodos y `c` la cantidad total de nodos emparejados; la cantidad de caminos esta dado por los nodos **no** emparejados, o sea `n-c`. Esto tambien nos dice que son los nodos que **no** estan emparejados a derecha los que inician los caminos, por lo que comenzando desde dichos nodos, podriamos obtener los `n-c` caminos.
+
+| ![Grafo de Ejemplo para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleGraph.png) | ![Grafo de Ejemplo  Resuelto para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleGraphSolved.png) | ![Grafo de Ejemplo  Transformado para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleTransformedGraph.png) |
+|:---------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+> *A la izquierda el grafo original, en el centro una solucion al problema y a la derecha como debe quedar el grafo transformado*
+
+- **Cobertura por Caminos General:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a al menos un camino. El problema se puede resolver de la misma forma que el problema de cobertura por caminos de nodos disjuntos con la particularidad de que en el grafo transformado existe una arista `a → b`, donde  `a` es disitnto de `b` (i.e, no existe la arista `a → a` en el grafo transformado), siempre que exista un camino desde `a` hacia `b` en el grafo original (posiblemente a traves de muchos nodos). Una posible implementacion para hallar las aristas es realizar una [DFS](#dfs) desde cada nodo y agregar una arista por cada nodo visitado, lo cual nos da una complejidad de **O(n(n+m))** (no encontre una implementacion mas sencilla💀).
+
+- **Hallar la Maxima Anticadena:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar una anticadena de longitud **maxima**. En un grafo, se entiende por anticadena a un conjunto de nodos tal que para cada nodo en el conjunto, **no** existe un camino que lleve al resto de nodos, por lo que podemos decir que todos los nodos pertenecientes a la anticadena son de cierta forma "independientes" los unos de los otros. Ahora, el **teorema de Dilworth** nos dice que el tamaño de la maxima anticadena es igual a la cantidad de caminos que resuelven el problema de cobertura por caminos general. De hecho, si construimos los caminos tal como se indico en el problema de cobertura por caminos de nodos disjuntos, podemos formar una anticadena simplemente tomando los nodos que inician los caminos (¡Aunque no es la unica!).
+
+### Dinic
+
+El algoritmo de Dinic es utilizando para hallar el flujo maximo y, por lo tanto, tambien nos permite hallar los nodos pertenecientes al minimo corte con un paso extra. En cada iteracion, Dinic realiza una [BFS](#bfs) para hacer una construccion por niveles del grafo, donde cada nivel se corresponde con la distancia respecto a la fuente. Luego, por medio de una [DFS](#dfs), empuja flujo por niveles a travez de las aristas hasta que ya no se pueda mas. El algoritmo termina cuando ya no se pueda agregar mas flujo, i.e., el resumidero no es alcanzable por aristas con peso positivo.
+
+```c++
+struct Dinic {
+	int nodes,src,dst; // Cantidad de nodos, indice del nodo fuente, indice del nodo resumidero
+	vector<int> dist,q,work; // Distancia de cada nodo respecto a la fuente, vector auxiliar para BFS, vector auxiliar para DFS
+	struct edge {int to,rev;ll f,cap;}; // {nodo destino de la arista original, indice de la arista inversa en la lista de adyacencia del nodo destino, flujo actual de la arista original, capacidad maxima de la arista}
+	vector<vector<edge>> adj; // Representacion del grafo como lista de adyacencia
+
+	Dinic(int x):nodes(x),adj(x),dist(x),q(x),work(x){} // Constructor
+
+	void add_edge(int s, int t, ll cap) {
+		adj[s].pb((edge){t,sz(adj[t]),0,cap});
+		adj[t].pb((edge){s,sz(adj[s])-1,0,0});
+	}
+
+	bool dinic_bfs() { //Construccion del nivel del grafo
+		fill(ALL(dist),-1);
+        dist[src]=0;
+		int qt=0;
+        q[qt++]=src;
+
+		for (int qh=0; qh<qt; qh++) {
+			int u=q[qh];
+			forr(i,0,sz(adj[u])){
+				edge &e=adj[u][i];
+                int v=adj[u][i].to;
+				if (dist[v]<0&&e.f<e.cap) {
+                    dist[v]=dist[u]+1;
+                    q[qt++]=v;
+                }
+			}
+		}
+
+		return dist[dst]>=0;
+	}
+
+	ll dinic_dfs(int u, ll f) { // Empujar flujo
+		if (u==dst)
+            return f;
+
+		for (int &i=work[u]; i<sz(adj[u]); i++) {
+			edge &e=adj[u][i];
+			if (e.cap<=e.f)
+                continue;
+			int v=e.to;
+			if (dist[v]==dist[u]+1) {
+				ll df=dinic_dfs(v,min(f,e.cap-e.f));
+				if (df>0) {
+                    e.f+=df;
+                    adj[v][e.rev].f-=df;
+                    return df;
+                }
+			}
+		}
+
+		return 0;
+	}
+
+	ll max_flow(int _src, int _dst) {
+		src=_src;
+        dst=_dst;
+		ll result=0;
+
+		while (dinic_bfs()) {
+			fill(ALL(work),0);
+			while (ll delta=dinic_dfs(src,INF))
+                result+=delta;
+		}
+
+		return result;
+	}
+
+    vector<int> min_cut(Dinic &dinic) {
+        vector<int> min_cut;
+        vector<bool> visited(dinic.nodes, false);
+        queue<int> q;
+
+        q.push(dinic.src);
+        visited[dinic.src] = true;
+
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            min_cut.push_back(u);
+
+            for (const auto &e : dinic.adj[u]) {
+                if (!visited[e.to] && e.f < e.cap) {
+                    visited[e.to] = true;
+                    q.push(e.to);
+                }
+            }
+        }
+
+        return min_cut;
+    }
+};
+
+int main() {
+    int n = 6;  // Número de nodos
+    Dinic dinic(n);
+
+    // Agregar aristas con capacidad
+    dinic.add_edge(0, 1, 3);
+    dinic.add_edge(0, 2, 2);
+    dinic.add_edge(1, 3, 2);
+    dinic.add_edge(2, 3, 1);
+    dinic.add_edge(3, 4, 4);
+    dinic.add_edge(3, 5, 2);
+    
+    int maxflow = dinic.max_flow(0, 5);
+    cout << "Max Flow: " << maxflow << endl;
+
+    vector<int> min_cut = min_cut(dinic);
+    cout << "Min-Cut Nodes: ";
+    for (int v : min_cut) {
+        cout << v << " ";
+    }
+    cout << endl;
+
+    return 0;
+}
+```
+
+> *Complejidad: O(mn^2)*
+
+**NOTA:**
+- Para grafos bipartitos (generalmente problemas de matching), la complejidad desciende a **O(m√n)**
+
 ## Arboles
 
 Un arbol es un grafo conexo[^2] y aciclico que consta de `n` nodos y `n-1` aristas. Cuenta con las siguientes propiedades:
@@ -3060,7 +3227,7 @@ dfs(x,-1); // La primera llamada es con -1 puesto que no hay nodo previo
 
 > *Complejidad O(n)*
 
-### Calcular Diametro[^9] del Arbol
+### Calcular Diametro[^10] del Arbol
 
 Dado un nodo arbitrario `a` (en el algortimo tomamos 0 por simplicidad), encontramos el nodo `b` mas alejado de `a` y luego el nodo `c` mas alejado de `b`. Finalmente, el diametro del arbol esta dado por la distancia entre `b` y `c` el cual guardamos en la variable `diameter`. En este algoritmo, el arbol es visto de la siguiente forma:
 
@@ -3462,7 +3629,7 @@ void search(int y) {
     }
 }
 ```
-> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^10] utilizando un algoritmo de Backtracking*
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^11] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
@@ -3486,7 +3653,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 ## Tecnicas Comunes
 
 - **Rangos** 
-- **Bitmasks[^11]**
+- **Bitmasks[^12]**
 
 ## Requisitos
 
@@ -3609,6 +3776,7 @@ if(x & (x-1) == 0)
 [^6]: *Decimos que un grafo es fuertemente conexo si existe un camino entre cada nodo y todos los demas*
 [^7]: *Un camino Euleriano es un camino que recorre cada arista exactamente una vez. Por su parte, un circuito Euleriano es un camino Euleriano que comienza y termina en el mismo nodo*
 [^8]: *Un camino Hamiltoniano es un camino que recorre cada nodo exactamente una vez. Por su parte, un circuito Hamiltoniano es un camino Hamiltoniano que comienza y termina en el mismo nodo*
-[^9]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
-[^10]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
-[^11]: *Una bitmask es un numero entero visto por su valor en binario*
+[^9]: *Se entiende por matching de un grafo a un conjunto de aristas sin vertices en comun pertenecientes al grafo*
+[^10]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
+[^11]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
+[^12]: *Una bitmask es un numero entero visto por su valor en binario*

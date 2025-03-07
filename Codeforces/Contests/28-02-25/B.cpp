@@ -41,7 +41,7 @@ int main()
         ll n;
         cin >> n;
         ll r = sqrt((n*(n+1))/2);
-        if (n == 1 || r*r == (n*(n+1))/2)
+        if (r*r == (n*(n+1))/2)
         {
             cout << -1 << nl;;
         }
