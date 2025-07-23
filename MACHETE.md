@@ -1,129 +1,137 @@
+![MACHETE](Imagenes/Logo.jpg)
+
 # Estimado de Eficiencia
 
-| Input size | Required time complexity |
-|----------- |--------------------------|
-| n <= 10    | O(n!)                    |
-| n <= 20    | O(2^n)                   |
-| n <= 500   | O(n^3)                   |
-| n <= 5000  | O(n^2)                   |
-| n <= 10^6  | O(n*log(n)) or O(n)      |
-| n > 10^6   | O(log(n)) or O(1)        |
+| Tamaño de entrada | Complejidad requerida                          |
+|-------------------|------------------------------------------------|
+| \(n \le 10\)      | \(\mathcal{O}(n!)\)                            |
+| \(n \le 20\)      | \(\mathcal{O}(2^n)\)                           |
+| \(n \le 500\)     | \(\mathcal{O}(n^3)\)                           |
+| \(n \le 5000\)    | \(\mathcal{O}(n^2)\)                           |
+| \(n \le 10^6\)    | \(\mathcal{O}(n \log n)\) o \(\mathcal{O}(n)\) |
+| \(n > 10^6\)      | \(\mathcal{O}(\log n)\) o \(\mathcal{O}(1)\)   |
+
 
 # Indice Algoritmos
 
-| Algoritmo                                                                                                | Complejidad                           |
-|----------------------------------------------------------------------------------------------------------|---------------------------------------|
-| [Progresiones: Sumas Gaussianas](#sumas-gaussianas)                                                      | O(1)                                  |
-| [Progresiones: Formula de Faulhaber](#formula-de-faulhaber-hasta-6)                                      | O(1)                                  |
-| [Progresiones: Progresion Aritmetica](#progresion-aritmetica)                                            | O(1)                                  |
-| [Progresiones: Progresion Geometrica](#progresion-geometrica)                                            | O(1)                                  |
-| [Algebra: Raiz](#raices)                                                                                 | O(log(numero))                        |
-| [Algebra: Exponenciacion](#exponenciacion)                                                               | O(#potencias)                         |
-| [Algebra: Formula de Binet](#formula-de-binet)                                                           | O(1)                                  |
-| [Geometria: Suma y resta de vectores](#suma-y-resta-de-vectores)                                         | O(1)                                  |
-| [Geometria: Multiplicacion y division de vectores por escalares](#multiplacion-y-division-por-escalares) | O(1)                                  |
-| [Geometria: Norma de un vector](#norma)                                                                  | O(log(U^2))                           |
-| [Geometria: Proyeccion de un vector sobre otro](#producto-vectorial)                                     | O(log(U^2))                           |
-| [Geometria: Producto punto](#producto-punto)                                                             | O(1)                                  |
-| [Geometria: Producto cruz](#producto-cruz)                                                               | O(1)                                  |
-| [Geometria: Calculo de perimetro](#calculo-de-perimetro)                                                 | O(#lados del poligono)                |
-| [Geometria: Calculo de area](#calculo-de-area)                                                           | O(#lados del poligono)                |
-| [Geometria: Polar Sort](#polar-sort)                                                                     | O(#puntos∗log(#puntos))               |
-| [Geometria: Convex Hull](#convex-hull)                                                                   | O(#puntos∗log(#puntos))               |
-| [Combinatoria: Computo de factoriales](#computo-de-factoriales)                                          | O(numero)                             |
-| [Combinatoria: Computo de factoriales inversos](#computo-de-factoriales-inversos)                        | O(3∗numero)                           |
-| [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | O(raiz(numero))                       |
-| [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | O(numero∗log(numero))                 |
-| [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | O(log(numero))                        |
-| [Teoria de Numeros: Divisores de un numero](#divisores-de-un-numero)                                     | O(log(numero))                        |
-| [Teoria de Numeros: Factorizacion de un numero](#factorizacion-de-un-numero)                             | O(log(numero))                        |
-| [Teoria de Numeros: Ver si un numero es congruente a otro](#aritmetica-modular)                          | O(1)                                  |
-| [Teoria de Numeros: Inverso modular](#inverso-modular)                                                   | O(#potencias)                         |
-| [Teoria de Numeros: Computo de inversos modulares](#computo-de-inversos-modulares)                       | O(3∗numero)                           |
-| [Busqueda: Busqueda lineal](#busqueda-lineal)                                                            | O(#elementos)                         |
-| [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | O(log(#elementos))                    |
-| [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | O(2∗#elementos)                       |
-| [Busqueda: 2SUM](#2sum)                                                                                  | O(2∗#elementos)                       |
-| [Grafos: DFS](#dfs)                                                                                      | O(#nodos + #aristas)                  |
-| [Grafos: BFS](#bfs)                                                                                      | O(#nodos + #aristas)                  |
-| [Grafos: Bellman-Ford](#bellman-ford)                                                                    | O(#vertices∗#aristas)                 |
-| [Grafos: Dijkstra](#dijkstra)                                                                            | O(#vertices + #aristas∗log(#aristas)) |
-| [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | O((#vertices)^3)                      |
-| [Grafos: Topological Sorting](#topological-sorting)                                                      | O(#nodos + #aristas)                  |
-| [Grafos: Contar el Numero de Caminos en un DAG](#contar-el-numero-de-caminos-en-un-dag)                  | O(#nodos + #aristas)                  |
-| [Grafos: Calcular Destino en un Grafo Sucesor](#calcular-destino-en-un-grafo-sucesor)                    | O(#nodos*log(#nodos))                 |
-| [Grafos: Floyd](#floyd)                                                                                  | O(#nodos)                             |
-| [Grafos: Kosaraju](#kosaraju)                                                                            | O(#nodos + #aristas)                  |
-| [Grafos: 2SAT](#2sat)                                                                                    | O(#nodos + #aristas)                  |
-| [Grafos: Hierholzer](#hierholzer)                                                                        | O(#nodos + #aristas)                  |
-| [Grafos: Encontrar Camino Hamiltoniano](#encontrar-camino-hamiltoniano)                                  | O(#intentos*#aristas*log(#nodos))     |
-| [Grafos: Dinic](#dinic)                                                                                  | O(#aristas*#nodos^2)                  |
-| [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | O(#vertices)                          |
-| [Grafos: Calcular Diametro del Arbol](#calcular-diametro6-del-arbol)                                     | O(#vertices)                          |
-| [Grafos: Hallar Ancestros](#hallar-ancestros)                                                            | O(#nodos*log(#nodos))                 |
-| [Grafos: Ancestro Comun Menor](#ancestro-comun-menor)                                                    | O(#nodos*log(#nodos))                 |
-| [Grafos: Distancia entre Dos Nodos](#distancia-entre-dos-nodos)                                          | O(#nodos*log(#nodos))                 |
-| [Grafos: Kruskal](#kruskal)                                                                              | O(#aristas*log(#vertices))            |
-| [Grafos: Prim](#prim)                                                                                    | O(#vertices + #aristas*log(#aristas)) |
-| [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | O(2^tamaño(conjunto))                 |
-| [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | O(#elementos!)                        |
-| [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | O(raiz(2^#elementos))                 |
-| [Bactracking: Ejemplo Problema de las N Reinas](#ejemplo-problema-de-las-n-reinas)                       | O(#reinas!)                           |
-| [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | O(tamaño(matriz))                     |
-| [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | O(tamaño(matriz))                     |
-| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | O(#elementos)                         |
-| [Operaciones de Bits: Setear el k-esimo Bit](#setear-el-k-esimo-bit)                                     | O(1)                                  |
-| [Operaciones de Bits: Chequear Potencia de 2](#chequear-potencia-de-2)                                   | O(1)                                  |
+| Algoritmo                                                                                                | Complejidad                                     |
+|----------------------------------------------------------------------------------------------------------|-------------------------------------------------|
+| [Progresiones: Sumas Gaussianas](#sumas-gaussianas)                                                      | $\mathcal{O}(1)$                                |
+| [Progresiones: Formula de Faulhaber](#formula-de-faulhaber-hasta-6)                                      | $\mathcal{O}(1)$                                |
+| [Progresiones: Progresion Aritmetica](#progresion-aritmetica)                                            | $\mathcal{O}(1)$                                |
+| [Progresiones: Progresion Geometrica](#progresion-geometrica)                                            | $\mathcal{O}(1)$                                |
+| [Algebra: Raiz](#raices)                                                                                 | $\mathcal{O}(\log (n))$                         |
+| [Algebra: Exponenciacion](#exponenciacion)                                                               | $\mathcal{O}(\log (n))$                         |
+| [Algebra: Formula de Binet](#formula-de-binet)                                                           | $\mathcal{O}(1)$                                |
+| [Algebra: Reduccion Gaussiana](#gauss)                                                                   | $\mathcal{O}(m^2 \cdot n)$                      |
+| [Geometria: Suma y Resta de Vectores](#suma-y-resta-de-vectores)                                         | $\mathcal{O}(1)$                                |
+| [Geometria: Multiplicacion y Division de Vectores por Escalares](#multiplacion-y-division-por-escalares) | $\mathcal{O}(1)$                                |
+| [Geometria: Norma de un Vector](#norma)                                                                  | $\mathcal{O}(1)$                                |
+| [Geometria: Proyeccion de un Vector Sobre Otro](#producto-vectorial)                                     | $\mathcal{O}(1)$                                |
+| [Geometria: Producto Punto](#producto-punto)                                                             | $\mathcal{O}(1)$                                |
+| [Geometria: Producto Cruz](#producto-cruz)                                                               | $\mathcal{O}(1)$                                |
+| [Geometria: Calculo de Perimetro](#calculo-de-perimetro)                                                 | $\mathcal{O}(\#lados)$                          |
+| [Geometria: Calculo de Area](#calculo-de-area)                                                           | $\mathcal{O}(\#lados)$                          | 
+| [Geometria: Polar Sort](#polar-sort)                                                                     | $\mathcal{O}(\#puntos \cdot \log(\#puntos))$    |
+| [Geometria: Convex Hull](#convex-hull)                                                                   | $\mathcal{O}(\#puntos \cdot \log(\#puntos))$    |
+| [Combinatoria: Computo de factoriales](#computo-de-factoriales)                                          | $\mathcal{O}(n)$                                |
+| [Combinatoria: Computo de factoriales inversos](#computo-de-factoriales-inversos)                        | $\mathcal{O}(n)$                                |
+| [Combinatoria: Inclusion Exclusion](#principio-de-inclusion-exclusion)                                   | $\mathcal{O}(2^n)$                              |
+| [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | $\mathcal{O}(\log (n))$                         |
+| [Teoria de Numeros: Divisores de un numero](#divisores-de-un-numero)                                     | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Factorizacion de un numero](#factorizacion-de-un-numero)                             | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Ver si un numero es congruente a otro](#aritmetica-modular)                          | $\mathcal{O}(1)$                                |
+| [Teoria de Numeros: Inverso modular](#inverso-modular)                                                   | $\mathcal{O}(\log (M))$                         |
+| [Teoria de Numeros: Computo de inversos modulares](#computo-de-inversos-modulares)                       | $\mathcal{O}(n)$                                |
+| [Busqueda: Busqueda lineal](#busqueda-lineal)                                                            | $\mathcal{O}(n)$                                |
+| [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | $\mathcal{O}(\log (n))$                         |
+| [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | $\mathcal{O}(n)$                                |
+| [Busqueda: 2SUM](#2sum)                                                                                  | $\mathcal{O}(n)$                                |
+| [Grafos: DFS](#dfs)                                                                                      | $\mathcal{O}(n + m)$                            |
+| [Grafos: BFS](#bfs)                                                                                      | $\mathcal{O}(n + m)$                            |
+| [Grafos: Bellman-Ford](#bellman-ford)                                                                    | $\mathcal{O}(n \cdot m)$                        |
+| [Grafos: Dijkstra](#dijkstra)                                                                            | $\mathcal{O}(\min\{n^2,\ m \cdot \log(n)\})$    |
+| [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | $\mathcal{O}(n^3)$                              |
+| [Grafos: Topological Sorting](#topological-sorting)                                                      | $\mathcal{O}(n + m)$                            |
+| [Grafos: Contar el Numero de Caminos en un DAG](#contar-el-numero-de-caminos-en-un-dag)                  | $\mathcal{O}(n + m)$                            |
+| [Grafos: Calcular Destino en un Grafo Sucesor](#calcular-destino-en-un-grafo-sucesor)                    | $\mathcal{O}(n \cdot \log(n))$                  |
+| [Grafos: Floyd](#floyd)                                                                                  | $\mathcal{O}(n)$                                |
+| [Grafos: Kosaraju](#kosaraju)                                                                            | $\mathcal{O}(n + m)$                            |
+| [Grafos: 2SAT](#2sat)                                                                                    | $\mathcal{O}(n + m)$                            |
+| [Grafos: Hierholzer](#hierholzer)                                                                        | $\mathcal{O}(n + m)$                            |
+| [Grafos: Encontrar Camino Hamiltoniano](#encontrar-camino-hamiltoniano)                                  | $\mathcal{O}(\#intentos \cdot m \cdot \log(n))$ |
+| [Grafos: Dinic](#dinic)                                                                                  | $\mathcal{O}(m \cdot n^2)$                      |
+| [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | $\mathcal{O}(n)$                                |
+| [Grafos: Calcular Diametro del Arbol](#calcular-diametro13-del-arbol)                                     | $\mathcal{O}(n)$                                |
+| [Grafos: Hallar Ancestros](#hallar-ancestros)                                                            | $\mathcal{O}(n \cdot \log(n))$                  |
+| [Grafos: Ancestro Comun Menor](#ancestro-comun-menor)                                                    | $\mathcal{O}(n \cdot \log(n))$                  |
+| [Grafos: Distancia entre Dos Nodos](#distancia-entre-dos-nodos)                                          | $\mathcal{O}(n \cdot \log(n))$                  |
+| [Grafos: Kruskal](#kruskal)                                                                              | $\mathcal{O}(m \cdot \log(n))$                  |
+| [Grafos: Prim](#prim)                                                                                    | $\mathcal{O}(n + m \cdot \log(m))$              |
+| [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | $\mathcal{O}(2^{\|S\|})$                        |
+| [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | $\mathcal{O}(n!)$                               |
+| [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | $\mathcal{O}(\sqrt{2^n})$                       |
+| [Bactracking: Ejemplo Problema de las N Reinas](#ejemplo-problema-de-las-n-reinas)                       | $\mathcal{O}(n!)$                               |
+| [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | $\mathcal{O}(n \cdot m)$                        |
+| [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | $\mathcal{O}(n \cdot m)$                        |
+| [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | $\mathcal{O}(n)$                                |
+| [Operaciones de Bits: Setear el k-esimo Bit](#setear-el-k-esimo-bit)                                     | $\mathcal{O}(1)$                                |
+| [Operaciones de Bits: Chequear Potencia de 2](#chequear-potencia-de-2)                                   | $\mathcal{O}(1)$                                |
 
 # Indice Estructuras
 
-| Estructura                                            | Memoria Total(usando `int`)                                                              |
-|-------------------------------------------------------|------------------------------------------------------------------------------------------|
-| [Arrays](#arrays)                                     | (4*#elementos)B                                                                          |
-| [Bitsets](#bitsets)                                   | (#elementos)b                                                                            |
-| [Prefix Sum/Tabla Aditiva](#prefix-sum)               | (8*#elementos+4)B                                                                        |
-| [Prefix Sum of Matrix](#prefix-sum-of-matrix)         | (8*#filas*#columnas)B                                                                    |
-| [Sparse Table](#sparse-table)                         | (4*#elementos*log(#elementos))B                                                          |
-| [Difference Array](#difference-array)                 | (8*#elementos+4)B                                                                        |
-| [Vectors](#vectors)                                   | (4*#elementos)B                                                                          |
-| [Strings](#strings)                                   | (#elementos + 1)B                                                                        |
-| [Deques](#deques)                                     | (4*#elementos)B                                                                          |
-| [Queues](#queues)                                     | (4*#elementos)B                                                                          |
-| [Priority Queues](#priority-queues)                   | (4*#elementos)B                                                                          |
-| [Sets](#sets)                                         | (4*#elementos)B                                                                          |
-| [Multisets](#multisets)                               | (4*#elementos)B                                                                          |
-| [Indexed Sets](#indexed-sets)                         | (4*#elementos)B                                                                          |
-| [Bitmask Sets](#bitmask-sets)                         | 4B                                                                                       |
-| [Disjoint Set Union](#disjoint-set-union)             | (8*#elementos)B                                                                          |
-| [Maps](#maps)                                         | (8*#elementos)B                                                                          |
-| [Iteradores](#iteradores)                             | 4B                                                                                       |
-| [Binary Index Tree/Fenwick Tree](#fenwick-tree)       | (8*#elementos)B                                                                          |
-| [Segment Tree](#segment-tree)                         | (12*#elementos-4)B                                                                       |
-| [Geometria: Punto](#punto)                            | 8B                                                                                       |
-| [Geometria: Vector](#vector)                          | 8B                                                                                       |
-| [Geometria: Recta](#recta)                            | 16B                                                                                      |
-| [Geometria: Poligono](#poligono)                      | (#vectores/puntos)8B                                                                     |
-| [Grafos: Lista de adyacencias](#lista-de-adyacencias) | (#nodos)4B + (#aristas)4B grafo direccional o (#aristas)8B grafo direccional pesado      |
-| [Grafos: Lista de aristas](#lista-de-aristas)         | (#aristas)8B para grafos direccionales o (#aristas)12B para grafos direccionales pesados |
-| [Grafos: Matriz de adyacencia](#matriz-de-adyacencia) | ((#nodos)^2)*4B                                                                          |
+| Estructura                                            | Memoria Total (usando `int`)                                                                                    |
+|-------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
+| [Arrays](#arrays)                                     | $(4 \cdot \#elementos)B$                                                                                        |
+| [Bitsets](#bitsets)                                   | $(\#elementos)b$                                                                                                |
+| [Prefix Sum/Tabla Aditiva](#prefix-sum)               | $(8 \cdot \#elementos + 4)B$                                                                                    |
+| [Prefix Sum of Matrix](#prefix-sum-of-matrix)         | $(8 \cdot \#filas \cdot \#columnas)B$                                                                           |
+| [Sparse Table](#sparse-table)                         | $(4 \cdot \#elementos \cdot \log(\#elementos))B$                                                                |
+| [Difference Array](#difference-array)                 | $(8 \cdot \#elementos + 4)B$                                                                                    |
+| [Vectors](#vectors)                                   | $(4 \cdot \#elementos)B$                                                                                        |
+| [Strings](#strings)                                   | $(\#elementos + 1)B$                                                                                            |
+| [Tries](#tries)                                       | $(\sum_{s \in diccionario} s.size() + 1)B$ (asumiendo que ninguna palabra es substring de otra)                 |
+| [Hashes](#hashes)                                     | $8B$                                                                                                            |
+| [Z Function](#z-function)                             | $(\#elementos)B$                                                                                                |
+| [Deques](#deques)                                     | $(4 \cdot \#elementos)B$                                                                                        |
+| [Queues](#queues)                                     | $(4 \cdot \#elementos)B$                                                                                        |
+| [Priority Queues](#priority-queues)                   | $(4 \cdot \#elementos)B$                                                                                        |
+| [Sets](#sets)                                         | $(4 \cdot \#elementos)B$                                                                                        |
+| [Multisets](#multisets)                               | $(4 \cdot \#elementos)B$                                                                                        |
+| [Indexed Sets](#indexed-sets)                         | $(4 \cdot \#elementos)B$                                                                                        |
+| [Bitmask Sets](#bitmask-sets)                         | $4B$                                                                                                            |
+| [Disjoint Set Union](#disjoint-set-union)             | $(8 \cdot \#elementos)B$                                                                                        |
+| [Maps](#maps)                                         | $(8 \cdot \#elementos)B$                                                                                        |
+| [Iteradores](#iteradores)                             | $4B$                                                                                                            |
+| [Binary Index Tree/Fenwick Tree](#fenwick-tree)       | $(8 \cdot \#elementos)B$                                                                                        |
+| [Segment Tree](#segment-tree)                         | $(12 \cdot \#elementos - 4)B$                                                                                   |
+| [Geometria: Punto](#punto)                            | $8B$                                                                                                            |
+| [Geometria: Vector](#vector)                          | $8B$                                                                                                            |
+| [Geometria: Recta](#recta)                            | $16B$                                                                                                           |
+| [Geometria: Poligono](#poligono)                      | $\left(8 \cdot \frac{\#\text{vectores}}{\text{puntos}} \right)B$                                                |
+| [Grafos: Lista de adyacencias](#lista-de-adyacencias) | $(4 \cdot \#nodos)B + (4 \cdot \#aristas)B$ grafo direccional o $(8 \cdot \#aristas)B$ grafo direccional pesado |
+| [Grafos: Lista de aristas](#lista-de-aristas)         | $(8 \cdot \#aristas)B$ para grafos direccionales o $(12 \cdot \#aristas)B$ para grafos direccionales pesados    |
+| [Grafos: Matriz de adyacencia](#matriz-de-adyacencia) | $(4 \cdot (\#nodos)^2)B$                                                                                        |
 > *La memoria total se multiplica por 2 si los elementos son `long long`*
 
 # Indice Funciones Builtin
 
 
-| Funcion                                                             | Descripcion                                                                                                   |
-|---------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------|
-| [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo `O(log(n))`                          |
-| [Funciones de Ordenacion: Random Shuffle](#random-shuffle)          | Ordena aleatoriamente estructuras de datos con iteradores de acceso aleatorio en tiempo `O(n)`                |
-| [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo `O(log(n))`                           |
-| [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo `O(log(n))`                            |
-| [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo `O(log(n))` |
-| [Funciones de Conversion: To String](#to-string)                    | Convierte un numero real en una cadena en tiempo `O(digitos(n))`                                              |    
-| [Funciones de Conversion: Atoi](#atoi)                              | Convierte una arreglo de caracteres en un entero en tiempo `O(s.size())`                                      |    
-| [Funciones de Bits: Counting Leading Zeros](#count-leading-zeros)   | Retorna la cantidad de ceros antes del 1 mas significativo de `x` en tiempo `O(1)`                            |
-| [Funciones de Bits: Counting Trailing Zeros](#count-trailing-zeros) | Retorna la cantidad de ceros despues del 1 menos significativo de `x` en tiempo `O(1)`                        |
-| [Funciones de Bits: Popcount](#popcount)                            | Retorna la cantidad de bits en 1 de `x` en tiempo `O(1)`                                                      |
-| [Funciones de Bits: Parity](#parity)                                | Retorna 1 si la cantidad de bits en 1 de `x` es par y 0 en caso contrario en tiempo `O(1)`                    |
+| Funcion                                                             | Descripcion                                                                                                              |
+|---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
+| [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(\log(n))$                          |
+| [Funciones de Ordenacion: Random Shuffle](#random-shuffle)          | Ordena aleatoriamente estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n)$                 |
+| [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo $\mathcal{O}(\log(n))$                           |
+| [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo $\mathcal{O}(\log(n))$                            |
+| [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo $\mathcal{O}(\log(n))$ |
+| [Funciones de Conversion: To String](#to-string)                    | Convierte un numero real en una cadena en tiempo $\mathcal{O}(digitos(n))$                                               |    
+| [Funciones de Conversion: Atoi](#atoi)                              | Convierte una arreglo de caracteres en un entero en tiempo $\mathcal{O}(s.size())$                                       |    
+| [Funciones de Bits: Counting Leading Zeros](#count-leading-zeros)   | Retorna la cantidad de ceros antes del 1 mas significativo de `x` en tiempo $\mathcal{O}(1)$                             |
+| [Funciones de Bits: Counting Trailing Zeros](#count-trailing-zeros) | Retorna la cantidad de ceros despues del 1 menos significativo de `x` en tiempo $\mathcal{O}(1)$                         |
+| [Funciones de Bits: Popcount](#popcount)                            | Retorna la cantidad de bits en 1 de `x` en tiempo $\mathcal{O}(1)$                                                       |
+| [Funciones de Bits: Parity](#parity)                                | Retorna 1 si la cantidad de bits en 1 de `x` es par y 0 en caso contrario en tiempo $\mathcal{O}(1)$                     |
 
 # Librerias God 
 
@@ -404,14 +412,18 @@ cout << __builtin_parityll(x) << "\n"; // 1
 
 - **Pensar en [busqueda binaria](#busqueda-binaria) para los problemas de minimizar un maximo o maximizar un minimo**
 
+- **Cuando en un problema de [flujos y cortes](#flujos-y-cortes) quiera tener muchas fuentes y resumideros, puedo hacer un S' y un T' con capacidad infinita y resolverlo como un problema de max flow**
+
+- **Si en una dp solo me muevo del estado i al estado i+1 y no necesito preservar informacion historica, puedo simplemente tener una dp nueva y una vieja e irlas actualizando en cada paso**
+
 # Arrays
 
 Lista de elementos.
 
 Especialmente eficiente para:
 
-- Acceder valores rapidamente -> **O(1)**
-- Modificar valores rapidamente -> **O(1)**
+- Acceder valores rapidamente $\rightarrow \mathcal{O}(1)$
+- Modificar valores rapidamente $\rightarrow \mathcal{O}(1)$
 
 **Usar siempre que se puedan.**
 
@@ -471,7 +483,7 @@ Especialmente eficiente para:
 - Devoler la suma maxima cuando hay numeros negativos
 
 ``` c++
-vector<int> S
+vector<int> S;
 S.push_back(0);
 void sumaAditiva  (vector<int > &A) {
     for(int i = 0; i < A.size(); i++) {
@@ -479,11 +491,11 @@ void sumaAditiva  (vector<int > &A) {
     }
 }
 ```
-> *Complejidad construccion: O(n)*
+> *Complejidad construccion: $\mathcal{O}(n)$*
 
-> *Complejidad consulta: O(1)*
+> *Complejidad consulta: $\mathcal{O}(1)$*
 
-> *Complejidad actualizacion: O(n)*
+> *Complejidad actualizacion: $\mathcal{O}(n)$*
 
 **NOTAS**:
 - Se necesitan **dos arreglos/vectores** (uno con los elementos y otro con la suma de los primeros i elementos)
@@ -532,11 +544,11 @@ Luego, para calcular la suma del area `A`
 
 solamente devemos devolver `psa[posiA][posjA]` - `psa[posiB][posjB]` - `psa[posiC][posjC]` + `psa[posiD][posjD]`.
 
-> *Complejidad construccion: O(RC)*
+> *Complejidad construccion: $\mathcal{O}(n \cdot m)$*
 
-> *Complejidad consulta: O(1)*
+> *Complejidad consulta: $\mathcal{O}(1)$*
 
-> *Complejidad actualizacion: O(n)*
+> *Complejidad actualizacion: $\mathcal{O}(n)$*
 
 # Sparse Table
 
@@ -544,11 +556,11 @@ Especialmente eficiente para:
 
 - Responder consultas de rango o subintervalos donde se desea hallar el minimo o maximo elemento
 
-> *Complejidad construccion: O(nlog(n))*
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
 
-> *Complejidad consulta: O(1)* 
+> *Complejidad consulta: $\mathcal{O}(1)$* 
 
-> *Complejidad actualizacion: O(nlog(n))*
+> *Complejidad actualizacion: $\mathcal{O}(n \cdot \log(n))$*
 
 ## Minimo
 
@@ -710,11 +722,11 @@ void updateDiffArray(vector<int>& D, int l, int r, int x)
 ```
 >*`l` y `r` debe estar indexado desde 0*
 
-> *Complejidad construccion: O(n)*
+> *Complejidad construccion: $\mathcal{O}(n)$*
 
-> *Complejidad consulta: O(n)* 
+> *Complejidad consulta: $\mathcal{O}(n)$* 
 
-> *Complejidad actualizacion: O(1)*
+> *Complejidad actualizacion: $\mathcal{O}(1)$*
 
 # Vectors
 
@@ -746,6 +758,8 @@ vector<int> v(9, 3); // vector de 9 ints, todos con valor 3
 
 Tienen las mismas funciones que los vectores pero cuentan con caracteristicas adicionales.
 
+Un string de largo $n$ tiene $\frac{n(n + 1)}{2}$ substrings posibles.
+
 <u>Inicializacion:</u>
 
 ```c++
@@ -753,14 +767,136 @@ string s; // cadena vacia
 ```
 
 <u>Funciones (particulares):</u>
-**s+s':** Devuelve la concatenacion de los strigns `s` y `s'` --> **O(∣s∣+∣s′∣)**
-**substr(k,x):** Devuelve un substring que comienza en la posicion `k` y tiene longitud `x` --> **O(x)**
-**find(t):** Devuelve la posicion en la que aparece el primer caracter (de izquierda a derecha) del primer substring `t` o `string::npos` en su defecto --> **O(∣s∣*∣t∣)**
-**rfind(t):** Devuelve la posicion en la que aparece el primer caracter (de derecha a izquierda) del primer substring `t` o `string::npos` en su defecto --> **O(∣s∣*∣t∣)**
+**s+s':** Devuelve la concatenacion de los strings `s` y `s'` $\rightarrow \mathcal{O}(|s| + |s'|)$
+**substr(k,x):** Devuelve un substring que comienza en la posicion `k` y tiene longitud `x` $\rightarrow \mathcal{O}(x)$
+**find(t):** Devuelve la posicion en la que aparece el primer caracter (de izquierda a derecha) del primer substring `t` o `string::npos` en su defecto $\rightarrow \mathcal{O}(|s| \cdot |s'|)$
+**rfind(t):** Devuelve la posicion en la que aparece el primer caracter (de derecha a izquierda) del primer substring `t` o `string::npos` en su defecto $\rightarrow \mathcal{O}(|s| \cdot |s'|)$
+
+# Tries
+
+Arbol que representa un conjunto de [strings](#strings). Cumple lo siguiente:
+- el nodo raiz representa el string vacio
+- cada arista posee exactamente un caracter y recorrer la arista representa escribirlo
+- los nodos donde termina (`term == true`) un string son **nodos terminales** (no necesariamente las hojas)
+- a cada nodo le corresponde un string generado por las aristas en el camino desde la raiz, estos strings son prefijos del diccionario.
+
+Especialmente eficiente para:
+- Busquedas en diccionarios
+- Problemas de substrings (puede requerir mas informacion por nodo)
+
+![Ejemplo Trie](Imagenes/EjemploTrie.png)
+> *Ejemplo de trie para el diccionario "cama", "coma", "mar", "marco", "marcha" y "no"*
+
+```c++
+struct trie {
+    map<char, trie> hijos;
+    bool term = false;
+
+    void insertar(string const& s, int pos = 0) {
+        char c = s[pos];
+        if (pos < int(s.size())) hijos[c].insertar(s, pos+1);
+        else term = true;
+    }
+
+    bool buscar(string const& s, int pos = 0) {
+        char c = s[pos];
+        if (pos < int(s.size())) return hijos.count(c) && hijos[c].buscar(s, pos+1);
+        else return term;
+    }
+};
+```
+> *Complejidad construccion: $\mathcal{O}(n \cdot |diccionario|)$*
+
+> *Complejidad consulta: $\mathcal{O}(n)$* 
+
+> *Complejidad actualizacion: $\mathcal{O}(n)$*
+
+# Hashes
+
+Sea $\sum = \{a_1, a_2, \ldots, a_n\}$ un alfabeto con $n$ caracteres. Si le asociamos a cada $a_i$ el valor $i$, podemos representar a cada [string](#strings) $s = s_0s_1 \ldots s_k$ como el polinomio:
+
+$$
+\text{hash}(s) = \sum_{i=0}^{k} \text{valor}(s_i) \cdot b^{k - i}
+$$
+
+donde $b$ es una **base** suficientemente grande ($>n$), y el resultado se toma modulo algun numero primo $m$ para evitar overflows y colisiones. Asi, cada string tendra asociado un numero unico al cual llamamos su **hash**.
+
+
+Especialmente eficiente para:
+- Contar ocurrencias de un string en otro
+- Comparaciones lexicograficas de strings
+
+```c++
+struct StrHash { // Hash polinomial con exponentes decrecientes.
+	static constexpr ll ms[] = {1'000'000'007, 1'000'000'403};
+	static constexpr ll b = 500'000'000;
+	vector<ll> hs[2], bs[2];
+	StrHash(string const& s) {
+		int n = sz(s);
+		forn(k, 2) {
+			hs[k].resize(n+1), bs[k].resize(n+1, 1);
+			forn(i, n) {
+				hs[k][i+1] = (hs[k][i] * b + s[i]) % ms[k];
+				bs[k][i+1] =  bs[k][i] * b         % ms[k];
+			}
+		}
+	}
+	ll get(int idx, int len) const { // Hashes en `s[idx, idx+len)`.
+		ll h[2];
+		forn(k, 2) {
+			h[k] = hs[k][idx+len] - hs[k][idx] * bs[k][len] % ms[k];
+			if (h[k] < 0) h[k] += ms[k];
+		}
+		return (h[0] << 32) | h[1];
+	}
+};
+```
+
+<u>Inicializacion:</u>
+
+```c++
+string s = "hello world";
+strhash hs(s);
+```
+
+> *Complejidad construccion: $\mathcal{O}(n)$*
+
+> *Complejidad consulta: $\mathcal{O}(1)$*
+
+# Z Function
+
+Dado un [string](#strings) $s$, definimos el arreglo $z$ tal que $z[i]$ es la longitud del prefijo mas largo de $s$ que a su vez empieza en el indice $i$.
+
+Especialmente eficiente para:
+- Deteccion de patrones en strings
+- Comparaciones de prefijos con sufijos
+
+![Ejemplo Funcion Z](Imagenes/EjemploZFunction.png)
+> *Ejemplo de del arreglo $z$ para el string "abaacabaad"*
+
+```c++
+// Retorna un vector `z` tal que `z[i]` es la longitud del prefijo más largo del
+// string `s` que a su vez empieza en el índice `i`.
+vector<int> z_function(string const& s) {
+	int n = int(size(s));
+	vector<int> z(n);
+	z[0] = n;
+	int l = 0, r = 0;
+	forr(i, 1, n) {
+		if (i <= r) { z[i] = min(r-i+1, z[i-l]); }
+		while (i+z[i] < n && s[z[i]] == s[i+z[i]]) { ++z[i]; }
+		if (i+z[i]-1 > r) { l = i, r = i+z[i]-1; }
+	}
+	return z;
+}
+```
+> *Complejidad construccion: $\mathcal{O}(n)$*
+
+> *Complejidad consulta: $\mathcal{O}(1)$*
 
 # Deques
 
-Es como un vector pero se pueden insertar y eliminar elementos por delante y por detras en **O(1)**.
+Es como un vector pero se pueden insertar y eliminar elementos por delante y por detras en $\mathcal{O}(1)$.
 
 <u>Inicializacion:</u>
 
@@ -772,7 +908,7 @@ deque<int> dq;
 **dq.push_front():** Insertar un elemento al comienzo
 **dq.pop_front():** Eliminar el primer elemento
 
-> *Suelen ser ligeramente mas lentos que los vectores pero en promedio la insercion y la eliminacion son **O(1)***
+> *Suelen ser ligeramente mas lentos que los vectores pero en promedio la insercion y la eliminacion son $\mathcal{O}(1)$*
 
 # Stacks
 
@@ -786,7 +922,7 @@ Simula una cola/fila. Tiene un comportamiento FIFO (First In, First Out).
 
 > *Es preferible antes que un **set***
 
-> *Inserciones, eliminaciones y accesos -> **O(1)***
+> *Inserciones, eliminaciones y accesos $\rightarrow \mathcal{O}(1)$*
 
 <u>Inicializacion:</u>
 
@@ -817,7 +953,7 @@ priority_queue<int, vector<int>, greater<int>> PQ; // cola de prioridades invers
 **PQ.top():** // 10
 **PQ.pop():** // chau 10
 
-> *Ojo! insertar y remover elementos aqui es **O(log(n))***
+> *Ojo! insertar y remover elementos aqui es $\mathcal{O}(\log(n))$*
 
 # Sets
 
@@ -846,20 +982,20 @@ set<int> s = {2,5,6,8}; // set con valores arbitrarios
 ```c++
 set1.insert(set2.begin(), set2.end());
 ```
-> *Complejidad: O(mlog(n))*
+> *Complejidad: $\mathcal{O}(m \cdot \log(n))$*
 
 - **interseccion**
 
 ```c++
 set_intersection(A.begin(), A.end(), B.begin(), B.end(), inserter(A∩B, A∩B.begin()));
 ```
-> *Complejidad: O(n + m)*
+> *Complejidad: $\mathcal{O}(n + m)$*
 
 - **diferencia**
 ```c++
 set_difference(A.begin(), A.end(), B.begin(), B.end(), inserter(A/B, A/B.begin()));
 ```
-> *Complejidad: O(nlog(n))*
+> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
 
 <u>Como iterar un set:</u>
 
@@ -871,11 +1007,11 @@ for (auto it = s.begin(); it != s.end(); it++) {
 
 > *Se maneja internamente con **punteros***
 
-> *Es mas costoso de insertar (**O(log(n))**) que un vector pero es mas rapido de buscar (**O(log(n))**)*
+> *Es mas costoso de insertar ($\mathcal{O}(\log(n))$) que un vector pero es mas rapido de buscar ($\mathcal{O}(\log(n))$)*
 
-> *Iterar el set es **O(n)**. No se puede indexar como un arreglo o vector*
+> *Iterar el set es $\mathcal{O}(n)$. No se puede indexar como un arreglo o vector*
 
-> *La gran mayoria de sus operaciones son **O(log(n))***
+> *La gran mayoria de sus operaciones son $\mathcal{O}(\log(n))$*
 
 > *Considerar utilizar [bitsets](#bitsets) si se requiere de poca memoria*
 
@@ -915,9 +1051,9 @@ indexed_set is;
 
 <u>Funciones (particulares):</u>
 **is.find_by_order(i):** Devuelve un puntero (iterador) al elemento i-esimo 
-**is.find_by_order(x):** Devuelve la posicion en la que deberia estar `x`; No hace falta que `x` pertenezca al set
+**is.order_of_key(x):** Devuelve la posicion en la que deberia estar `x`; No hace falta que `x` pertenezca al set
 
-> *La complejidad de estas funciones es **O(log(n))***
+> *La complejidad de estas funciones es $\mathcal{O}(\log(n))$*
 
 # Bitmask Sets
 
@@ -1012,7 +1148,7 @@ int find(int x) {
     return x;
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 - **same:** Devuelve true si los elementos `x` e `y` pertenecen al mismo conjunto. Decimos que dos elementos pertenecen al mismo conjunto si y solo si sus representativos son los mismos
 
@@ -1023,7 +1159,7 @@ bool same(int x, int y) {
     return find(x) == find(y);
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 - **unite:** Une el set mas chico de los elementos `x` e `y` al mas grande
 
@@ -1036,7 +1172,7 @@ void unite(int x, int y) {
     link[y] = x;
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 # Maps
 
@@ -1067,7 +1203,7 @@ for (auto [key, value] : m) {
 
 Como set y map, pero sus elementos no están ordenados.
 
-> *Muchas operaciones pasan a ser **O(1)** (en promedio) en vez de O(log(n))*
+> *Muchas operaciones pasan a ser $\mathcal{O}(1)$ (en promedio) en vez de $\mathcal{O}(\log(n))$*
 
 ## Diferencias
 
@@ -1078,7 +1214,7 @@ Como set y map, pero sus elementos no están ordenados.
 ```c++
 uset1.insert(uset2.begin(), uset2.end());
 ```
-> *Complejidad: O(m) caso promedio, O(nm) caso peor (colisiones de hash extremas)*
+> *Complejidad: $\mathcal{O}(\log(m))$ caso promedio, $\mathcal{O}(n \cdot m)$ caso peor (colisiones de hash extremas)*
 
 - **interseccion**
 
@@ -1089,7 +1225,7 @@ for (int x : A) {
     }
 }
 ```
-> *Complejidad: O(n) caso promedio, O(nm) caso peor (colisiones de hash extremas)*
+> *Complejidad: $\mathcal{O}(\log(m))$ caso promedio, $\mathcal{O}(n \cdot m)$ caso peor (colisiones de hash extremas)*
 
 - **diferencia**
 
@@ -1100,7 +1236,7 @@ for (int x : A) {
     }
 }
 ```
-> *Complejidad: O(n) caso promedio, O(nm) caso peor (colisiones de hash extremas)*
+> *Complejidad: $\mathcal{O}(\log(m))$ caso promedio, $\mathcal{O}(n \cdot m)$ caso peor (colisiones de hash extremas)*
 
 # Iteradores
 
@@ -1150,13 +1286,13 @@ int sum(int k) {
 }
 ```
 
-Toda consulta de rango puede resolverse de la siguiente manera: **`sum(r) - sum(l-1)`**
+Toda consulta de rango puede resolverse de la siguiente manera: $sum(r) - sum(l-1)$
 
-> *Complejidad construccion: O(nlog(n))*
+> *Complejidad construccion: $\mathcal{O}(\log(n))$*
 
-> *Complejidad consulta: O(log(n))* 
+> *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
-> *Complejidad actualizacion: O(log(n))*
+> *Complejidad actualizacion: $\mathcal{O}(\log(n))$*
 
 **NOTA**:
 - A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** para implementarlo
@@ -1167,8 +1303,8 @@ Es un arreglo que responde tanto consultas de operaciones de prefijos sobre rang
 
 Espcialmente eficiente para:
 
-- Modificar y consultar/buscar valores -> O(log(n))
-- Responder consultas (*querys*) sobre subintervalos -> O(4*log(n))
+- Modificar y consultar/buscar valores $\rightarrow \mathcal{O}(\log(n))$
+- Responder consultas (*querys*) sobre subintervalos $\rightarrow \mathcal{O}(\log(n))$
 
 <u>Proceso de creacion:</u>
 1. Dado un arreglo `A` con `N` elementos, extender `A` con "elementos neutros" (sule ser 0 generalmente) hasta que tenga tamaño potencia de 2.
@@ -1235,11 +1371,11 @@ int sumst(int l, int r) { // indice izquiero del subarreglo, indice derecho del 
 ```
 >*`l` y `r` deben estar indexados desde 0*
 
-> *Complejidad construccion: O(nlog(n))*
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
 
-> *Complejidad consulta: O(log(n))* 
+> *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
-> *Complejidad actualizacion: O(log(n))*
+> *Complejidad actualizacion: $\mathcal{O}(\log(n))$*
 
 **NOTAS**:
 - A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** de tamaño `(n+k)*2` para implementarlo, donde `k` son los elementos neutros agregados para lograr que `n` sea potencia de 2
@@ -1329,7 +1465,7 @@ int raiz(int x) {
     return l;
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 **NOTA**: 
 - Utiliza **busqueda lineal** y **devuelve el piso de la raiz**
@@ -1347,14 +1483,13 @@ int raiz(int x) {
 ##### Enteros
 
 ``` c++
-ll exp(int b, int e) {
-    ll val = 1;
-    for (int i = 0; i < e; i++)
-    val *= b;
-    return val;
+ll pot(ll x, int n) {
+    if (n == 1) return x;
+    if (n % 2 == 0) return pot(x*x, n/2);
+    return x * pot(x, n - 1);
 }
 ```
-> *Complejidad: O(e)*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 ### Formula de Binet
 
@@ -1366,6 +1501,41 @@ Calcula el n-esimo numero de la sucesion de *Fibonacci*.
 
 **NOTA**: 
 - El resultado debe estar en **punto flotante**
+
+### Gauss
+
+``` c++
+double reduce(vector<vector<double>> &a){  //Devuelve determinante si m == n
+	int m = sz(a), n = sz(a[0]);
+	int i = 0, j = 0;
+	double r = 1.0;
+	while(i < m and j < n){
+		int h = i;
+		forr(k, i+1, m) if(abs(a[k][j]) > abs(a[h][j])) h = k;
+		if(abs(a[h][j]) < EPS){
+			j ++;
+			r = 0.0;
+			continue;
+		}
+		if(h != i){
+			r = -r;
+			swap(a[i], a[h]);
+		}
+		r *= a[i][j];
+		dforr(k, j, n) a[i][k] /= a[i][j];
+		forr(k, 0, m){
+			if(k == i) continue;
+			dforr(l_, j, n) a[k][l_] -= a[k][j] * a[i][l_];
+		}
+		i ++; j ++;
+	}
+	return r;
+}
+```
+> *Complejidad: $\mathcal{O}(m^2 \cdot n)$*
+
+**NOTA**: 
+- La version con aritmetica modular solo funciona si el modulo es **primo**.
 
 ## Geometria
 
@@ -1442,7 +1612,7 @@ Es el largo o la extension de un vector U en el espacio.
 ld Ux, Uy; // Vector U
 ld norma = abs(sqrtl(Ux*Ux + Uy*Uy));
 ```
-> *Complejidad: O(log(Ax^2 + Ay^2))*
+> *Complejidad: $\mathcal{O}(1)$*
 
 ![Norma de un vector](Imagenes/NormaDeUnVector.png)
 
@@ -1455,7 +1625,7 @@ ld Ux, Uy; // Vector U
 ld Vx, Vy; // Vector V
 ld proyeccionUV =  (Vx + Vy)*((Ux*Vx + Uy*Vy)/abs(sqrtl(Ux*Ux + Uy*Uy)));
 ```
-> *Complejidad: O(log(Ax^2 + Ay^2))*
+> *Complejidad: $\mathcal{O}(1)$*
 
 - Podemos interpretarla como la proyeccion ortogonal del vector U sobre la linea que contiene alvector V:
 
@@ -1473,7 +1643,7 @@ int Ux, Uy; // Vector U
 int Vx, Vy; // Vector V
 int escalar = Ux*Vx + Uy*Vy;
 ```
-> *Complejidad: O(1)*
+> *Complejidad: $\mathcal{O}(1)$*
 
 - Podemos interpretar el producto punto entre una direccion U y un punto V, como una medida de ”que tan lejos esta el punto V en la direccion U”:
 
@@ -1490,7 +1660,7 @@ int Ux, Uy; // Vector U
 int Vx, Vy; // Vector V
 int vectorial = Ux*Vy - Uy*Vx;
 ```
-> *Complejidad: O(1)*
+> *Complejidad: $\mathcal{O}(1)$*
 
 - El producto vectorial es igual al área del paralelogramo formado por los vectores
 
@@ -1515,7 +1685,7 @@ for (int i = 0; i < n-1; i++) {
 }
 per += dist(Poly[n-1], Poly[0]);
 ```
-> *Complejidad: O(n)*
+> *Complejidad: $\mathcal{O}(n)$*
 
 ![Calculo de perimetro](Imagenes/CalculoDePerimetro.png)
 
@@ -1536,6 +1706,7 @@ for (int i = 0; i < n-1; i++) {
 }
 area += areaTri(Poly[n-1], Poly[0]);
 ```
+> *Complejidad: $\mathcal{O}(\#lados)$*
 
 #### Polar Sort
 
@@ -1556,7 +1727,7 @@ struct cmp {
     }
 };
 ```
-> *Complejidad: O(n ∗ log(n))*
+> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
 
 #### Convex Hull
 
@@ -1577,7 +1748,7 @@ vector<pto> upper_hull(vector<pto>& p) {
     return uh;
 }
 ```
-> *Complejidad: O(n ∗ log(n))*
+> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
 
 ``` c++
 vector<pto> lower_hull(vector<pto>& p) {
@@ -1591,7 +1762,7 @@ vector<pto> lower_hull(vector<pto>& p) {
     return uh;
 }
 ```
-> *Complejidad: O(N ∗ log(N))*
+> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
 
 ## Combinatoria
 
@@ -1609,7 +1780,7 @@ F[0] = 1;
 for(ll i = 1; i < MAXN; i++) F[i] = F[i-1]*i %M;
 ```
 > *Aqui M es un numero primo GRANDE*
-> *Complejidad O(MAXN)*
+> *Complejidad: $\mathcal{O}(MAXN)$*
 
 #### Computo de Factoriales Inversos
 
@@ -1629,7 +1800,159 @@ F[0] = 1; forr(i, 1, MAXN) F[i] = F[i-1]*i %M;
 INV[1] = 1; forr(i, 2, MAXN) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
 FI[0] = 1; forr(i, 1, MAXN) FI[i] = FI[i-1]*INV[i] %M;
 ```
-> *Complejidad O(3.MAXN)*
+> *Complejidad: $\mathcal{O}(MAXN)$*
+
+### Permutaciones
+
+Una permutacion es un arreglo que consta de $n$ enteros distintos de $1$ a $n$ ordenados arbitrariamente.
+
+Si $p$ es una permutacion de longitud $n$, decimos que $p^{-1}$ es su **inversa** si se cumple que:
+
+$$
+p[i] = j \Leftrightarrow p^{-1}[j] = i, \quad \forall i,j \in \{1, \ldots, n\}
+$$
+
+La inversa resulta util cuando queremos consultar en $\mathcal{O}(1)$ en que posicion se encuentra cada elemento de la permutacion **identidad**. Denotamos por $I_d$ a la permutacion identidad la cual cumple que: 
+
+$$
+I_d[i] = i, \quad \forall i \in \{1, \ldots, n\}.
+$$
+
+Dada una permutacion $p$ de longitud $n$, decimos que $i \in \{1, \ldots, n\}$ es un **punto fijo** de $p$ si $p[i] = i$.
+
+Sean $c_1, c_2, \ldots, c_k \in \{1, \ldots, n\}$ $k$ enteros distintos, decimos que el conjunto $\{c_1, c_2, \ldots, c_k\}$ es un **ciclo** de $p$ con **periodo** $k$ si:
+
+$$
+p[c_1] = c_2, \ldots, p[c_{k-1}] = c_k, p[c_k] = c_1
+$$
+
+Podemos ver a las permutaciones como un grafo funcional[^2] y luego calcular la cantidad de ciclos en $\mathcal{O}(n)$ utilizando [DFS](#dfs).
+Por ejemplo, la permutacion [1,5,6,7,4,3,2] se representa graficamente de la siguiente forma:
+
+![Ejemplo de Permutacion como Grafo Funcional](Imagenes/PermutacionesEjemplo1.png)
+
+Dada una permutacion $p$ de longitud $n$, definimos $swap(i,j) = $  cambiar los valores de $p[i]$ y $p[j]$ para $i \neq j$. Una permutacion **swap** $s_{i,j}$ cumple que todas sus posiciones son puntos fijos a excepcion de $i$ y $j$, para $i \neq j$.
+
+Si $p$ y $q$ son permutaciones de longitud igual a $n$, denotamos a su **composicion** como:
+
+$$
+(p \circ q)(i) = p[q[i]], \quad \forall i \in \{1, \ldots, n\}.
+$$
+
+**Teorema:**  
+Sean $s_{i_1, j_1}, s_{i_2, j_2}, \ldots, s_{i_k, j_k}$ $k \in \mathbb{N}$ permutaciones swap. Toda permutacion $p$ de longitud $n \ge 1$ puede ser construida componiendo $s_{i_1, j_1}, s_{i_2, j_2}, \ldots, s_{i_k, j_k}$ con $I_d$. Es decir:
+
+$$
+p = s_{i_1, j_1} \circ s_{i_2, j_2} \circ \ldots \circ s_{i_k, j_k} \circ I_d
+$$
+
+Dada una permutacion $p$ de longitud $n$, denotamos:
+ 
+$$
+p^m = \overbrace{p \circ p \circ \ldots \circ p}^{\text{m veces}}.
+$$
+
+Una **inversion** en una permutacion $p$ es un par $(i,j)$ tal que $i < j$ y $p[i] > p[j]$.
+Por ejemplo: para $p = [5,2,4,1,3]$, $(3,5)$ es una inversion ya que $3 < 5$ y $p[3] = 4 > 3 = p[5]$.
+En una permutacion de largo $n$, la **minima cantidad de inversiones** es 0 (en la identidad) y la **maxima cantidad de inversiones** es $\frac{n(n - 1)}{2}$ (en la reversa de la identidad). Todas las cantidades entre medio son conseguibles con alguna permutacion. 
+> *Esta definicion tambien aplica para **arreglos con elementos repetidos***
+
+La **paridad** de una permutacion se define como la paridad de su cantidad de inversiones.
+
+**Lema:** 
+Aplicar un $swap$ hace que la cantidad de inversiones aumente o disminuya en exactamente uno. Es decir, cada vez que realizamos un $swap$, la paridad de la permutacion resultante cambia.
+
+Como podemos interpretar a una permutacion como una composicion de swaps, se tiene que al componer dos permutaciones sus paridades se suman.
+
+Vimos que podemos formar un ciclo de periodo $k$ con $k-1$ $swaps$. Por lo tanto, se da que:
+
+Un **ciclo con periodo par** $\: \xrightarrow{\text{es}} \:$ una **permutacion impar**
+Un **ciclo con periodo impar** $\: \xrightarrow{\text{es}} \:$ una **permutacion par**
+
+<u>Aplicaciones</u>
+
+En lo que sigue, $p$ sera un permutacion de largo $n$.
+
+- **Minima Cantidad de Swaps para Llevar una Permutacion a la Identidad:** $p$ sera igual a $I_d$ cuando todos sus ciclos tengan periodo $1$. Dado un ciclo $c_1, c_2, \ldots, c_k \in \{1, \ldots, n\}$ de largo $k$, podemos hacer que cada $c_i$ sea un punto fijo en $k-1$ operaciones. Una forma simple y ordenada de hacerlo es haciendo las operaciones $swap(c1,c2), swap(c1,c3), \ldots, swap(c1,ck)$.
+    > *Complejidad: $\mathcal{O}(n)$ (contar ciclos)*
+
+- **Minimo $m$ tal que $p^m = I_d$:** Obsevar que para cada ciclo de $p$, siempre vale que al hacer $p^{l_i}$ todas la posiciones del ciclo se convierten en puntos fijos. Aqui $l_i$ es el periodo del $i$-esimo ciclo, $\forall i \in \{1, \ldots, c\}$ donde $c = $ cantidad de ciclos de $p$. Por lo tanto, $m = lcm(l_1, l_2, \ldots, l_c)$.
+    - **Ojo!** $m$ puede ser tan grande que no entre en `long long`.
+    > *Complejidad: $\mathcal{O}(n)$ (contar ciclos)*
+
+- **Raiz Cuadrada de una Permutacion:** Se nos pide dar una permutacion $r$ tal que $p = r \circ r$. Veamos como cambian los ciclos de $r$ al hacer componerla consigo misma:
+    - Un ciclo par $c_1, c_2, \ldots, c_{2k}$ se convierte en dos ciclos $c_1, c_3, \ldots, c_{2k-1}$ y $c_2, c_4, \ldots, c_{2k}$ cada uno de periodo $k$.
+    - Un ciclo impar $c_1, c_2, \ldots, c_{2k + 1}$ se convierte en un ciclo $c_1, c_3, \ldots, c_{2k - 1}, c_{2k + 1}, c_2, c_4, \ldots, c_{2k}$ de periodo $2k + 1$.
+
+    Por lo tanto, para que dicha raiz exista es necesario que en $p$ haya una cantidad par de ciclos de periodo $k$, siempre que $k$ sea par. Cuando se de esa condcicion, podemos construir $r$ reordenando los indices de los ciclos impares y juntando de a pares a los ciclos pares.
+    > *Complejidad: $\mathcal{O}(n)$ (contar ciclos)*
+
+- **Contar Inversiones/Minima Cantidad de Swaps Adyacentes:** Comenzamos con $p[1], p[2], \ldots, p[n]$ los elementos de la permutacion $p$. Los recorremos de izquierda a derecha y los vamos metiendo en un [indexed set](#indexed-sets). Antes de insertar un nuevo elemento, contamos cuantos elementos mayores a el ya agregamos al set, sumamos eso a la respuesta y recien despues lo agregamos.
+Notar que si $p \neq I_d$, entonces existe $i$ tal que $p[i] > p[i + 1]$. Aplicando $swap(i, i + 1)$, disminuimos en $1$ la cantidad de inversiones. De esta forma, podemos hacer un algoritmo que transforme a $p$ en la permutacion identidad en $inv(p)$ operaciones.     
+    > *Complejidad: $\mathcal{O}(n \cdot \log n)$*
+
+- **Calcular Paridad:** Supongamos que $p$ consta de $c$ ciclos cada uno con periodo $l_i$. Como podemos llevar cada ciclo a la permutacion identidad en $l_i - 1$ $swaps$, tenemos que la paridad de $p$ se calcula como:
+$$
+\sum_{i=1}^{c} (\ell_i - 1) = \left( \sum_{i=1}^{c} \ell_i \right) - c = n - c.
+$$
+    > *Complejidad: $\mathcal{O}(n)$ (contar ciclos)*
+
+- **Cantidad de Permutaciones con Exactamente $m$ Puntos Fijos de Largo $n$:** Comenzemos con el caso $m = 0$.
+Denotemos por $D_n$ a tal cantidad. Notar que $D_0 = 1$ y $D_1 = 0$. Podemos calcular $D_i$ recursivamente utilizando [programacion dinamica](#programacion-dinamica). Si $p$ no tiene puntos fijos, $p[n] = k \neq n$, por lo que hay $n - 1$ posibilidades para el valor $k$. Luego, hay dos casos para $k$:
+    - Si $p[k] = n$, entonces los otros $n-2$ valores forman una permutacion. Hay $D_{n-2}$ formas en este caso.
+    - Si $p[k] \neq n$, entonces podemos renombrar $n$ a $k$ y los primeros $n - 1$ valores forman una permutacion. Hay $D_{n-1}$ formas en este caso.
+
+    Asi, la recursion que obtenemos esta dada por:
+    $$
+    D_n = (n-1)(D_{n-1} + D_{n-2}).
+    $$
+    Para $m > 1$, la cantidad de permutaciones esta dada por:
+    $$
+    \binom{n}{m} D_{n-m}.
+    $$
+    > *Complejidad: $\mathcal{O}(n)$*
+
+- **Minima Descomposicion en Subsecuencias Decrecientes/Maxima Subsecuencia Creciente (LIS):** Podemos descomponer una permutacion en la minima cantidad de subsecuencias decrecientes con un algoritmo greedy. La idea consiste en procesar los elementos de a uno y en cada paso agregar el elemento actual a la primera subsecuencia posible.
+Por ejemplo: para $p = [4,2,6,8,3,1,5,7]$, si seguimos el algoritmo anterior, nos quedan las subsecuencias en el siguiente orden: $[4,2,1], [6,3], [8,5], [7]$. En cada paso, debemos aplicar busqueda binaria sobre el menor evalor de cada subsecuencia para saber a cual debemos añdirle el elemento que estemos procesando. Notar que por como itera el algoritmo, los menores elementos de las subsecuencias quedan ordenados de mayor a menor (asi tambien como los elementos de la propia subsecuencia), por lo que no hace falta utilizar una estructura que mantega ordenado los elementos.
+Por teorema, tenemos que en toda permutacion siempre vale que el largo de la maxima subsecuencia creciente es igual a la cantidad de secuencias en la minima descomposicion en subsecuencias decrecientes. Por lo que el LIS sera igual a la cantidad de secuencias obtenidas tras correr el algoritmo greedy. Si queremos obtener los elementos que conforman la subsecuencia, debemos modificar el algoritmo para que agregue una arista dirigida entre el elemento que se esta procesando y el ultimo elemento agregado a la subsecuencia anterior, creando asi un DAG (Observar que no hay aristas que salen de la primer subsecuencia). Luego, la maxima subsecuencia creciente estara dada por los nodos presentes en el camino que parte desde algun elemento de la ultima subsecuencia hasta su raiz. 
+    > *Complejidad: $\mathcal{O}(n \cdot \log(n))$* 
+
+### Principio de Inclusion Exclusion
+
+El principio de inclusion-exclusion es un importante metodo combinatorio para calcular el tamaño de un conjunto o la probabilidad de sucesos complejos. Relaciona el tamaño de conjuntos individuales con su union.
+
+![Formula Inclusion-Exclusion](Imagenes/Inclusion-ExclusionFormula.png)
+
+``` c++
+int inclusion_exclusion_general(int n, function<int(int mask)> f) {
+    int total = 0;
+    for (int mask = 1; mask < (1 << n); ++mask) {
+        int sign = (__builtin_popcount(mask) % 2 == 1 ? +1 : -1);
+        total += sign * f(mask);
+    }
+    return total;
+}
+```
+> *Complejidad $\mathcal{O}(2^n)$*
+
+**NOTA**: 
+- Aqui `f(mask)` representa cuantos elementos cumplen las propiedades en `mask`
+
+##### Ejemplo
+
+Se nos pide calcular cuantos de los primeros 100 numeros naturales son divisbles por 2,3 y 5 (3 propiedaes). En este caso, f es como sigue:
+
+``` c++
+int f(int mask) {
+    vector<int> primes = {2, 3, 5};
+    int lcm = 1;
+    forn(i, 3) if (mask & (1 << i))
+        lcm = lcm(lcm, primes[i]);
+    return 100 / lcm;
+}
+
+cout << inclusion_exclusion_general(3, f) << endl;
+```
 
 ## Teoria de Numeros
 
@@ -1647,7 +1970,7 @@ bool isPrime(int n) {
     return true;
 }
 ```
-> *Complejidad: O(raiz(n))*
+> *Complejidad: $\mathcal{O}(\sqrt{n})$*
 
 #### Criba de Eratóstenes
 
@@ -1665,7 +1988,7 @@ void criba() {
     }
 }
 ```
-> *Complejidad: O(nlog(n))*
+> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
 
 #### MCD y MCM
 
@@ -1676,14 +1999,14 @@ int mcd(int a, int b) {
     return mcd(b, a%b);
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 - Para calcular el mínimo común múltiplo entre dos números usamos el MCD
 
 ``` c++
 int mcm(int a, int b) { return (a / mcd(a, b)) * b; }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 **PROPIEDAD**: 
 - mcd(a,b) = mcd (a,b+a*k) para cualquier k entero.
@@ -1704,24 +2027,26 @@ void getDiv(int n) {
     // sort(Div.begin(), Div.end()); // OPCIONAL
 }
 ```
-> *Complejidad: O(log(n)) (+ O(n.log(n)) si se ordena segun ChatGPT)*
+> *Complejidad: $\mathcal{O}(\sqrt{n})$ ($\:+\: \mathcal{O}(\sqrt{n} \cdot \log(\sqrt{n}))$ si se ordena)*
 
 #### Factorizacion de un Numero
 
 ``` c++
-map<int, int> F;
-void fact(int n) {
+vector<pair<int, int>> F;
+void fact(ll n) {
     F.clear();
-    for (int p = 2; p * p <= n; p++) {
+    for (ll p = 2; p * p <= n; p++) {
+        int k = 0;
         while (n%p == 0) {
-            F[p]++;
+            k++;
             n /= p;
         }
+        F.pb({p,k});
     }
-    if (n > 1) F[n]++;
+    if (n > 1) F.pb({n,1});
 }
 ```
-*Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\sqrt{n})$*
 
 ### Aritmetica Modular
 
@@ -1736,14 +2061,18 @@ void fact(int n) {
 ``` c++
 ll expmod(ll b, ll e, ll M) {
     ll val = 1;
-    for (ll i = 0; i < e; i++)
-    val *= (b % M);
+    b %= M;
+    while (e > 0) {
+        if (e & 1) val = val * b % M;
+        b = b * b % M;
+        e >>= 1;
+    }
     return val;
 }
 
-ll invmod(ll a){ return expmod(a, M-2); }
+ll invmod(ll a){ return expmod(a, M - 2, M); }
 ```
-> *Complejidad: O(e)*
+> *Complejidad: $\mathcal{O}(\log{M})$*
 
 ### Computo de Inversos Modulares
 
@@ -1760,7 +2089,7 @@ int INV[MAXN];
 INV[1] = 1;
 for(ll a = 2; a < MAXN; a++) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
 ```
-> *Complejidad: O(MAXN)*
+> *Complejidad: $\mathcal{O}(MAXN)$*
 
 # Algoritmos de Busqueda
 
@@ -1768,12 +2097,12 @@ for(ll a = 2; a < MAXN; a++) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
 
 ``` c++
 for (int i = 0; i < n ; i ++) {
-    if ( array [ i ] == X ) {
+    if (array[i] == X) {
     // encontre X
     }
 }
 ```
-> *Complejidad: O(n)*
+> *Complejidad: $\mathcal{O}(n)$*
 
 ## Busqueda Binaria
 
@@ -1794,7 +2123,7 @@ while (a <= b) {
     else a = k+1;
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 **Implementacion alternativa con saltos:**
 
@@ -1807,7 +2136,7 @@ if (array [k] == x) {
     // encontre X en indice K
 }
 ```
-> *Complejidad: O(log(n))*
+> *Complejidad: $\mathcal{O}(\log(n))$*
 
 **NOTA**: 
 - Para poder utilizar estos algoritmos se deben **ordenar** los elementos.
@@ -1835,7 +2164,7 @@ void ventanaDeslizante  (vector<int > &A , int x , int &iR , int &jR) {
     }
 }
 ```
-> *Complejidad: O(2n)*
+> *Complejidad: $\mathcal{O}(n)$*
 > *Este algoritmo resuelve el problema de: Dado un arreglo de n numeros positivos, y un numero x, nos interesa saber si existe un subarreglo cuya suma sea x.*
 
 **NOTAS**:
@@ -1865,7 +2194,7 @@ void sum2  (vector<int > &A, int x, int &iR , int &jR) {
     }
 }
 ```
-> *Complejidad: O(2n)*
+> *Complejidad: $\mathcal{O}(n)$*
 
 **NOTAS**:
 - Los elementos deben estar **ordenados** 
@@ -1986,10 +2315,10 @@ for(int i = 0; i < n; ++i) {
 
 Suelen ser usados para:
 
-- Chequear conectividad[^2]
-- Hallar componentes[^3]
+- Chequear conectividad[^3]
+- Hallar componentes[^4]
 - Encontrar ciclos
-- Chequear Biparticidad[^4]
+- Chequear Biparticidad[^5]
 
 ### DFS
 
@@ -1997,8 +2326,11 @@ Ve los vecinos en algun orden.
 
 Especialmente eficiente para:
 
-- Resolver puentes
-- Resolver puntos de articulacion
+- Resolver puentes[^6]
+- Resolver puntos de articulacion[^7]
+- Armar un [spanning tree](#spanning-tree) (provee una estructura del grafo)
+- Checkear ancestros en $\mathcal{O}(1)$
+    - Definimos el rango de un nodo respecto al orden de recorrido DFS como $[t_{\text{entrada}},\ t_{\text{salida}}]$. Luego, un nodo `u` es hijo del nodo `v` si y solo si, el rango de `u` esta contenido en el rango de `v`
 
 ``` c++
 bitset<MAXN> visited;
@@ -2012,7 +2344,7 @@ void dfs(int r) { // <-- pasamos la raiz como parametro
     }
 }
 ```
-> *Complejidad O(n+m)*
+> *Complejidad $\mathcal{O}(n + m)$*
 
 **NOTAS**:
 - adj es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -2043,7 +2375,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
     }
 }
 ```
-> *Complejidad O(n+m)*
+> *Complejidad $\mathcal{O}(n + m)$*
 
 **NOTAS**:
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -2057,6 +2389,42 @@ Mismo algoritmo de la seccion anterior.
 
 **NOTA**:
 - **solo funciona si el peso de todas las aristas son iguales**
+
+#### BFS 0-1
+
+Cuando queremos hallar el camino minimo de un nodo a otro en un grafo cuyas aristas solamente tienen peso 0 o 1 podríamos optar por utilizar el algoritmo de [Dijkstra](#dijkstra), sin embargo existe una solucion mas eficiente que consite en modificar el algoritmo clascio de BFS.
+
+``` c++
+deque<int> dq;
+int distance[n];
+for (int i = 0; i < n; i++) {
+    distance[i] = INF; // INF es un valor inalcanzable
+}
+
+void bfs(int r) { // <-- pasamos la raiz como parametro
+    distance[r] = 0;
+    dq.push_front(r);
+    while(!dq.empty()) {
+        int s = dq.front(); dq.pop_front();
+        // process node s
+        for (auto e:adj[s]) {
+            if (distance[e.first] > distance[s] + e.second)
+            {
+                distance[e.first] = distance[s] + e.second;
+                if (e.second)
+                    dq.push_back(e.first);
+                else
+                    dq.push_front(e.first);
+            }
+        }
+    }
+}
+```
+> *Complejidad $\mathcal{O}(n + m)$*
+
+**NOTAS**:
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
+- Cada nodo puede aparecer mas de una vez en la dequeue
 
 ### Bellman-Ford
 
@@ -2079,7 +2447,7 @@ void bf (int v) {
 }
 ```
 > *Invariante: luego de su k-esima iteracion, calcula la distancia minima a todo v usando a lo sumo k aristas*
-> *Complejidad: O(nm)*
+> *Complejidad: $\mathcal{O}(n \cdot m)$*
 
 **NOTAS**:
 - `edges` es la representacion del grafo en forma de una [lista de aristas](#lista-de-aristas)
@@ -2119,7 +2487,7 @@ void dijkstra(int v) {
 ```
 > *Invariante: Antes de la k-esima iteracion, calcula correctamente la distancia hacia los k vertices mas cercanos al origen*
 > *Invariante: En cada iteracion, toma al vertice no procesado que este a distancia minima del origen*
-> *Complejidad: O(n + mlog(m))*
+> *Complejidad: $\mathcal{O}(\min\{n^2,\ m \cdot \log(n)\})$*
 
 **NOTAS**:
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -2149,8 +2517,8 @@ for(int k = 0; k < n, k++) {
     }
 }
 ```
-> *Invariante: luego de la k-esima iteracion, computa los caminos k-internos[^5] minimos.*
-> *Complejidad O(n^3)*
+> *Invariante: luego de la k-esima iteracion, computa los caminos k-internos[^8] minimos.*
+> *Complejidad $\mathcal{O}(n^3)$*
 
 **NOTAS**:
 - `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
@@ -2158,7 +2526,7 @@ for(int k = 0; k < n, k++) {
 
 #### Ciclos Negativos
 
-Tras haber ejecutado el algoritmo de Floyd-Warshall, podemos detectar la existencia de ciclos negativos ne tiempo `O(n)`, solamente debemos iterar la diagonal de la matriz con la distancias en busqueda de un valor negativo. De ser ese el caso, sabremos que existe al menos un ciclo negativo presente en el grafo
+Tras haber ejecutado el algoritmo de Floyd-Warshall, podemos detectar la existencia de ciclos negativos ne tiempo $\mathcal{O}(n)$, solamente debemos iterar la diagonal de la matriz con la distancias en busqueda de un valor negativo. De ser ese el caso, sabremos que existe al menos un ciclo negativo presente en el grafo
 
 ## Grafos Dirigidos
 
@@ -2200,7 +2568,7 @@ void topological_sort() {
     reverse(ans.begin(), ans.end());
 }
 ```
-> *Complejidad: O(n+m)*
+> *Complejidad: $\mathcal{O}(n + m)$*
 
 **NOTA**:
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -2220,7 +2588,7 @@ for(int i = 1; i<n; i++)
     }
 }
 ```
-> *Complejidad: O(n+m)*
+> *Complejidad: $\mathcal{O}(n + m)$*
 
 **NOTAS**:
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -2262,9 +2630,9 @@ int get_successor(int x, int k) {
     return x;
 }
 ```
-> *Complejidad construccion: O(nlog(n))*
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
 
-> *Complejidad consulta: O(log(n))* 
+> *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
 **NOTA**:
 - `next` es un vector que indicia en la posicion `i-esima`, el sucesor inmediato del nodo `i`
@@ -2299,14 +2667,14 @@ while (a != b) {
     length++;
 }
 ```
-> *Complejidad: O(n)*
+> *Complejidad: $\mathcal{O}(n)$*
 
 **NOTA**:
 - `next` es un vector que indicia en la posicion `i-esima`, el sucesor inmediato del nodo `i`
 
 ### Kosaraju
 
-Encuentra las componentes fuertemente conexas[^6] de un grafo dirigido.
+Encuentra las componentes fuertemente conexas[^9] de un grafo dirigido.
 
 | ![Ejemplo Grafo Dirigido](Imagenes/GrafoDirigidoKosaraju.png) | ![Ejemplo de Comoponentes Conexas](Imagenes/ComponentesFuertementeConexasKosaraju.png) |
 |---------------------------------------------------------------|---------------------------------------------------------------------------|
@@ -2366,7 +2734,7 @@ void dfs(int v, vector<vector<int>> const& adj, vector<int> &output) {
             if (roots[v] != roots[u])
                 adj_cond[roots[v]].push_back(roots[u]);
 ```
-> *Complejidad: O(n + m)*
+> *Complejidad: $\mathcal{O}(n + m)$*
 
 ### 2SAT
 
@@ -2441,7 +2809,7 @@ bool satisf(int _nvar) {
     return true; // Si no hay conflictos, es satisfacible
 }
 ```
-> *Complejidad: O(n + m)*
+> *Complejidad: $\mathcal{O}(n + m)$*
 
 **NOTA:**
 
@@ -2455,9 +2823,9 @@ Suele usarse para:
 
 - Secuencias de De Brujin
 
-El algoritmo de Hierholzer es un metodo para construir un circuito Euleriano[^7] (tambien se explica como construir un camino Euleriano en las notas).
+El algoritmo de Hierholzer es un metodo para construir un circuito Euleriano[^10] (tambien se explica como construir un camino Euleriano en las notas).
 
-Para que exista un camino Euleriano en un grafo, este, ademas de ser conexo[^2], debe cumplir una de las siguientes dos condiciones dependiendo de si es dirigido o no:
+Para que exista un camino Euleriano en un grafo, este, ademas de ser conexo[^3], debe cumplir una de las siguientes dos condiciones dependiendo de si es dirigido o no:
 
 <u>Grafos no Dirigidos:</u>
 
@@ -2512,7 +2880,7 @@ void hierholzer(int n, vector<unordered_set<int>> adj, int start) {
 
 hierholzer(n, adj, 0);
 ```
-> *Complejidad O(n+m)*
+> *Complejidad $\mathcal{O}(n + m)$*
 
 **NOTAS:**
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias) pero utilizando `unorder_set` para facilitar la eliminacion de aristas
@@ -2559,7 +2927,7 @@ void hierholzer(int n, vector<vector<int>> adj, int start) {
 
 hierholzer(n, adj, 0);
 ```
-> *Complejidad O(n+m)*
+> *Complejidad $\mathcal{O}(n + m)$*
 
 **NOTAS:**
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias) pero utilizando `vector` para facilitar la eliminacion de aristas
@@ -2571,7 +2939,7 @@ Suele usarse para:
 
 - Recorrido del Caballo
 
-El siguiente algoritmo es un metodo para construir un camino Hamiltoniano[^8].
+El siguiente algoritmo es un metodo para construir un camino Hamiltoniano[^11].
 
 Chequear que exista un camino Hamiltoniano es un problema NP-Dificl, sin embargo, existen dos teoremas que son suficientes (pero no necesarios) para garantizar la existencia de un camino Hamiltoniano:
 
@@ -2805,7 +3173,7 @@ int main() {
     return 0;
 }
 ```
-> *Complejidad: O(mx_ch m log(n))*
+> *Complejidad: $\mathcal{O}(\text{mx\_ch} \cdot m \cdot \log(n))$*
 
 #### Grafos Dirigidos
 
@@ -3032,7 +3400,7 @@ int main() {
     return 0;
 }
 ```
-> *Complejidad: O(mx_ch m log(n))*
+> *Complejidad: $\mathcal{O}(\text{mx\_ch} \cdot m \cdot \log(n))$*
 
 ## Flujos y Cortes
 
@@ -3050,15 +3418,16 @@ Los algoritmos de esta seccion reciben como input un grafo dirigido donde el pes
 |:------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
 > *A la izquierda el grafo original y a la derecha el grafo luego de haber realizado la "division"*
 
-- **Matching Maximo:** Dado un grafo **bipartito**[^4] no dirigido, se nos pide hallar el matching[^9] mas grande posible. Para lograrlo, basta extender el grafo con una fuente, un resumidero, aristas e interpretar todas las aristas como si tuvieran capacidad 1 y fueran dirigidas tal como se muestra en las imagenes de abajo. Luego, como la capacidad de todas las aristas es 1, al correr [Dinic](#dinic), el tamano del matching sera el mismo que el flujo maximo.
+- **Matching Maximo:** Dado un grafo **bipartito**[^5] no dirigido, se nos pide hallar el matching[^12] mas grande posible. Para lograrlo, basta extender el grafo con una fuente, un resumidero, aristas e interpretar todas las aristas como si tuvieran capacidad 1 y fueran dirigidas tal como se muestra en las imagenes de abajo. Luego, como la capacidad de todas las aristas es 1, al correr [Dinic](#dinic), el tamano del matching sera el mismo que el flujo maximo.
 
 | ![Grafo de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsGraph.png) | ![Grafo Extendido de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsExtendedGraph.png) |
 |:----------------------------------------------------------------------------:|:----------------------------------------------------------------:|
 > *A la izquierda el grafo original y a la derecha como debe quedar el grafo tras la extension*
 
-- **Matching Perfecto:** Dado un grafo **bipartito**[^4] no dirigido, se nos pide determinar si existe un matching[^9] perfecto en el grafo, i.e., sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, queremos hallar un matching `M` tal que `|M| = |X|` o `|M| = |Y|`. Ahora, el **teorema de Hall** nos dice que existe matching perfecto exactamente cuando cada subconjunto de `X` cumple que `|X| <= |vecinos(X)|` o cada subconjunto de `Y` cumple que `|X| <= |vecinos(X)|`. La idea es transformar el grafo igual que lo hicimos para el problema de obtener el matching maximo y correr [Dinic](#dinic) para obtener el flujo maximo. Luego, si el flujo maximo se corresponde con `|X|` o `|Y|` entonces, segun el teorema de Hall, existe matching perfecto.
+- **Matching Perfecto:** Dado un grafo **bipartito**[^5] no dirigido, se nos pide determinar si existe un matching[^12] perfecto en el grafo, i.e., sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, queremos hallar un matching `M` tal que `|M| = |X|` o `|M| = |Y|`. Ahora, el **teorema de Hall** nos dice que existe matching perfecto exactamente cuando cada subconjunto de `X` cumple que `|X| <= |vecinos(X)|` o cada subconjunto de `Y` cumple que `|X| <= |vecinos(X)|`. La idea es transformar el grafo igual que lo hicimos para el problema de obtener el matching maximo y correr [Dinic](#dinic) para obtener el flujo maximo. Luego, si el flujo maximo se corresponde con `|X|` o `|Y|` entonces, segun el teorema de Hall, existe matching perfecto.
 
-- **Cobertura Minima de Nodos/Conjunto Maximo Independiente:** Dado un grafo **bipartito**[^4] no dirigido, se nos pide hallar el minimo conjunto de nodos tales que cada arista tenga al menos un extremo en el conjunto (cobertura minima de nodos) y/o hallar el maximo conjunto de nodos tales que no haya dos nodos pertenecientes al conjunto que esten conectados por una arista. Ahora, el **teorema de Kőnig** nos dice que el tamaño de la cobertura minima de nodos es siempre igual al tamaño del maximo matching[^9], siempre que el grafo sea bipartito. La idea es transformar el grafo al igual que lo hicimos en el problema de obtener el matching maximo y posteriormente ejecutar [Dinic](#dinic). Sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, el siguiente paso es realizar una [DFS](#dfs) desde todos los nodos de `X` que quedaron sin matchear (aquellos cuyas aristas de salida no esten pasando flujo). Finalmente, el conjunto de todos los nodos de `X` que **no** fueron visitados y todos los nodos de `Y` que **si** fueron visitados componen la cobertura minima de nodos y los demas nodos son el conjunto maximo independiente.
+- **Cobertura Minima de Nodos(MVC)/Conjunto Maximo Independiente(MIS):** Dado un grafo **bipartito**[^5] no dirigido, se nos pide hallar el minimo conjunto de nodos tales que cada arista tenga al menos un extremo en el conjunto (cobertura minima de nodos) y/o hallar el maximo conjunto de nodos tales que no haya dos nodos pertenecientes al conjunto que esten conectados por una arista. Ahora, el **teorema de Kőnig** nos dice que el tamaño de la cobertura minima de nodos es siempre igual al tamaño del maximo matching[^12], siempre que el grafo sea bipartito. La idea es transformar el grafo al igual que lo hicimos en el problema de obtener el matching maximo y posteriormente ejecutar [Dinic](#dinic). Sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, el siguiente paso es realizar una [DFS](#dfs) desde todos los nodos de `X` que quedaron sin matchear (aquellos cuyas aristas de salida no esten pasando flujo). Finalmente, el conjunto de todos los nodos de `X` que **no** fueron visitados y todos los nodos de `Y` que **si** fueron visitados componen la cobertura minima de nodos y los demas nodos son el conjunto maximo independiente.
+  - La **Cobertura Minima de Aristas(MEC)** es igual a |V| - |MVC|.
 
 - **Cobertura por Caminos de Nodos Disjuntos:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a exactamente un camino. La idea es transformar el grafo como se muestra en la imagen de abajo y posteriormente ejecutar [Dinic](#dinic). Sea `n` la cantidad total de nodos y `c` la cantidad total de nodos emparejados; la cantidad de caminos esta dado por los nodos **no** emparejados, o sea `n-c`. Esto tambien nos dice que son los nodos que **no** estan emparejados a derecha los que inician los caminos, por lo que comenzando desde dichos nodos, podriamos obtener los `n-c` caminos.
 
@@ -3066,9 +3435,39 @@ Los algoritmos de esta seccion reciben como input un grafo dirigido donde el pes
 |:---------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 > *A la izquierda el grafo original, en el centro una solucion al problema y a la derecha como debe quedar el grafo transformado*
 
-- **Cobertura por Caminos General:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a al menos un camino. El problema se puede resolver de la misma forma que el problema de cobertura por caminos de nodos disjuntos con la particularidad de que en el grafo transformado existe una arista `a → b`, donde  `a` es disitnto de `b` (i.e, no existe la arista `a → a` en el grafo transformado), siempre que exista un camino desde `a` hacia `b` en el grafo original (posiblemente a traves de muchos nodos). Una posible implementacion para hallar las aristas es realizar una [DFS](#dfs) desde cada nodo y agregar una arista por cada nodo visitado, lo cual nos da una complejidad de **O(n(n+m))** (no encontre una implementacion mas sencilla💀).
+- **Cobertura por Caminos General:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a al menos un camino. El problema se puede resolver de la misma forma que el problema de cobertura por caminos de nodos disjuntos con la particularidad de que en el grafo transformado existe una arista `a → b`, donde  `a` es disitnto de `b` (i.e, no existe la arista `a → a` en el grafo transformado), siempre que exista un camino desde `a` hacia `b` en el grafo original (posiblemente a traves de muchos nodos). 
+  - Una posible implementacion para hallar las aristas es realizar una [DFS](#dfs) desde cada nodo y agregar una arista por cada nodo visitado, lo cual nos da una complejidad de > $\mathcal{O}(n \cdot (n + m))$ (no encontre una implementacion mas sencilla💀).
 
 - **Hallar la Maxima Anticadena:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar una anticadena de longitud **maxima**. En un grafo, se entiende por anticadena a un conjunto de nodos tal que para cada nodo en el conjunto, **no** existe un camino que lleve al resto de nodos, por lo que podemos decir que todos los nodos pertenecientes a la anticadena son de cierta forma "independientes" los unos de los otros. Ahora, el **teorema de Dilworth** nos dice que el tamaño de la maxima anticadena es igual a la cantidad de caminos que resuelven el problema de cobertura por caminos general. De hecho, si construimos los caminos tal como se indico en el problema de cobertura por caminos de nodos disjuntos, podemos formar una anticadena simplemente tomando los nodos que inician los caminos (¡Aunque no es la unica!).
+
+- **Problema de Asignacion General:** Dados un grafo dirigido G = (V,E) y una funcion de valor w: E $\rightarrow$ Z, queremos elegir un subconjunto de nodos V' $\subseteq$ V tal que: $\forall$(u,v) $\in$ E, si v $\in$ V' $\Rightarrow$ u $\in$ V'; y maximice $\sum_{v \in V'} w(v)$.
+Para resolver este problema construimos un grafo G' = (V',E') tal que:
+    1. V' = V $\cup$ {S,T}, donde S es el nodo **fuente** y T es el nodo **sumidero**.
+    2. Para cada nodo v $\in$ V, si w(v) < 0, agrego una arista (S,v) con capacidad -w(v), y si w $\geq$ 0, agrego una arista (v,T) con capacidad w(t).
+    3. Para cada arista (u,v) $\in$ E, agrego una arista (u,v) $\in$ E' con capacidad $\infty$.
+    4. Calculo el corte minimo entre S y T en G'.
+    5. El conjunto de nodos V' alcanzables desde S en la red residual.
+    6. El valor de V' es la suma de los w(v) positivos menos el corte minimo. 
+ 
+- **Asignacion de Maquina y Tareas:** Un caso particular del problema anterior, es cuando tenemos un conjunto de tareas T y un conjunto de maquinas M, donde el costo de cada tarea esta dado por b(t) y quiero elegir un subconjunto de maquinas y tareas que me dan un beneficio neto maximo. La idea es reducir el problema a uno de corte minimo como sigue:
+    1. Asumo que ya me pagaron todas las tareas. Entonces, no realizar la tarea t tiene un costo b(t).
+    2. Defino un grafo G = (V,E).
+    3. Agrego un nodo **fuente** S y un nodo **sumidero** T.
+    4. Para cada maquina m $\in$ M, agrego una arista (S,m) con capacidad c(m).
+    5. Para cada tarea t $\in$ T, agrego una arista (t,T) con capacidad b(t).
+    6. Para cada tarea t $\in$ T y cada maquina m $\in$ M, agrego una arista (m,t) con capacidad $\infty$.
+    7. Calculo el corte minimos entre S y T en G.
+    8. El maximo beneficio alcanzable es $\sum_{t \in T} b(t)$ menos el costo del corte minimo. Esto representa la necesidad de la maquina m para la tarea t.
+    9. Si la arista (S,m) forma parte del corte, compro la maquina m.
+    10. Si la arista (t,T) forma parte del corte, entonces NO realizao la tarea t.
+
+- **Aristas con Flujo Minimo:** La idea para resolver este problema es la siguiente:
+  1. Construimos un grafo G' = (V',E'), donde V' = V $\cup$ {S,T}, nuevos nodos **fuente** y **sumidero**.
+  2. $\forall$ (u,v) $\in$ E, agregamos a E' una arista (u,v) con capacidad d(u,v) - c(u,v), arista (S',v) y (u,T'), ambas con capacidad c(u,v).
+  3. Agregamos aristas (S',S) y (T,T') con capacidad $\infty$.
+  4. Calculamos el flujo maximo f' de S' a T'. SI hay aristas saliente de S' (excepto (S',S)) que no esten saturadas, el flujo no es satisfacible.
+  5. Si el flujo es satisfacible, f(u,v) = c(u,v) + f(u,v) para cada (u,v) $\in$ E.
+  6. El flujo f cumple las condiciones del problema y maximiza el valor |f|.
 
 ### Dinic
 
@@ -3195,14 +3594,14 @@ int main() {
 }
 ```
 
-> *Complejidad: O(mn^2)*
+> *Complejidad: $\mathcal{O}(m \cdot n^2)$*
 
 **NOTA:**
-- Para grafos bipartitos (generalmente problemas de matching), la complejidad desciende a **O(m√n)**
+- Para grafos bipartitos (generalmente problemas de matching), la complejidad desciende a $\mathcal{O}(m \cdot \sqrt{n})$
 
 ## Arboles
 
-Un arbol es un grafo conexo[^2] y aciclico que consta de `n` nodos y `n-1` aristas. Cuenta con las siguientes propiedades:
+Un arbol es un grafo conexo[^3] y aciclico que consta de `n` nodos y `n-1` aristas. Cuenta con las siguientes propiedades:
 
 - Remover una arista divide el arbol en dos componentes
 - Agregar una arista crea un ciclo
@@ -3225,9 +3624,9 @@ void dfs(int s, int e) {
 dfs(x,-1); // La primera llamada es con -1 puesto que no hay nodo previo
 ```
 
-> *Complejidad O(n)*
+> *Complejidad $\mathcal{O}(n)$*
 
-### Calcular Diametro[^10] del Arbol
+### Calcular Diametro[^13] del Arbol
 
 Dado un nodo arbitrario `a` (en el algortimo tomamos 0 por simplicidad), encontramos el nodo `b` mas alejado de `a` y luego el nodo `c` mas alejado de `b`. Finalmente, el diametro del arbol esta dado por la distancia entre `b` y `c` el cual guardamos en la variable `diameter`. En este algoritmo, el arbol es visto de la siguiente forma:
 
@@ -3256,7 +3655,7 @@ diameter = 0;
 dfs(farthestNode, -1, 0);
 ```
 
-> *Complejidad O(n)*
+> *Complejidad $\mathcal{O}(n)$*
 
 ### Hallar Ancestros
 
@@ -3300,9 +3699,9 @@ int get_ancestor(int x, int k) {
 // Preprocesar la tabla up con DFS desde la raíz (asumimos raíz en 0)
 dfs(0, -1);
 ```
-> *Complejidad construccion: O(nlog(n))*
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
 
-> *Complejidad consulta: O(log(n))*
+> *Complejidad consulta: $\mathcal{O}(\log(n))$*
 
 **NOTA**:
 - `adj` es la representacion del arbol en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -3370,9 +3769,9 @@ dfs(0, -1, 0);  // Asumimos que el nodo 0 es la raíz
 build_sparse_table();
 ```
 
-> *Complejidad construccion: O(nlog(n))*
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
 
-> *Complejidad consulta: O(1)*
+> *Complejidad consulta: $\mathcal{O}(1)$*
 
 **NOTA**:
 - `adj` es la representacion del arbol en forma de una [lista de adyacencias](#lista-de-adyacencias)
@@ -3407,7 +3806,7 @@ for (int i = 0; i < edges.size(); i++) {
         unite(get<1>(edges[i], get<2>(edges[i]))));
 }
 ```
-> *Complejidad O (mlog(n))*
+> *Complejidad: $\mathcal{O}(m \cdot \log(n))$*
 
 **NOTAS:**
 - `edges` es la representacion del grafo en forma de una [lista de aristas](#lista-de-aristas) que **contiene primero el peso** y luego los nodos
@@ -3459,7 +3858,7 @@ void prim(int start) {
     }
 }
 ```
-> *Complejidad O(n + mlog(m))*
+> *Complejidad: $\mathcal{O}(n + m \cdot \log(m))$*
 
 **NOTA:**
 - `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
@@ -3504,7 +3903,7 @@ void primMax(int start) {
     }
 }
 ```
-> *Complejidad O(n + mlog(m))*
+> *Complejidad: $\mathcal{O}(n + m \cdot \log(m))$*
 
 **NOTA:**
 - `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
@@ -3532,7 +3931,7 @@ void search(int k) {
 }
 ```
 
-> *Complejidad O(2^n)*
+> *Complejidad: $\mathcal{O}(2^n)$*
 
 **NOTA**:
 - En la primera llamada, **`k` debe ser 0**
@@ -3547,7 +3946,7 @@ for (int b = 0; b < (1<<n); b++) {
 }
 ```
 
-> *Complejidad O(2^n)*
+> *Complejidad: $\mathcal{O}(2^n)$*
 
 **NOTAS**:
 - Es mas rapido que el metodo 1
@@ -3576,7 +3975,7 @@ void search() {
 }
 ```
 
-> *Complejidad O(n!)*
+> *Complejidad $\mathcal{O}(n!)$*
 
 ### Metodo 2
 
@@ -3592,7 +3991,7 @@ do {
 } while (next_permutation(permutation.begin(),permutation.end()));
 ```
 
-> *Complejidad O(n!)*
+> *Complejidad $\mathcal{O}(n!)$*
 
 **NOTAS**:
 - Es mas rapido que el metodo 1
@@ -3602,7 +4001,7 @@ do {
 
 Cuando el problema permita dividir el espacio de busqueda en dos partes de igual tamaño y exista una forma eficiente de combinarlas, conviene utilizar la tecnica de reunion en el centro.
 
-Por ejemplo, considerese el problema de que dada una lista de `n` elementos se debe determinar si es posible tomar algunos numeros de ella de forma tal que su suma sea `x`. Sea *n = 4*, la lista *[2, 4, 5, 9]* y *x = 15*. En vez de calcular todos los subconjuntos posibles y sumar su elementos (lo cual tendria complejidad O(2^n)), podemos dividir la lista en dos sublistas *A = [2, 4]* y *B = [5, 9]*, quedandonos los subconjuntos *SA = [0, 2, 4, 6]* y *SB = [0, 5, 9, 14]*. Solo resta chequear si la suma de algun elemento de `SA` con un elemento de `SB` es igual a 15, lo cual puede hacer en O((n/2)^2). En este caso es posible ya que 6 + 9 = 15, lo cual se corresponde con haber sumado 2 + 4 + 9 en la lista original. Este enfoque reduce la complejidad temporal de O(2^n) a O(2^(n/2)) lo cual es lo mismo que **O(raiz(2^n))**.
+Por ejemplo, considerese el problema de que dada una lista de `n` elementos se debe determinar si es posible tomar algunos numeros de ella de forma tal que su suma sea `x`. Sea *n = 4*, la lista *[2, 4, 5, 9]* y *x = 15*. En vez de calcular todos los subconjuntos posibles y sumar su elementos (lo cual tendria complejidad O(2^n)), podemos dividir la lista en dos sublistas *A = [2, 4]* y *B = [5, 9]*, quedandonos los subconjuntos *SA = [0, 2, 4, 6]* y *SB = [0, 5, 9, 14]*. Solo resta chequear si la suma de algun elemento de `SA` con un elemento de `SB` es igual a 15, lo cual puede hacer en O((n/2)^2). En este caso es posible ya que 6 + 9 = 15, lo cual se corresponde con haber sumado 2 + 4 + 9 en la lista original. Este enfoque reduce la complejidad temporal de O(2^n) a O(2^(n/2)) lo cual es lo mismo que $\mathcal{O}(\sqrt{2^n})$.
 
 # Backtracking
 
@@ -3629,7 +4028,7 @@ void search(int y) {
     }
 }
 ```
-> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en O(n!)[^11] utilizando un algoritmo de Backtracking*
+> *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en $\mathcal{O}(n!)$[^14] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
@@ -3640,6 +4039,12 @@ Un algoritmo Greedy, elige la mejor solucion en cada paso. Si conviene no tomar 
 
 - Son muy **eficientes**
 - Es **dificil** encontrar la estrategia que siempre devuelva la solucion optima y mas aun demostrar que esa estrategia funciona. Una buena forma para obtener mayor confiabilidad es ver si existen **contraejemplos** a la estrategia propuesta
+
+<u>Tips para afrontar un problema Greedy:</u>
+- **Ordenar** de distintas formas (al menos mentalmente) los conjuntos (o multiconjuntos) de candidatos
+- Revisar lo que sucede en los casos **maximos** y **minimos**
+- Comenzar con una **solucion mala** que cumpla las restricciones y luego ir pensando como mejorarla hasta que sea optima
+
 
 # Programacion Dinamica
 
@@ -3653,7 +4058,7 @@ Es un metodo que combina la **correctitud** de la busqueda completa (fuerza brut
 ## Tecnicas Comunes
 
 - **Rangos** 
-- **Bitmasks[^12]**
+- **Bitmasks[^15]**
 
 ## Requisitos
 
@@ -3769,14 +4174,17 @@ if(x & (x-1) == 0)
 ```
 
 [^1]: *Un conjunto de puntos es convexo si contiene todos los segmentos entre todo par de puntos del conjunto.*
-[^2]: *Un grafo es conexo si todos los nodos estan conectados por un camino*
-[^3]: *Se denomina componente de un grafo a un subconjunto conexo de los nodos del mismo*
-[^4]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
-[^5]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
-[^6]: *Decimos que un grafo es fuertemente conexo si existe un camino entre cada nodo y todos los demas*
-[^7]: *Un camino Euleriano es un camino que recorre cada arista exactamente una vez. Por su parte, un circuito Euleriano es un camino Euleriano que comienza y termina en el mismo nodo*
-[^8]: *Un camino Hamiltoniano es un camino que recorre cada nodo exactamente una vez. Por su parte, un circuito Hamiltoniano es un camino Hamiltoniano que comienza y termina en el mismo nodo*
-[^9]: *Se entiende por matching de un grafo a un conjunto de aristas sin vertices en comun pertenecientes al grafo*
-[^10]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
-[^11]: *Para `n` suficientemente grande, la complejidad se asemeja mas a O(2^n)*
-[^12]: *Una bitmask es un numero entero visto por su valor en binario*
+[^2]: *Un grafo dirigido es funcional si cada nodo tiene exactamente una arista saliente. Esto significa que el grafo forma una colección de ciclos y caminos que terminan en un ciclo*
+[^3]: *Un grafo es conexo si todos los nodos estan conectados por un camino*
+[^4]: *Se denomina componente de un grafo a un subconjunto conexo de los nodos del mismo*
+[^5]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
+[^6]: *Un puentes una arista cuya eliminacion aumenta el numero de componentes conexas del grafo.*
+[^7]: *Un punto de articulacion es un nodo cuya eliminacion (junto con sus aristas) desconecta el grafo*
+[^8]: *Decimos que un camino es k-interno si todos los vertices intermedios (o sea, excluyendo al primero y al ultimo) tienen un indice menor o igual a k*
+[^9]: *Decimos que un grafo es fuertemente conexo si existe un camino entre cada nodo y todos los demas*
+[^10]: *Un camino Euleriano es un camino que recorre cada arista exactamente una vez. Por su parte, un circuito Euleriano es un camino Euleriano que comienza y termina en el mismo nodo*
+[^11]: *Un camino Hamiltoniano es un camino que recorre cada nodo exactamente una vez. Por su parte, un circuito Hamiltoniano es un camino Hamiltoniano que comienza y termina en el mismo nodo*
+[^12]: *Se entiende por matching de un grafo a un conjunto de aristas sin vertices en comun pertenecientes al grafo*
+[^13]: *El diametro de un arbol es la longitud maxima de un camino entre dos nodos*
+[^14]: *Para `n` suficientemente grande, la complejidad se asemeja mas a $\mathcal{O}(2^n)$*
+[^15]: *Una bitmask es un numero entero visto por su valor en binario*
