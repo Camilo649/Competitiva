@@ -1,15 +1,28 @@
+---
+title: "Machete"
+author: "Camilo"
+mainfont: "DejaVu Serif"
+monofont: "DejaVu Sans Mono"
+sansfont: "Noto Color Emoji"
+mathfont: "Latin Modern Math"
+header-includes:
+  - \usepackage{unicode-math}
+  - \setmathfont{Latin Modern Math}
+---
+
+
 ![MACHETE](Imagenes/Logo.jpg)
 
 # Estimado de Eficiencia
 
 | Tamaño de entrada | Complejidad requerida                          |
 |-------------------|------------------------------------------------|
-| \(n \le 10\)      | \(\mathcal{O}(n!)\)                            |
-| \(n \le 20\)      | \(\mathcal{O}(2^n)\)                           |
-| \(n \le 500\)     | \(\mathcal{O}(n^3)\)                           |
-| \(n \le 5000\)    | \(\mathcal{O}(n^2)\)                           |
-| \(n \le 10^6\)    | \(\mathcal{O}(n \log n)\) o \(\mathcal{O}(n)\) |
-| \(n > 10^6\)      | \(\mathcal{O}(\log n)\) o \(\mathcal{O}(1)\)   |
+| $n \le 10$        | $\mathcal{O}(n!)$                              |
+| $n \le 20$        | $\mathcal{O}(2^n)$                             |
+| $n \le 500$       | $\mathcal{O}(n^3)$                             |
+| $n \le 5000$      | $\mathcal{O}(n^2)$                             |
+| $n \le 10^6$      | $\mathcal{O}(n \log n)$ o $\mathcal{O}(n)$     |
+| $n > 10^6$        | $\mathcal{O}(\log n)$ o $\mathcal{O}(1)$       |
 
 
 # Indice Algoritmos
@@ -39,12 +52,18 @@
 | [Combinatoria: Inclusion Exclusion](#principio-de-inclusion-exclusion)                                   | $\mathcal{O}(2^n)$                              |
 | [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | $\mathcal{O}(\sqrt{n})$                         |
-| [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | $\mathcal{O}(\log (n))$                         |
+| [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | $\mathcal{O}(\log(min(a,b)))$                   |
 | [Teoria de Numeros: Divisores de un numero](#divisores-de-un-numero)                                     | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: Factorizacion de un numero](#factorizacion-de-un-numero)                             | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Cantidad de factores de un numero](#cantidad-de-factores-de-un-numero)               | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Suma de factores de un numero](#suma-de-factores-de-un-numero)                       | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Producto de factores de un numero](#producto-de-factores-de-un-numero)               | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Cantidad de coprimos hasta n](#cantidad-de-coprimos-hasta-n)                         | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: Ver si un numero es congruente a otro](#aritmetica-modular)                          | $\mathcal{O}(1)$                                |
 | [Teoria de Numeros: Inverso modular](#inverso-modular)                                                   | $\mathcal{O}(\log (M))$                         |
 | [Teoria de Numeros: Computo de inversos modulares](#computo-de-inversos-modulares)                       | $\mathcal{O}(n)$                                |
+| [Teoria de Numeros: Ecuacion diofantica lineal](#ecuación-diofantica-lineal)                             | $\mathcal{O}(\log(min(a,b)))$                   |
+| [Teoria de Numeros: Teorema chino del resto](#teorema-chino-del-resto)                                   | $\mathcal{O}(n)$                                |
 | [Busqueda: Busqueda lineal](#busqueda-lineal)                                                            | $\mathcal{O}(n)$                                |
 | [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | $\mathcal{O}(\log (n))$                         |
 | [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | $\mathcal{O}(n)$                                |
@@ -64,7 +83,7 @@
 | [Grafos: Encontrar Camino Hamiltoniano](#encontrar-camino-hamiltoniano)                                  | $\mathcal{O}(\#intentos \cdot m \cdot \log(n))$ |
 | [Grafos: Dinic](#dinic)                                                                                  | $\mathcal{O}(m \cdot n^2)$                      |
 | [Grafos: Nodos de cada Subarbol](#nodos-de-cada-subarbol)                                                | $\mathcal{O}(n)$                                |
-| [Grafos: Calcular Diametro del Arbol](#calcular-diametro13-del-arbol)                                     | $\mathcal{O}(n)$                                |
+| [Grafos: Calcular Diametro del Arbol](#calcular-diametro13-del-arbol)                                    | $\mathcal{O}(n)$                                |
 | [Grafos: Hallar Ancestros](#hallar-ancestros)                                                            | $\mathcal{O}(n \cdot \log(n))$                  |
 | [Grafos: Ancestro Comun Menor](#ancestro-comun-menor)                                                    | $\mathcal{O}(n \cdot \log(n))$                  |
 | [Grafos: Distancia entre Dos Nodos](#distancia-entre-dos-nodos)                                          | $\mathcal{O}(n \cdot \log(n))$                  |
@@ -118,7 +137,6 @@
 
 # Indice Funciones Builtin
 
-
 | Funcion                                                             | Descripcion                                                                                                              |
 |---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
 | [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(\log(n))$                          |
@@ -132,10 +150,75 @@
 | [Funciones de Bits: Counting Trailing Zeros](#count-trailing-zeros) | Retorna la cantidad de ceros despues del 1 menos significativo de `x` en tiempo $\mathcal{O}(1)$                         |
 | [Funciones de Bits: Popcount](#popcount)                            | Retorna la cantidad de bits en 1 de `x` en tiempo $\mathcal{O}(1)$                                                       |
 | [Funciones de Bits: Parity](#parity)                                | Retorna 1 si la cantidad de bits en 1 de `x` es par y 0 en caso contrario en tiempo $\mathcal{O}(1)$                     |
+| [Funciones Aritmeticas: GCD](#gcd)                                  | Devuelve el maximo comun divisor en tiempo $\mathcal{O}log(min(a,b))$                                                    |
+| [Funciones Aritmeticas: LCM](#lcm)                                  | Devuelve el minimo comun multiplo en tiempo $\mathcal{O}log(min(a,b))$                                                   |
 
 # Librerias God 
 
 - bits/stdc++.h
+
+# Tips
+
+- **Multiplicar en lugar de dividir**
+    - Flotantes
+
+    ``` c++
+    int a, b, c, d;
+    double val1 = a/b;
+    double val2 = c/d;
+    if (val1 == val2) {
+        // do stuff…
+    }
+    ```
+
+    - Enteros
+
+    ``` c++
+    int a, b, c, d;
+    if (a*d == c*b) {
+        // do stuff…
+    }
+    ```
+
+- **Los algoritmos de grafos de obtencion de caminos minimos que son de 1 a todos se pueden transformar en algoritmos para encontrar caminos de todos a uno (revirtiendo el sentido de los ejes)**
+
+- **Los algoritmos de grafos de obtencion de caminos minimos que son de 1 a todos se pueden usar para computar caminos de todos a todos (haciendo n ejecuciones del algoritmo, una desde cada origen)**
+
+- **Si falta informacion en el grafo, agregar vertices para codificar dicha informacion**
+
+- **Encarar los problemas de calcular los estados posibles como problemas de grafos**
+
+- **Setear MAXN en un valor ligeramente mayor a `n` para evitar casos borde de una manera sencilla**
+
+- **Si se va a recorrer una matriz, poner un marco con valores inalcanzables para detectar/evitar casos bordes**
+
+- **Usar un "centinela" como el valor al que queremos llegar para cortar la recursion**
+  
+- **Saber matematicas, pensamiento logico. Es mejor poder demostrar algo y saber que funciona en vez de ir a ciegas con una implementacion**
+
+- **Resolver un problema consiste en detectar propiedades y observaciones del problema. Un Wrong Answer (WA) probablemente significa que faltan observaciones**
+
+- **Un Accepted (AC) no necesariamente significa que este completamente bien. Siempre comparar con otras soluciones**
+
+- **UPSOLVEAR. Aprender lo que no sabes**
+
+- **Siempre es preferible utilizar la funcion `sort()` que mantener una estructura ordenada (como sets o maps)**
+
+- **Si necesitamos valores de indices grandes pero no necesariamente todos ellos, se puede utilizar una funcion `c(i)` que dado un indice `i` comprima el valor del indice en uno mas pequeño que podamos manejar. La funcion debe respetar que, dados dos indices `i` y `j`, tal que `i < j`,  `c(i) < c(j)`. NOTAR que debemos conocer los indices de antemano**
+
+- **Chequear divisibilidad para potencias de 2 utilizando la operacion AND: un numero `x` es divisible por `2^k` si y solo si `x & (2^k - 1) == 0`. NOTAR que podemos chequear facilmente paridad utilizando esta tecnica**
+
+- **Multiplicar y dividir por potencias de 2 utilizando shifteos**
+
+- **Representar la data en binario cuando los datos solo pueden tomar 2 valores**
+
+- **Siempre que las caracteristicas del problema lo permitan, podemos plantear los estados de un problema de [programacion dinamica](#programacion-dinamica) como un [DAG](#grafos-dirigidos)**
+
+- **Pensar en [busqueda binaria](#busqueda-binaria) para los problemas de minimizar un maximo o maximizar un minimo**
+
+- **Cuando en un problema de [flujos y cortes](#flujos-y-cortes) quiera tener muchas fuentes y resumideros, puedo hacer un S' y un T' con capacidad infinita y resolverlo como un problema de max flow**
+
+- **Si en una dp solo me muevo del estado i al estado i+1 y no necesito preservar informacion historica, puedo simplemente tener una dp nueva y una vieja e irlas actualizando en cada paso**
 
 # Funciones de Ordenacion
 
@@ -353,68 +436,26 @@ long long x = 5328; // 000000000000000000000000000000000000000000000000000101001
 cout << __builtin_parityll(x) << "\n"; // 1
 ```
 
-# Tips
+# Funciones Aritmeticas
 
-- **Multiplicar en lugar de dividir**
-    - Flotantes
+## GCD
 
-    ``` c++
-    int a, b, c, d;
-    double val1 = a/b;
-    double val2 = c/d;
-    if (val1 == val2) {
-        // do stuff…
-    }
-    ```
+``` c++
+int a = 48; 
+int b = 18;
+gcd(a,b); // 6
+```
+> *Los compiladores de 2025 y posteriores calculan gcd de valores constantes en tiempo de compilacion*
 
-    - Enteros
 
-    ``` c++
-    int a, b, c, d;
-    if (a*d == c*b) {
-        // do stuff…
-    }
-    ```
+## LCM
 
-- **Los algoritmos de grafos de obtencion de caminos minimos que son de 1 a todos se pueden transformar en algoritmos para encontrar caminos de todos a uno (revirtiendo el sentido de los ejes)**
-
-- **Los algoritmos de grafos de obtencion de caminos minimos que son de 1 a todos se pueden usar para computar caminos de todos a todos (haciendo n ejecuciones del algoritmo, una desde cada origen)**
-
-- **Si falta informacion en el grafo, agregar vertices para codificar dicha informacion**
-
-- **Encarar los problemas de calcular los estados posibles como problemas de grafos**
-
-- **Setear MAXN en un valor ligeramente mayor a `n` para evitar casos borde de una manera sencilla**
-
-- **Si se va a recorrer una matriz, poner un marco con valores inalcanzables para detectar/evitar casos bordes**
-
-- **Usar un "centinela" como el valor al que queremos llegar para cortar la recursion**
-  
-- **Saber matematicas, pensamiento logico. Es mejor poder demostrar algo y saber que funciona en vez de ir a ciegas con una implementacion**
-
-- **Resolver un problema consiste en detectar propiedades y observaciones del problema. Un Wrong Answer (WA) probablemente significa que faltan observaciones**
-
-- **Un Accepted (AC) no necesariamente significa que este completamente bien. Siempre comparar con otras soluciones**
-
-- **UPSOLVEAR. Aprender lo que no sabes**
-
-- **Siempre es preferible utilizar la funcion `sort()` que mantener una estructura ordenada (como sets o maps)**
-
-- **Si necesitamos valores de indices grandes pero no necesariamente todos ellos, se puede utilizar una funcion `c(i)` que dado un indice `i` comprima el valor del indice en uno mas pequeño que podamos manejar. La funcion debe respetar que, dados dos indices `i` y `j`, tal que `i < j`,  `c(i) < c(j)`. NOTAR que debemos conocer los indices de antemano**
-
-- **Chequear divisibilidad para potencias de 2 utilizando la operacion AND: un numero `x` es divisible por `2^k` si y solo si `x & (2^k - 1) == 0`. NOTAR que podemos chequear facilmente paridad utilizando esta tecnica**
-
-- **Multiplicar y dividir por potencias de 2 utilizando shifteos**
-
-- **Representar la data en binario cuando los datos solo pueden tomar 2 valores**
-
-- **Siempre que las caracteristicas del problema lo permitan, podemos plantear los estados de un problema de [programacion dinamica](#programacion-dinamica) como un [DAG](#grafos-dirigidos)**
-
-- **Pensar en [busqueda binaria](#busqueda-binaria) para los problemas de minimizar un maximo o maximizar un minimo**
-
-- **Cuando en un problema de [flujos y cortes](#flujos-y-cortes) quiera tener muchas fuentes y resumideros, puedo hacer un S' y un T' con capacidad infinita y resolverlo como un problema de max flow**
-
-- **Si en una dp solo me muevo del estado i al estado i+1 y no necesito preservar informacion historica, puedo simplemente tener una dp nueva y una vieja e irlas actualizando en cada paso**
+``` c++
+int a = 48; 
+int b = 18;
+lcm(a,b); // 144
+```
+> *Los compiladores de 2025 y posteriores calculan lcm de valores constantes en tiempo de compilacion*
 
 # Arrays
 
@@ -1392,35 +1433,21 @@ int sumst(int l, int r) { // indice izquiero del subarreglo, indice derecho del 
 
 ### Formula de Faulhaber (hasta 6)
 
-$
-1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2} = \frac{n^2 + n}{2}
-$
+$1 + 2 + 3 + \cdots + n = \frac{n(n+1)}{2} = \frac{n^2 + n}{2}$
 
-$
-1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6} = \frac{2n^3 + 3n^2 + n}{6}
-$
+$1^2 + 2^2 + 3^2 + \cdots + n^2 = \frac{n(n+1)(2n+1)}{6} = \frac{2n^3 + 3n^2 + n}{6}$
 
-$
-1^3 + 2^3 + 3^3 + \cdots + n^3 = \left(\frac{n^2 + n}{2}\right)^2 = \frac{n^4 + 2n^3 + n^2}{4}
-$
+$1^3 + 2^3 + 3^3 + \cdots + n^3 = \left(\frac{n^2 + n}{2}\right)^2 = \frac{n^4 + 2n^3 + n^2}{4}$
 
-$
-1^4 + 2^4 + 3^4 + \cdots + n^4 = \frac{6n^5 + 15n^4 + 10n^3 - n}{30}
-$
+$1^4 + 2^4 + 3^4 + \cdots + n^4 = \frac{6n^5 + 15n^4 + 10n^3 - n}{30}$
 
-$
-1^5 + 2^5 + 3^5 + \cdots + n^5 = \frac{2n^6 + 6n^5 + 5n^4 - n^2}{12}
-$
+$1^5 + 2^5 + 3^5 + \cdots + n^5 = \frac{2n^6 + 6n^5 + 5n^4 - n^2}{12}$
 
-$
-1^6 + 2^6 + 3^6 + \cdots + n^6 = \frac{6n^7 + 21n^6 + 21n^5 - 7n^3 + n}{42}
-$
+$1^6 + 2^6 + 3^6 + \cdots + n^6 = \frac{6n^7 + 21n^6 + 21n^5 - 7n^3 + n}{42}$
 
 ### Progresion Aritmetica
 
-$$
-\underbrace{a + \cdots + b}_{n \text{ numbers}} = \frac{n(a + b)}{2}
-$$
+$\underbrace{a + \cdots + b}_{n \text{ numbers}} = \frac{n(a + b)}{2}$
 
 Donde *a* es el primer numero, *b* el ultimo y *n* la cantidad total de numeros.
 
@@ -1429,9 +1456,7 @@ Donde *a* es el primer numero, *b* el ultimo y *n* la cantidad total de numeros.
 
 ### Progresion Geometrica
 
-$
-a + ak + ak^2 + \cdots b = \frac{bk - a}{k - 1}
-$
+$a + ak + ak^2 + \cdots b = \frac{bk - a}{k - 1}$
 
 Donde *a* es el primer numero, *b* el ultimo y *k* es el radio entre los sumandos.
 
@@ -1493,9 +1518,7 @@ ll pot(ll x, int n) {
 
 ### Formula de Binet
 
-$
-f(n) = \frac{(1 + \sqrt{5})^n - (1 - \sqrt{5})^n}{2^n \sqrt{5}}
-$
+$f(n) = \frac{(1 + \sqrt{5})^n - (1 - \sqrt{5})^n}{2^n \sqrt{5}}$
 
 Calcula el n-esimo numero de la sucesion de *Fibonacci*.
 
@@ -1535,7 +1558,7 @@ double reduce(vector<vector<double>> &a){  //Devuelve determinante si m == n
 > *Complejidad: $\mathcal{O}(m^2 \cdot n)$*
 
 **NOTA**: 
-- La version con aritmetica modular solo funciona si el modulo es **primo**.
+- La version con aritmetica modular solo funciona si el modulo es **primo**
 
 ## Geometria
 
@@ -1676,7 +1699,7 @@ double dist(pto A, pto B) {
     double dy = A.y - B.y;
     return hypot(dx, dy);
 }
-⁝
+// ...
 vector<pto> Poly(n);
 
 double per = 0;
@@ -1698,7 +1721,7 @@ double areaTri(vec A, vec B) {
     double prodVec = A.x*B.y - B.x*A.y;
     return prodVec/2;
 }
-⁝
+// ...
 vector<pto> Poly(n);
 double area = 0;
 for (int i = 0; i < n-1; i++) {
@@ -1770,7 +1793,7 @@ vector<pto> lower_hull(vector<pto>& p) {
 
 #### Computo de factoriales
 
-- Lo que se hace para calcular factoriales cuando **𝑛 ≤ 10^6** es **precalcular** los factoriales y guardarlos en un arreglo.
+- Lo que se hace para calcular factoriales cuando **$n$ ≤ 10^6** es **precalcular** los factoriales y guardarlos en un arreglo.
 
 ``` c++
 const int MAXN = 1e7, M = 1e9+7;
@@ -1784,9 +1807,9 @@ for(ll i = 1; i < MAXN; i++) F[i] = F[i-1]*i %M;
 
 #### Computo de Factoriales Inversos
 
-- Le llamamos “factorial inverso” de 𝑛 módulo 𝑀, al inverso modular del factorial de 𝑛 módulo 𝑀.
+- Le llamamos “factorial inverso” de $n$ módulo $M$, al inverso modular del factorial de $n$ módulo $M$.
 
-- Cuando 𝑛 ≤ 10^6, es más eficiente tener en cuenta que:
+- Cuando $n$ ≤ 10^6, es más eficiente tener en cuenta que:
 
 ![Formula2](Imagenes/Formula2.png)
 
@@ -1913,7 +1936,7 @@ Denotemos por $D_n$ a tal cantidad. Notar que $D_0 = 1$ y $D_1 = 0$. Podemos cal
     > *Complejidad: $\mathcal{O}(n)$*
 
 - **Minima Descomposicion en Subsecuencias Decrecientes/Maxima Subsecuencia Creciente (LIS):** Podemos descomponer una permutacion en la minima cantidad de subsecuencias decrecientes con un algoritmo greedy. La idea consiste en procesar los elementos de a uno y en cada paso agregar el elemento actual a la primera subsecuencia posible.
-Por ejemplo: para $p = [4,2,6,8,3,1,5,7]$, si seguimos el algoritmo anterior, nos quedan las subsecuencias en el siguiente orden: $[4,2,1], [6,3], [8,5], [7]$. En cada paso, debemos aplicar busqueda binaria sobre el menor evalor de cada subsecuencia para saber a cual debemos añdirle el elemento que estemos procesando. Notar que por como itera el algoritmo, los menores elementos de las subsecuencias quedan ordenados de mayor a menor (asi tambien como los elementos de la propia subsecuencia), por lo que no hace falta utilizar una estructura que mantega ordenado los elementos.
+Por ejemplo: para $p = [4,2,6,8,3,1,5,7]$, si seguimos el algoritmo anterior, nos quedan las subsecuencias en el siguiente orden: $[4,2,1], [6,3], [8,5], [7]$. En cada paso, debemos aplicar busqueda binaria sobre el menor valor de cada subsecuencia para saber a cual debemos añdirle el elemento que estemos procesando. Notar que por como itera el algoritmo, los menores elementos de las subsecuencias quedan ordenados de mayor a menor (asi tambien como los elementos de la propia subsecuencia), por lo que no hace falta utilizar una estructura que mantega ordenado los elementos.
 Por teorema, tenemos que en toda permutacion siempre vale que el largo de la maxima subsecuencia creciente es igual a la cantidad de secuencias en la minima descomposicion en subsecuencias decrecientes. Por lo que el LIS sera igual a la cantidad de secuencias obtenidas tras correr el algoritmo greedy. Si queremos obtener los elementos que conforman la subsecuencia, debemos modificar el algoritmo para que agregue una arista dirigida entre el elemento que se esta procesando y el ultimo elemento agregado a la subsecuencia anterior, creando asi un DAG (Observar que no hay aristas que salen de la primer subsecuencia). Luego, la maxima subsecuencia creciente estara dada por los nodos presentes en el camino que parte desde algun elemento de la ultima subsecuencia hasta su raiz. 
     > *Complejidad: $\mathcal{O}(n \cdot \log(n))$* 
 
@@ -1964,6 +1987,7 @@ cout << inclusion_exclusion_general(3, f) << endl;
 
 ``` c++
 bool isPrime(int n) {
+    if (n < 2) return false;
     for(int p = 2; p*p <= n; p++) {
         if(n%p == 0) return false;
     }
@@ -1979,8 +2003,8 @@ bool isPrime(int n) {
 ``` c++
 bitset isPrime[MAXN];
 void criba() {
+    isPrime.set();
     isPrime[0] = isPrime[1] = false;
-    for(int i = 2; i < MAXN; i++) isPrime[i] = true;
     for(int p = 2; p < MAXN; p++) {
         if (isPrime[p]) {
             for(int m = 2*p; m < MAXN; m += p) isPrime[m] = false;
@@ -1992,21 +2016,25 @@ void criba() {
 
 #### MCD y MCM
 
-- Para calcular el máximo común divisor entre dos números podemos usar el **algoritmo de euclides**.
+**NOTA**:
+- Usar [gcd](#gcd) y [lcm](#lcm) en su lugar
+
+Para calcular el máximo común divisor entre dos números podemos usar el **algoritmo de euclides**.
+
 ``` c++
 int mcd(int a, int b) {
     if (b == 0) return a;
     return mcd(b, a%b);
 }
 ```
-> *Complejidad: $\mathcal{O}(\log(n))$*
+> *Complejidad: $\mathcal{O}(\log(min(a,b)))$*
 
-- Para calcular el mínimo común múltiplo entre dos números usamos el MCD
+Para calcular el mínimo común múltiplo entre dos números usamos el MCD
 
 ``` c++
 int mcm(int a, int b) { return (a / mcd(a, b)) * b; }
 ```
-> *Complejidad: $\mathcal{O}(\log(n))$*
+> *Complejidad: $\mathcal{O}(\log(min(a,b)))$*
 
 **PROPIEDAD**: 
 - mcd(a,b) = mcd (a,b+a*k) para cualquier k entero.
@@ -2048,13 +2076,68 @@ void fact(ll n) {
 ```
 > *Complejidad: $\mathcal{O}(\sqrt{n})$*
 
+#### Cantidad de Factores de un Numero
+
+``` c++
+ll count_fact(){
+    ll res = 1;
+    for (int i = 0; i < F.size(); i++) {
+        res *= (F[i].snd + 1)
+    }
+    return res;
+}
+```
+> *Complejidad: $\mathcal{O}(\sqrt{n})$*
+
+#### Suma de Factores de un Numero
+
+``` c++
+ll sum_fact(ll M){
+    ll res = 1;
+    for (int i = 0; i < F.size(); i++) {
+        res *= (expmod(F[i].fst, F[i].snd, M) - 1) / (F[i].fst - 1);
+    }
+    return res;
+}
+```
+> *Complejidad: $\mathcal{O}(\sqrt{n})$*
+
+#### Producto de Factores de un Numero
+
+``` c++
+ll product_fact(ll n, ll M){
+    return expmod(n, count_fact()/2, M);
+}
+```
+> *Complejidad: $\mathcal{O}(\sqrt{n})$*
+
+#### Cantidad de Coprimos hasta $n$
+
+``` c++
+ll count_coprime(ll n){
+    ll res = 1;
+    for (int i = 0; i < F.size(); i++) {
+        res *= expmod(F[i].fst, F[i].snd-1, M) * (F[i].fst - 1);
+    }
+    return res;
+}
+```
+> *Complejidad: $\mathcal{O}(\sqrt{n})$*
+
+**NOTA**:
+- Si $n$ es primo, *count_prime($n$)* = $n-1$
+
 ### Aritmetica Modular
 
-- a es congruente a b en modulo m (a≡b mod(m)) **<=>** a tiene el mismo resto que b **<=>** |a - b| % m == 0
+- a **es congruente** a b en modulo m (a≡b mod(m)) $\iff$ a tiene el mismo resto que b al dividirse por m $\iff$ |a $\pm$ b| % m == 0
+- $ (x + y) \bmod m = \big( (x \bmod m) + (y \bmod m) \big) \bmod m $
+- $ (x - y) \bmod m = \big( (x \bmod m) - (y \bmod m) \big) \bmod m $
+- $ (x \cdot y) \bmod m = \big( (x \bmod m) \cdot (y \bmod m) \big) \bmod m $
+
 
 ### Inverso Modular
 
-- El Pequeño Teorema de Fermat dice que sea **𝑝 primo** y **𝑎 coprimo a 𝑝**:
+- El Pequeño Teorema de Fermat dice que sea **$p$ primo** y **$a$ coprimo a $p$**:
 
 ![PequeñoTeoremaDeFermat](Imagenes/PequeñoTeoremaDeFermat.png)
 
@@ -2072,24 +2155,131 @@ ll expmod(ll b, ll e, ll M) {
 
 ll invmod(ll a){ return expmod(a, M - 2, M); }
 ```
-> *Complejidad: $\mathcal{O}(\log{M})$*
+> *Complejidad: $\mathcal{O}(\log({M}))$*
 
 ### Computo de Inversos Modulares
 
-- Cuando el módulo **𝑀 es un número primo** se satisface la siguiente fórmula:
+- Cuando el módulo **$M$ es un número primo** se satisface la siguiente fórmula:
 
 ![Formula1](Imagenes/Formula1.png)
 
-- Podemos precalcular los inversos modulares de 𝑀 para valores de **𝑛 ≤ 10^6** con el siguiente algoritmo:
+- Podemos precalcular los inversos modulares de $M$ para valores de **$n$ ≤ 10^6** con el siguiente algoritmo:
 
 ``` c++
-const int MAXN = 1e7, M = 1e9+7;
+const int MAXN = 1e6+6, M = 1e9+7;
 int INV[MAXN];
 
 INV[1] = 1;
 for(ll a = 2; a < MAXN; a++) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
 ```
 > *Complejidad: $\mathcal{O}(MAXN)$*
+
+### Ecuación Diofantica Lineal
+
+El problema consite en determinar si existe solucion para la siguiente ecuacion:
+
+$$
+ax + by = c
+$$
+
+done $a$, $b$ y $c$ **son enteros**.
+
+Se resuelve modificando ligeramente el [algoritmo de Euclides](#mcd-y-mcm) como sigue:
+
+```c++
+int gcd(int a, int b, int& x, int& y) {
+    if (b == 0) {
+        x = 1;
+        y = 0;
+        return a;
+    }
+    int x1, y1;
+    int d = gcd(b, a % b, x1, y1);
+    x = y1;
+    y = x1 - y1 * (a / b);
+    return d;
+}
+
+bool find_any_solution(int a, int b, int c, int &x0, int &y0, int &g) {
+    g = gcd(abs(a), abs(b), x0, y0);
+    if (c % g) {
+        return false;
+    }
+
+    x0 *= c / g;
+    y0 *= c / g;
+    if (a < 0) x0 = -x0;
+    if (b < 0) y0 = -y0;
+    return true;
+}
+```
+> *Complejidad: $\mathcal{O}(\log(min(a,b)))$*
+
+**NOTA**:
+- El algoritmo no contempla el caso en el que **$a = b = 0$**
+
+Dada una solucion, podemos obtener infinitas soluciones de la siguiente manera:
+
+$$
+\left( x + k\frac{b}{\gcd(a,b)},\; y - k\frac{a}{\gcd(a,b)} \right), \quad \forall k \in \mathbb{Z}.
+$$
+
+### Teorema Chino del Resto
+
+El problema consiste en resolver sistemas de ecuaciones de la forma:
+
+$$
+\begin{aligned}
+x &\equiv a_1 \pmod{m_1} \\
+&\;\;\vdots \\
+x &\equiv a_n \pmod{m_n}
+\end{aligned}
+$$
+
+donde los módulos $m_1,\cdots,m_n$ son **coprimos dos a dos**.
+
+Definimos:
+
+$$
+X_k = \frac{m_1 m_2 \cdots m_n}{m_k}.
+$$
+
+Luego, una solucion es:
+
+$$
+x = \sum_{i=1}^{n} a_i X_i \left( X_i^{-1} \right)_{m_i}
+$$
+
+la cual podemos obtener como:
+
+```c++
+struct Congruence {
+    long long a, m;
+};
+
+long long crt(vector<Congruence> const& congruences) {
+    long long M = 1;
+    for (auto const& congruence : congruences) {
+        M *= congruence.m;
+    }
+
+    long long solution = 0;
+    for (auto const& congruence : congruences) {
+        long long a_i = congruence.a;
+        long long M_i = M / congruence.m;
+        long long N_i = mod_inv(M_i, congruence.m);
+        solution = (solution + a_i * M_i % M * N_i) % M;
+    }
+    return solution;
+}
+```
+>*Complejidad: $\mathcal{O}(n)$*
+
+Dada una solucion $x$, podemos obtener infinitas soluciones de la siguiente manera:
+
+$$
+x + k\, m_1 \cdots m_n, \quad \forall k \in \mathbb{Z}.
+$$
 
 # Algoritmos de Busqueda
 
@@ -2139,7 +2329,7 @@ if (array [k] == x) {
 > *Complejidad: $\mathcal{O}(\log(n))$*
 
 **NOTA**: 
-- Para poder utilizar estos algoritmos se deben **ordenar** los elementos.
+- Para poder utilizar estos algoritmos se deben **ordenar** los elementos
 
 ## Ventana Deslizante
 
@@ -2225,7 +2415,7 @@ vector<int> adj[MAXN];
 // Para agregar usamos:
 
 adj[1].push_back(2) // Si existe una arista de 1 a 2;
-⁝
+// ...
 ```
 
 #### Grafo Dirigido Pesado
@@ -2236,7 +2426,7 @@ vector<pair<int,int>> adj[MAXN];
 // Para agregar usamos:
 
 adj[1].push_back({2,5}) // Si existe una arista de 1 a 2 con peso 5;
-⁝
+// ...
 ```
 
 ### Lista de Aristas
@@ -2251,7 +2441,7 @@ vector<pair<int,int>> edges;
 // Para agregar usamos:
 
 edges.push_back({1,2}) // Si existe una arista de 1 a 2;
-⁝
+// ...
 ```
 
 #### Grafo Dirigido Pesado
@@ -2262,7 +2452,7 @@ vector<tuple<int,int,int>> edges;
 // Para agregar usamos:
 
 edges.push_back({1,2,5}) // Si existe una arista de 1 a 2 con peso 5;
-⁝
+// ...
 ```
 
 ### Matriz de Adyacencia
@@ -3643,7 +3833,7 @@ void dfs(int s, int e, int l) {
         farthestNode = s;
     }
     for (auto u : adj[s]) {
-        if (u != e) continue; 
+        if (u == e) continue; 
         dfs(u, s, l + 1);
     }
 }
