@@ -150,6 +150,8 @@ header-includes:
 | [Funciones de Bits: Counting Trailing Zeros](#count-trailing-zeros) | Retorna la cantidad de ceros despues del 1 menos significativo de `x` en tiempo $\mathcal{O}(1)$                         |
 | [Funciones de Bits: Popcount](#popcount)                            | Retorna la cantidad de bits en 1 de `x` en tiempo $\mathcal{O}(1)$                                                       |
 | [Funciones de Bits: Parity](#parity)                                | Retorna 1 si la cantidad de bits en 1 de `x` es par y 0 en caso contrario en tiempo $\mathcal{O}(1)$                     |
+| [Funciones de Conteo: Count](#count)                                | Devuelve la cantidad de ocurrencias de un elemento en otro elemento iterable en tiempo $\mathcal{O}(n)$                  |
+| [Funciones de Conteo: Count If](#count-if)                          | Devuelve la cantidad de elemntos cumplen una determinada condicion en otro elemento iterable en tiempo $\mathcal{O}(n)$  |
 | [Funciones Aritmeticas: GCD](#gcd)                                  | Devuelve el maximo comun divisor en tiempo $\mathcal{O}log(min(a,b))$                                                    |
 | [Funciones Aritmeticas: LCM](#lcm)                                  | Devuelve el minimo comun multiplo en tiempo $\mathcal{O}log(min(a,b))$                                                   |
 
@@ -377,6 +379,52 @@ ll z = atoll("789");
 **NOTAS**:
 - Si el string comienza con numeros y luego cualquier otro tipo de caracter, solo se convertira hasta antes del primer caracter no numerico
 - Si el string no comienza con caracteres numericos, la funcion devolvera 0
+
+# Funciones de Conteo
+
+## Count
+
+- **Vectores**
+```c++
+vector<int> v = {1,2,3,2,2};
+cout << count(v.begin(), v.end(), 2) << "\n"; // 3
+```
+
+- **Strings**
+ ```c++
+string s = "BANANA";
+cout << count(s.begin(), s.end(), 'A') << "\n"; // 3
+```
+
+- **Arrays**
+```c++
+array<double, 5> a = {1.0, 2.0, 1.0};
+cout << count(a.begin(), a.end(), 1.0) << "\n"; // 2
+```
+
+## Count If
+
+- **Vectores**
+```c++
+vector<int> v = {1,2,3,2,2};
+cout << count_if(v.begin(), v.end(), [](int x) { return x % 2 != 0; }); << "\n"; // 2
+```
+
+- **Strings**
+ ```c++
+string s = "BANANA";
+cout << 
+count_if(s.begin(), s.end(), [](char c) {
+    return c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
+});
+ << "\n"; // 3
+```
+
+- **Arrays**
+```c++
+array<double, 5> a = {1.0, 2.0, 1.0};
+cout << count_if(a, a + 5, [](int x) { return x > 1; }); << "\n" ; // 1
+```
 
 # Funciones de Bits
 
@@ -1796,7 +1844,7 @@ vector<pto> lower_hull(vector<pto>& p) {
 - Lo que se hace para calcular factoriales cuando **$n$ ≤ 10^6** es **precalcular** los factoriales y guardarlos en un arreglo.
 
 ``` c++
-const int MAXN = 1e7, M = 1e9+7;
+const int MAXN = 1e6, M = 1e9+7;
 ll F[MAXN];
 // ...
 F[0] = 1;
@@ -1816,11 +1864,11 @@ for(ll i = 1; i < MAXN; i++) F[i] = F[i-1]*i %M;
 - Tras lo cual podemos precalcular los factoriales inversos en tiempo lineal:
 
 ``` c++
-const int MAXN = 1e7, M = 1e9+7;
+const int MAXN = 1e6, M = 1e9+7;
 ll F[MAXN], INV[MAXN], FI[MAXN];
 // ...
 F[0] = 1; forr(i, 1, MAXN) F[i] = F[i-1]*i %M;
-INV[1] = 1; forr(i, 2, MAXN) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
+INV[1] = 1; forr(i, 2, MAXN) INV[i] = M - (ll)(M/i)*INV[M%i]%M;
 FI[0] = 1; forr(i, 1, MAXN) FI[i] = FI[i-1]*INV[i] %M;
 ```
 > *Complejidad: $\mathcal{O}(MAXN)$*
@@ -1947,7 +1995,7 @@ El principio de inclusion-exclusion es un importante metodo combinatorio para ca
 ![Formula Inclusion-Exclusion](Imagenes/Inclusion-ExclusionFormula.png)
 
 ``` c++
-int inclusion_exclusion_general(int n, function<int(int mask)> f) {
+int inclusion_exclusion_general(int n, function<int(int)> f) {
     int total = 0;
     for (int mask = 1; mask < (1 << n); ++mask) {
         int sign = (__builtin_popcount(mask) % 2 == 1 ? +1 : -1);
@@ -1961,22 +2009,106 @@ int inclusion_exclusion_general(int n, function<int(int mask)> f) {
 **NOTA**: 
 - Aqui `f(mask)` representa cuantos elementos cumplen las propiedades en `mask`
 
-##### Ejemplo
+#### Ejemplo
 
 Se nos pide calcular cuantos de los primeros 100 numeros naturales son divisbles por 2,3 y 5 (3 propiedaes). En este caso, f es como sigue:
 
 ``` c++
 int f(int mask) {
     vector<int> primes = {2, 3, 5};
-    int lcm = 1;
+    int mcm = 1;
     forn(i, 3) if (mask & (1 << i))
-        lcm = lcm(lcm, primes[i]);
-    return 100 / lcm;
+        mcm = lcm(mcm, primes[i]);
+    return 100 / mcm;
 }
 
 cout << inclusion_exclusion_general(3, f) << endl;
 ```
 
+### Coeficiente Binomial
+
+El coeficiente binomial $\binom{n}{k}$ representa el numero de formas en la que podemos elegir un subconjunto (sin importar el orden) de $k$ elementos de un conjunto de $n$ elementos.
+
+**Formula recursiva:**
+$$
+\binom{n}{k} = \binom{n-1}{k-1} + \binom{n-1}{k}
+$$
+
+Aqui los casos bases son $\binom{n}{0} = \binom{n}{n} = 1$.
+
+**Formula cerrada:**
+$$
+\binom{n}{k} = \frac{n!}{k!(n-k)!}
+$$
+
+#### Propiedades
+
+- $\binom{n}{k} = \binom{n}{n-k}$
+- $\binom{n}{0} + \binom{n}{1} + \cdots + \binom{n}{n} = 2^n$
+- $(a + b)^n = \binom{n}{0}a^n b^0 + \binom{n}{1}a^{n-1} b^1 + \cdots + \binom{n}{n}a^0 b^n$
+
+#### Coeficiente Multinomial
+
+El coeficiente multinomial
+
+$$
+\binom{n}{k_1, k_2, \dots, k_m}
+= \frac{n!}{k_1! \, k_2! \cdots k_m!}
+$$
+
+representa el numero de formas en la que podemos dividir un conjunto de $n$ elementos en $m$ subconjuntos de tamaños $k_1, k_2, \cdots, k_m$, tales que $k_1 + k_2 + \cdots + k_m = n$.
+
+### Numeros de Catalan
+
+El numero de Catalan $C_n$ representa el numero de expresiones con parentesis **validas** que consisten de $n$ parentesis que cierran y $n$ parentesis que abren.
+
+**Formula recursiva:**
+$$
+C_n = \sum_{i=0}^{n-1} C_i \, C_{n-i-1}
+$$
+
+Aqui el caso base es $C_0 = 1$.
+
+**Formula cerrada:**
+$$
+C_n = \frac{1}{n+1} \binom{2n}{n}
+$$
+
+#### Propiedades
+
+- Una expresión de paréntesis vacía es válida.
+- Si una expresión $A$ es válida, entonces la expresión $(A)$ también es válida.
+- Si las expresiones $A$ y $B$ son válidas, entonces la expresión $AB$ también es válida.
+
+#### Usos
+
+- **Contar arboles binarios:** hay $C_n$ arboles binarios con exactamente $n$ nodos.
+- **Contar arboles enraizados:** hay $C_n-1$ arboles binarios con exactamente $n$ nodos.
+
+### Lema de Burnside
+
+El lema de Burnside se puede utilizar para contar el numero de combinaciones, de modo que
+solo se cuente un representante por cada grupo de combinaciones simetricas. Tal lema establece que:
+
+$$
+\sum_{k=1}^{n} \frac{c(k)}{n},
+$$
+
+donde hay $n$ formas de cambiar la posicion de una combinacion, y hay $c(k)$ combinaciones que permanecen sin cambios cuando se aplica la k-esima forma.
+
+#### Ejemplo
+
+Se nos pide calcular el numero de collares distintos de $n$ perlas, donde cada perla tiene $m$ colores posibles. Decimos que dos collares son identicos cuando uno sea igual al otro después de rotarlos.
+
+Hay $n$ rotaciones distintas para cada collar.
+Cuando el numero de pasos es $k$, un total de $m^{gcd(k,n)}$ siguen siendo identicos. La razón de esto es que los bloques de perlas de tamaño $gcd(k, n)$ se reemplazaran entre si.
+
+Asi, el lema de Burnside nos dice que el numero de collares distintos es 
+
+$$
+\sum_{i=0}^{n-1} \frac{m^{gcd(i,n)}}{n}.
+$$
+ 
 ## Teoria de Numeros
 
 ### Divisibilidad

@@ -19,7 +19,7 @@ typedef long double ld;
 
 using u64 = uint64_t;
 
-const int MAXN = -1;
+const int MAXN = 2*1e5 + 6;
 
 using namespace std;
  
@@ -42,68 +42,63 @@ int main()
         cin >> n >> x >> y;
         string s;
         cin >> s;
+        bitset<MAXN> b(s);
         int p[n];
         forn(i,n) cin >> p[i];
         bool flag = true;
 
-        // ll sump = 0;
-        // forn(i,n)
+        ll sum = 0;
+        ll lbA = 0, difA = 0, voteA = 0;
+        ll lbB = 0, difB = 0, voteB = 0;
+        // bool existEvenA = false;
+        // bool existEvenB = false;
+        forn(i,n)
+        {
+            sum += p[i];
+            if(s[i] == '0')
+            {
+                lbA += p[i]/2 + 1;
+                // if(p[i]%2 == 0)
+                // {
+                //     difA += 2;
+                //     //existEvenA = true;
+                // }
+                // else difA += 1;
+                // voteA += p[i];
+            }
+            else
+            {
+                lbB += p[i]/2 + 1;
+                // if(p[i]%2 == 0)
+                // {
+                //     difB += 2;
+                //     //existEvenB = true;
+                // }
+                // else difB += 1;
+                // voteB += p[i];
+            }
+        }
+        // if(difA > difB)
         // {
-        //     sump += p[i];
+        //     if(x - difA < y - difB) flag = false;
         // }
-        // if (sump > x+y) flag = false;
-
-        ll difa = 0;
-        ll difb = 0;
-        forn(i,n)
+        // else
+        // {
+        //     if(y - difB < x - difA) flag = false;
+        // }
+        if(x+y < sum) flag = false;
+        if(b.count() == 0)
         {
-            if (s[i] == '0')
-            {
-                if (p[i]%2 == 0)
-                {
-                    difa += 2;
-                }
-                else
-                {
-                    difa += 1;
-                }
-            }
-            else
-            {
-                if (p[i]%2 == 0)
-                {
-                    difb += 2;
-                }
-                else
-                {
-                    difb += 1;
-                }
-            }
+            if(!(x >= y+n && x >= lbA)) flag = false;
         }
-        forn(i,n)
+        else if(b.count() == (size_t)n)
         {
-            ll a,b;
-            if (s[i] == '0')
-            {
-                if(p[i]%2 == 0) difa -= 2;
-                else difa -= 1;
-                a = min(((ll)p[i]/2) + 1, (ll)x-difa);
-                b = p[i] - a;
-                if(a<=b) flag = false;
-            }
-            else
-            {
-                if(p[i]%2 == 0) difb -= 2;
-                else difb -= 1;
-                b = min(((ll)p[i]/2) + 1, (ll)y-difb);
-                a = p[i] - b;
-                if(b<=a) flag = false;
-            }
-            x -= a;
-            y -= b;
+            if(!(y >= x+n && y >= lbB)) flag = false;
         }
-        if(s[n-1] == '0' && x < y) flag = false;
-        if(s[n-1] == '1' && y < x) flag = false;
+        else
+        {
+            if(x<lbA || y<lbB) flag = false;
+        }
 
         if(flag)
         {

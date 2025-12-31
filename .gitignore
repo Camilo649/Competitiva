@@ -1,5 +1,6 @@
 .vscode/
 Codeforces/Contests/19-12-24/
 *.exe
+*.csv
 tempCodeRunnerFile
 texput.log
