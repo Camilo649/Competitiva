@@ -75,6 +75,8 @@ header-includes:
 | [Grafos: Floyd-Warshall](#floyd-warshall)                                                                | $\mathcal{O}(n^3)$                              |
 | [Grafos: Topological Sorting](#topological-sorting)                                                      | $\mathcal{O}(n + m)$                            |
 | [Grafos: Contar el Numero de Caminos en un DAG](#contar-el-numero-de-caminos-en-un-dag)                  | $\mathcal{O}(n + m)$                            |
+| [Grafos: Contar el Numero de Caminos de Distancia k](#contar-el-numero-de-caminos-de-distancia-k)        | $\mathcal{O}(n^3 \cdot \log(k))$                |
+| [Grafos: Caminos Minimos con Exactamente k Aristas](#caminos-minimos-con-exactamente-k-aristas)          | $\mathcal{O}(n^3 \cdot \log(k))$                |
 | [Grafos: Calcular Destino en un Grafo Sucesor](#calcular-destino-en-un-grafo-sucesor)                    | $\mathcal{O}(n \cdot \log(n))$                  |
 | [Grafos: Floyd](#floyd)                                                                                  | $\mathcal{O}(n)$                                |
 | [Grafos: Kosaraju](#kosaraju)                                                                            | $\mathcal{O}(n + m)$                            |
@@ -89,6 +91,7 @@ header-includes:
 | [Grafos: Distancia entre Dos Nodos](#distancia-entre-dos-nodos)                                          | $\mathcal{O}(n \cdot \log(n))$                  |
 | [Grafos: Kruskal](#kruskal)                                                                              | $\mathcal{O}(m \cdot \log(n))$                  |
 | [Grafos: Prim](#prim)                                                                                    | $\mathcal{O}(n + m \cdot \log(m))$              |
+| [Grafos: Kirchhoff](#kirchhoff)                                                                          | $\mathcal{O}(n^3)$                              |
 | [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | $\mathcal{O}(2^{\|S\|})$                        |
 | [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | $\mathcal{O}(n!)$                               |
 | [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | $\mathcal{O}(\sqrt{2^n})$                       |
@@ -2916,6 +2919,90 @@ for(int i = 1; i<n; i++)
 - `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
 - `ans` es el orden topologico del grafo
 
+### Contar el Numero de Caminos de Distancia k
+
+Cuando representamos a un grafo sin pesos como una [matriz de adyacencia](#matriz-de-adyacencia) $V$, $V^k$ contiene el numero de caminos de $k$ aristas entre los nodos del grafo.
+
+(La multiplicacion y potenciacion de matrices estan implementadas [aqui](#recurrencias-lineales)).
+
+#### Ejemplo
+
+Dado el siguiente grafo y su correspondiente matriz de adyacencia:
+
+<p align="center">
+  <img src="Imagenes/Graphs&Matrix-ExampleGraph.png" width="45%" />
+  <img src="Imagenes/Graphs&Matrix-ExampleAdjacencyMatrix.png" width="45%" />
+</p>
+
+$V^4$ contiene todos los caminos de $4$ aristas:
+
+<p align="center">
+  <img src="Imagenes/Graphs&Matrix-ExampleAdjacencyMatrix^4.png" width="45%" />
+</p>
+
+Notar que, por ejemplo, $V^4[2,5] = 2$ debido a los caminos $2 \rightarrow 1 \rightarrow 4 \rightarrow 2 \rightarrow 5$ y $2 \rightarrow 6 \rightarrow 3 \rightarrow 2 \rightarrow 5$.
+
+### Caminos Minimos con Exactamente k Aristas
+
+Cuando representamos a un grafo con pesos como una [matriz de adyacencia](#matriz-de-adyacencia) $V$, $V^k$ contiene el peso del del camino mas corto de $k$ aristas entre los nodos del grafo si utilizamos la siguiente formula para el producto matricial:
+
+$$
+AB[i,j] = \min_{k=1}^{n} \big( A[i,k] + B[k,j] \big)
+$$
+
+```c++
+vector<vector<ll>> minplus_mul(const vector<vector<ll>> &A, const vector<vector<ll>> &B)
+{
+    int n = A.size();
+    vector<vector<ll>> C(n, vector<ll>(n, INF));
+
+    for(int i = 0; i < n; i++){
+        for(int k = 0; k < n; k++){
+            if(A[i][k] == INF) continue;
+            for(int j = 0; j < n; j++){
+                if(B[k][j] == INF) continue;
+                C[i][j] = min(C[i][j], A[i][k] + B[k][j]);
+            }
+        }
+    }
+    return C;
+}
+
+vector<vector<ll>> minplus_pow(vector<vector<ll>> base, long long exp)
+{
+    int n = base.size();
+    vector<vector<ll>> res(n, vector<ll>(n, INF));
+
+    for(int i = 0; i < n; i++)
+        res[i][i] = 0;
+
+    while(exp){
+        if(exp & 1)
+            res = minplus_mul(res, base);
+        base = minplus_mul(base, base);
+        exp >>= 1;
+    }
+    return res;
+}
+```
+
+#### Ejemplo
+
+Dado el siguiente grafo y su correspondiente matriz de adyacencia:
+
+<p align="center">
+  <img src="Imagenes/Graphs&Matrix-ExampleGraphWeighted.png" width="45%" />
+  <img src="Imagenes/Graphs&Matrix-ExampleAdjacencyMatrixWeighted.png" width="45%" />
+</p>
+
+$V^4$ contiene los caminos de costo minimo con $4$ aristas:
+
+<p align="center">
+  <img src="Imagenes/Graphs&Matrix-ExampleAdjacencyMatrixWeighted^4.png" width="45%" />
+</p>
+
+Notar que, por ejemplo, $V^4[2,5] = 8$ el cual corresponde al camino $2 \rightarrow 1 \rightarrow 4 \rightarrow 2 \rightarrow 5$.
+
 ### Calcular Destino en un Grafo Sucesor
 
 Un grafo sucesor es un grafo dirigido donde de cada nodo sale exactamente una arista. Estos grafos consisten de una o mas componentes conexas donde cada una contiene un ciclo y caminos que llevan a dicho ciclo, por lo tanto **n=m**.
@@ -4141,6 +4228,55 @@ En el algoritmo de Prim, inicialmente el arbol de expansion comienza con un nodo
 
 - Preferible para **grafos densos** (n<<m)
 
+#### Kirchhoff
+
+El **Teorema de Kirchhoff** nos provee una forma de calcular el numero de spanning trees de un grafo como el determinante de la matriz Laplaceana. Una matriz Laplaceana $L$ cumple las siguientes propiedades:
+- $L[i][i]$ es el grado del nodo $i$
+- $L[i][j] = -1$ si hay una arista entre los nodos $i$ y $j$.
+- $L[i][j] = 0$ si NO hay una arista entre los nodos $i$ y $j$.
+
+```c++
+vector<vector<double>> build_laplacian(int n, const vector<pair<int,int>> &edges)
+{
+    vector<vector<double>> L(n, vector<double>(n, 0.0));
+
+    for(auto [u, v] : edges){
+        L[u][u] += 1;
+        L[v][v] += 1;
+        L[u][v] -= 1;
+        L[v][u] -= 1;
+    }
+    return L;
+}
+
+vector<vector<double>> cofactor(const vector<vector<double>> &L)
+{
+    int n = sz(L);
+    vector<vector<double>> M(n-1, vector<double>(n-1));
+
+    forr(i, 1, n)
+        forr(j, 1, n)
+            M[i-1][j-1] = L[i][j];
+
+    return M;
+}
+
+long long count_spanning_trees(int n, const vector<pair<int,int>> &edges)
+{
+    auto L = build_laplacian(n, edges);
+    auto M = cofactor(L);
+
+    double det = reduce(M);
+
+    return llround(det);
+}
+```
+> *Complejidad: $\mathcal{O}(n^3)$*
+
+**NOTAS**:
+- En la funcion *cofactor* quitamos la fila $0$ y la columna $0$ pero es indistinto de cual quitemos.
+- *reduce* es la [reduccion Gaussiana](#gauss)
+
 ##### Minimum Spanning Tree
 
 ```c++
@@ -4441,7 +4577,7 @@ La complejidad de una dp esta dada por la suma de sus estados. Aqui un estado es
 
 > *Podemos mejorar la eficiencia si representamos los estados que sean subconjuntos de elementos en forma de **bitmasks**, como por ejemplo: `dp[1<<K][N]`. Solo funciona para conjuntos con **no mas de 64 elementos** (utilizando long long)*
 
-### Algoritmo de Kadane
+## Algoritmo de Kadane
 
 Obtener la maxima suma de subarreglos:
 
@@ -4465,6 +4601,141 @@ forr(i,1,n)
     curmn = min(a[i], curmn + a[i]);
     glmn = min(glmn, curmn);
 }
+```
+
+## Recurrencias Lineales
+
+Una recurrencia lineal es una funcion $f(n)$ cuyos valores iniciales $f(0), \cdots, f(k-1)$ son conocidos y los siguientes valores se calculan mediante la formula:
+
+$$
+f(n) = c_1f(n-1), \cdots, c_kf(n-k),
+$$
+
+donde $c_1, \cdots, c_k$ son coeficientes constantes.
+
+El objetivo es crear una matriz $X$ tal que:
+
+$$
+X \cdot \begin{bmatrix} 
+f(i) \\ 
+f(i+1) \\ 
+\vdots \\ 
+f(i+k-1) 
+\end{bmatrix} = \begin{bmatrix} 
+f(i+1) \\ 
+f(i+2) \\ 
+\vdots \\ 
+f(i+k) 
+\end{bmatrix}.
+$$
+
+Dicha matriz de tamano $k$x$k$ es:
+
+$$
+X = \begin{bmatrix} 
+0 & 1 & 0 & 0 & \cdots & 0 \\ 
+0 & 0 & 1 & 0 & \cdots & 0 \\ 
+0 & 0 & 0 & 1 & \cdots & 0 \\ 
+\vdots & \vdots & \vdots & \vdots & \ddots & \vdots \\ 
+0 & 0 & 0 & 0 & \cdots & 1 \\ 
+c_k & c_{k-1} & c_{k-2} & c_{k-3} & \cdots & c_1 
+\end{bmatrix}.
+$$
+
+Luego, $f(n), \cdots, f(n+k-1)$ pueden ser calculados de la siguiente manera:
+
+$$
+\begin{bmatrix} 
+f(n) \\ 
+f(n+1) \\ 
+\vdots \\ 
+f(n+k-1) 
+\end{bmatrix} = X^n \cdot \begin{bmatrix} 
+f(0) \\ 
+f(1) \\ 
+\vdots \\ 
+f(k-1) 
+\end{bmatrix}
+$$
+
+```c++
+const ll MOD = 1e9+7;
+
+vector<vector<ll>> mat_mul(
+    const vector<vector<ll>> &A,
+    const vector<vector<ll>> &B
+){
+    int n = A.size();
+    vector<vector<ll>> C(n, vector<ll>(n, 0));
+
+    for(int i=0;i<n;i++)
+        for(int k=0;k<n;k++) if(A[i][k])
+            for(int j=0;j<n;j++)
+                C[i][j] = (C[i][j] + A[i][k]*B[k][j]) % MOD;
+
+    return C;
+}
+
+vector<vector<ll>> mat_pow(
+    vector<vector<ll>> base, ll exp
+){
+    int n = base.size();
+    vector<vector<ll>> A(n, vector<ll>(n, 0));
+
+    for(int i=0;i<n;i++) A[i][i] = 1;
+
+    while(exp){
+        if(exp & 1) A = mat_mul(A, base);
+        base = mat_mul(base, base);
+        exp >>= 1;
+    }
+    return A;
+}
+
+ll linear_recurrence(
+    vector<ll> c,        // coeficientes c1..ck
+    vector<ll> f,        // f(0)..f(k-1)
+    ll n
+){
+    int k = c.size();
+
+    if(n < k) return f[n];
+
+    // matriz de transición
+    vector<vector<ll>> X(k, vector<ll>(k, 0));
+
+    // desplazamiento
+    for(int i=0;i<k-1;i++)
+        X[i][i+1] = 1;
+
+    // última fila (recurrencia)
+    for(int i=0;i<k;i++)
+        X[k-1][i] = c[k-1-i];
+
+    vector<vector<ll>> Xn = mat_pow(X, n);
+
+    // f(n) = primera fila * vector inicial
+    ll ans = 0;
+    for(int i=0;i<k;i++)
+        ans = (ans + Xn[0][i] * f[i]) % MOD;
+
+    return ans;
+}
+```
+
+> *Complejidad: $\mathcal{O}(k^3 \log(n))$*
+
+**NOTA**:
+- Notar que solo estamos devolviendo $f(n)$ pero pordriamos devolver hasta $f(n+k-1)$ inclusive en una misma iteracion.
+
+### Ejemplo: Fibonacci
+
+```c++
+// f(n) = f(n-1) + f(n-2)
+vector<ll> c = {1, 1};
+vector<ll> f = {0, 1};
+
+cout << linear_recurrence(c, f, 10); // 55
 ```
 
 # Operaciones de Bits

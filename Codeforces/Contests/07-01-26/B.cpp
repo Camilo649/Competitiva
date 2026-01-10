@@ -35,45 +35,45 @@ int main()
     cout.tie(0);
     
     cin >> tests;
-    
+
     while (tests--)
     {
         int n; cin >> n;
-        int a[n], b[n], c[n];
-        forn(i,n) cin >> a[i];
-        forn(i,n) cin >> b[i];
-        forn(i,n) cin >> c[i];
+        int k; cin >> k;
+        int a[n]; forn(i,n) cin >> a[i];
 
-        ll count_i = 0;
-        ll count_k = 0;
-        forn(l,n)
+        map<int,int> m;
+        forn(i,n)
         {
-            bool flag = true;
-            int m = 0;
-            while (m<n && flag)
-            {
-                if(b[m] <= a[(l+m)%n])
-                {
-                    flag = false;
-                }
-                m++;
-            }
-            if(flag) count_i++;
-
-            flag = true;
-            m = 0;
-            while (m<n && flag)
-            {
-                if(c[(l+m)%n] <= b[m])
-                {
-                    flag = false;
-                }
-                m++;
-            }
-            if(flag) count_k++;
+            if(m.count(a[i]) == 0) m[a[i]] = 1;
+            else m[a[i]]++;
         }
 
-        cout << count_i*count_k*n << nl;
+        int ops = n-k+1;
+        for (auto [key, value] : m) {
+            int dif = max(value-1, 0);
+            ops -= dif;
+        }
+
+        while (ops > 0)
+        {
+            auto it = std::prev(m.end());
+            m.erase(it);
+            ops --;
+        }
+
+        int ans = 0;
+        int key_ant = -1;
+        for (auto [key, value] : m) {
+            if(value > 0 && key == key_ant + 1){
+                ans++;
+                key_ant = key;
+            }
+            else break;
+        }
+
+        cout << ans << nl;
+        
     }
     
     return 0;

@@ -35,45 +35,29 @@ int main()
     cout.tie(0);
     
     cin >> tests;
-    
+
     while (tests--)
     {
         int n; cin >> n;
-        int a[n], b[n], c[n];
-        forn(i,n) cin >> a[i];
-        forn(i,n) cin >> b[i];
-        forn(i,n) cin >> c[i];
+        string s; cin >> s;
 
-        ll count_i = 0;
-        ll count_k = 0;
-        forn(l,n)
+        vector<int> count('z' - 'a' + 1,0);
+        ll ans = ((ll)(n+1)*(ll)n)/2;
+        forn(i,n)
         {
-            bool flag = true;
-            int m = 0;
-            while (m<n && flag)
+            if(count[s[i]-'a'] >= 1)
             {
-                if(b[m] <= a[(l+m)%n])
-                {
-                    flag = false;
-                }
-                m++;
+                ans -= n-(i+1);
             }
-            if(flag) count_i++;
-
-            flag = true;
-            m = 0;
-            while (m<n && flag)
-            {
-                if(c[(l+m)%n] <= b[m])
-                {
-                    flag = false;
-                }
-                m++;
-            }
-            if(flag) count_k++;
+            count[s[i]-'a']++;
         }
 
-        cout << count_i*count_k*n << nl;
+        forn(i,count.size())
+        {
+            ans -= max(count[i] - 1, 0);
+        }
+
+        cout << ans << nl;
     }
     
     return 0;

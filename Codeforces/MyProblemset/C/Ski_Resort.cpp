@@ -25,6 +25,15 @@ using namespace std;
  
 int tests;
 
+ll fact(ll n) {
+    ll x = 1;
+    forr(i,1,n+1)
+    {
+        x *= i;
+    }
+    return x;
+}
+
 int main()
 {
     #ifdef MILF
@@ -35,45 +44,29 @@ int main()
     cout.tie(0);
     
     cin >> tests;
-    
+
     while (tests--)
     {
-        int n; cin >> n;
-        int a[n], b[n], c[n];
-        forn(i,n) cin >> a[i];
-        forn(i,n) cin >> b[i];
-        forn(i,n) cin >> c[i];
+        ll n,k,q; cin >> n >> k >> q;
+        ll a[n]; forn(i,n) cin >> a[i];
 
-        ll count_i = 0;
-        ll count_k = 0;
-        forn(l,n)
+        ll ans = 0;
+        ll m = 0;
+        forn(i,n)
         {
-            bool flag = true;
-            int m = 0;
-            while (m<n && flag)
+            while (i<n && a[i] <= q)
             {
-                if(b[m] <= a[(l+m)%n])
-                {
-                    flag = false;
-                }
                 m++;
+                i++;
             }
-            if(flag) count_i++;
-
-            flag = true;
-            m = 0;
-            while (m<n && flag)
+            if(m >= k)
             {
-                if(c[(l+m)%n] <= b[m])
-                {
-                    flag = false;
-                }
-                m++;
+                ans += ((m-k+2)*(m-k+1))/2;
             }
-            if(flag) count_k++;
+            m=0;
         }
 
-        cout << count_i*count_k*n << nl;
+        cout << ans << nl;
     }
     
     return 0;

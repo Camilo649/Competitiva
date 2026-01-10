@@ -35,45 +35,20 @@ int main()
     cout.tie(0);
     
     cin >> tests;
-    
+
     while (tests--)
     {
         int n; cin >> n;
-        int a[n], b[n], c[n];
-        forn(i,n) cin >> a[i];
-        forn(i,n) cin >> b[i];
-        forn(i,n) cin >> c[i];
 
-        ll count_i = 0;
-        ll count_k = 0;
-        forn(l,n)
+        n--;
+        ll ans = 1;
+        while (n>0)
         {
-            bool flag = true;
-            int m = 0;
-            while (m<n && flag)
-            {
-                if(b[m] <= a[(l+m)%n])
-                {
-                    flag = false;
-                }
-                m++;
-            }
-            if(flag) count_i++;
-
-            flag = true;
-            m = 0;
-            while (m<n && flag)
-            {
-                if(c[(l+m)%n] <= b[m])
-                {
-                    flag = false;
-                }
-                m++;
-            }
-            if(flag) count_k++;
+           ans += n;
+           n -= 2;
         }
 
-        cout << count_i*count_k*n << nl;
+        cout << ans << nl;
     }
     
     return 0;
