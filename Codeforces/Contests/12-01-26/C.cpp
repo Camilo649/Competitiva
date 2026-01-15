@@ -19,7 +19,7 @@ typedef long double ld;
 
 using u64 = uint64_t;
 
-const int MAXN = -1;
+const int MAXN = 1e9;
 
 using namespace std;
  
@@ -38,7 +38,22 @@ int main()
 
     while (tests--)
     {
-        
+        int n,k; cin >> n >> k;
+
+        set<int> posible;
+        posible.insert(n);
+        int i = n;
+        int ops = 0;
+        while (i > 1)
+        {
+            if(posible.count(k) == 1) break;
+            posible.insert(i/2);
+            posible.insert((int)ceil((double)i/2));
+            i = (int)ceil((double)i/2)%2 == 1 ? (int)ceil((double)i/2) : i/2;
+            ops++;
+        }
+
+        cout << (posible.count(k) == 1 ? ops : -1) << nl;
     }
     
     return 0;

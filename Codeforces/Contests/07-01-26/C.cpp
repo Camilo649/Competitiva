@@ -40,18 +40,16 @@ int main()
     {
         int n,m,k; cin >> n >> m >> k;
 
-        int ans = 1;
-        int mx = max(k-1, n-k);
-        int mn = min(k-1, n-k);
-
-        int i = 0;
-        while (m - (2*i + 1) > mn && i+1 < mx)
+        if(k-1 < n-k) k = n+1-k;
+        int a = 0, b = 0;
+        while (1)
         {
-            i++;
+            if(b < n-k && a + (b+1) + max(a,b+1) - 1 <= m) b++;
+            if(a < k-1 && (a+1) + b + max(a+1,b) - 1 <= m) a++;
+            else break;
         }
-        ans += i+1 + min(mn, m - (2*i + 1));
-
-        cout << min(ans,n) << nl;
+        
+        cout << a + b + 1 << nl;
     }
     
     return 0;

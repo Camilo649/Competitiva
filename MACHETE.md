@@ -50,6 +50,10 @@ header-includes:
 | [Combinatoria: Computo de factoriales](#computo-de-factoriales)                                          | $\mathcal{O}(n)$                                |
 | [Combinatoria: Computo de factoriales inversos](#computo-de-factoriales-inversos)                        | $\mathcal{O}(n)$                                |
 | [Combinatoria: Inclusion Exclusion](#principio-de-inclusion-exclusion)                                   | $\mathcal{O}(2^n)$                              |
+| [Probabilidad: Esperanza](#esperanza)                                                                    | $\mathcal{O}(n)$                                |
+| [Probabilidad: Varianza](#varianza)                                                                      | $\mathcal{O}(n)$                                |
+| [Probabilidad: Caminata en Cadena de Markov (Programacion Dinamica)](#metodo-1)                          | $\mathcal{O}(n^2 \cdot m)$                      |
+| [Probabilidad: Caminata en Cadena de Markov (Matrices)](#metodo-2)                                       | $\mathcal{O}(n^3 \cdot \log (m))$               |
 | [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | $\mathcal{O}(\log(min(a,b)))$                   |
@@ -157,6 +161,8 @@ header-includes:
 | [Funciones de Conteo: Count If](#count-if)                          | Devuelve la cantidad de elemntos cumplen una determinada condicion en otro elemento iterable en tiempo $\mathcal{O}(n)$  |
 | [Funciones Aritmeticas: GCD](#gcd)                                  | Devuelve el maximo comun divisor en tiempo $\mathcal{O}log(min(a,b))$                                                    |
 | [Funciones Aritmeticas: LCM](#lcm)                                  | Devuelve el minimo comun multiplo en tiempo $\mathcal{O}log(min(a,b))$                                                   |
+| [Funciones Utilitarias: Swap](#swap)                                | Intercambia los valores de dos variables cualesquiera en tiempo $\mathcal{O}(1)$                                                      |
+| [Funciones de Entrada/Salida: Setprecision](#setprecision)          | Establece la cantidad de dígitos decimales mostrados en el output en tiempo $\mathcal{O}(1)$                             |
 
 # Librerias God 
 
@@ -507,6 +513,47 @@ int b = 18;
 lcm(a,b); // 144
 ```
 > *Los compiladores de 2025 y posteriores calculan lcm de valores constantes en tiempo de compilacion*
+
+# Funciones Utilitarias
+
+## Swap
+
+```c++
+int a = 5, b = 10;
+swap(a, b);
+cout << a << " " << b << "\n"; // 10 5
+```
+
+```c++
+vector<int> v1 = {1, 2, 3};
+vector<int> v2 = {4, 5, 6};
+swap(v1, v2);
+for (int x : v1) cout << x << " ";
+cout << "\n"; // 4 5 6
+for (int x : v2) cout << x << " ";
+cout << "\n"; // 1 2 3
+```
+
+# Funciones de Entrada/Salida
+
+## Setprecision
+
+- **Presicion Fija**:
+```c++
+double x = 3.141592653589793;
+cout << fixed << setprecision(4) << x << "\n"; // 3.1416
+```
+
+- **Notacion Cientifica**:
+```c++
+double x = 3.141592653589793;
+cout << scientific << setprecision(3) << x << "\n"; // 3.142e+00
+```
+
+**NOTAS**:
+- Por defecto la presicion es fija y de 6 digitos significativos
+- El ultimo digito siempre se redondea
+- Una vez utilizada, afecta todas las impresiones siguientes del programa
 
 # Arrays
 
@@ -2112,6 +2159,230 @@ $$
 \sum_{i=0}^{n-1} \frac{m^{gcd(i,n)}}{n}.
 $$
  
+## Probabilidad
+
+Una **probabilidad** es un numero real entre 0 y 1 que indica que tan probable es un evento. Cuando se sabe que un evento va a pasar, su probabilidad es 1, y cuando se sabe que es imposible que ocurra, su probabilidad es 0.
+
+Un **evento** es un conjunto $A \subset X$, donde $X$ es el **universo** y contiene todos los posibles resultados.
+
+Podemos calcular un evento dado mediante la formula:
+
+$$
+P(A) = \frac{\#\{\text{resultados deseados}\}}{\#\{\text{resultados totales}\}} = \frac{|A|}{|X|}
+$$
+
+o mediante la simulacion del proceso que genera el evento. Por ejemplo: En una baraja de poker, la probabilidad de sacar tres cartas del mismo palo se puede calcular como:
+
+$$
+P(A) = 1 \cdot \frac{3}{51} \cdot \frac{2}{50} = \frac{1}{425}.
+$$
+
+### Operaciones
+
+- **Complemento**: Dado un evento $A$, su complemento $\overline{A}$ es el evento "No ocurre $A$". Se calcula como:
+$$
+P(\overline{A}) = 1 - P(A).
+$$
+
+- **Probabilidad Condicional**: Dados los eventos $A$ y $B$, la probabilidad condicional $P(A|B)$ es la probabilidad de que ocurra $A$ asumiendo que sucede $B$. Se calcula como:
+$$
+P(A \mid B) = \frac{P(A \cap B)}{P(B)}
+$$
+
+- **Interseccion**: Dados los eventos $A$ y $B$, su intereseccion $A \cap B$ es el evento "Ocurren $A$ y $B$". Se puede calcular como:
+$$
+P(A \cap B) = P(B)P(A \mid B) = P(A)P(B \mid A)
+$$
+o en base a la union:
+$$
+P(A \cap B) = P(A) + P(B) - P(A \cup B).
+$$
+Decimos que dos eventos $A$ y $B$ son **independietes** si
+$$
+P(A \mid B) = P(A)
+\quad \text{y} \quad
+P(B \mid A) = P(B)
+$$
+
+- **Union**: Dados los eventos $A$ y $B$, su union $A \cup B$ es el evento "Ocurren $A$ o $B$". Se calcula como:
+$$
+P(A \cup B) = P(A) + P(B) - P(A \cap B).
+$$
+Notar que si dos eventos $A$ y $B$ son **disjuntos**, $P(A \cup B) = P(A) + P(B)$.
+
+### Variables Aleatorias
+
+Una **variable aleatoria** es un valor generado por un proceso o experimento de caracteristicas aleatorias.
+
+> Siempre consideramos variables aleatorias con numeros discretos (i.e. que no consideraremos las variables aleatorias continuas).
+
+#### Esperanza
+
+Dada una variable aleatoria $X$, su **esperanza** $E[X]$ denota al valor esperado de X. Se calcula como:
+
+$$
+E[X] = \sum_x x \cdot P(X = x).
+$$
+
+```c++
+double expected_value(const vector<double>& x, const vector<double>& p) 
+{
+    double E = 0.0;
+    int n = x.size();
+    for (int i = 0; i < n; i++) {
+        E += x[i] * p[i];
+    }
+    return E;
+}
+```
+> *Complejidad: $\mathcal{O}(n)$*
+
+#### Varianza
+
+Dada una variable aleatoria $X$, su **varianza** $Var(X)$ es una medida de que tan dispersos estan los valores de la variable con respecto a su [esperanza](#esperanza). Se calcula como:
+
+$$
+Var(X) = E\!\left[(X - E[X])^2\right] = E[X^2] - (E[X])^2.
+$$
+
+```C++
+double variance(const vector<double>& x, const vector<double>& p) 
+{
+    double EX = 0.0, EX2 = 0.0;
+    int n = x.size();
+
+    for (int i = 0; i < n; i++) {
+        EX  += x[i] * p[i];
+        EX2 += x[i] * x[i] * p[i];
+    }
+
+    return EX2 - EX * EX;
+}
+```
+> *Complejidad: $\mathcal{O}(n)$*
+
+#### Distribuciones
+
+La **distribucion** de una variable aleatoria $X$ muestra la probabilidad que cada posible valor de $X$ debe tener.
+
+<u>Uniforme</u>
+En esta distribucion $X$ tiene $n$ posibles valores en el intervalo $[a,b]$ y la probabilidad de cada uno de ellos es $\frac{1}{n}$.
+
+$$
+E[X] = \frac{a+b}{2}
+\quad \text{y} \quad
+\mathrm{Var}(X) = \frac{n^2 - 1}{12}.
+$$
+
+<u>Binomial</u>
+En esta distribucion se realizan $n$ intentos cada uno con probabilidad $p$. La variable cuenta el numero de exitos y la probabilidad de un valor $x$ es $P(X = x) = p^x (1-p)^{n-x} \binom{n}{x}$.
+
+$$
+E[X] = np
+\quad \text{y} \quad
+\mathrm{Var}(X) = np(1-p).
+$$
+
+<u>Geometrica</u>
+En esta distribucion la probabilidad de que un intento tenga exito es $p$ y se continua hasta que el primer exito suceda. La variable cuenta el numero de intentos necesarios hasta que ocurre el primer exito y la probabilidad de un valor $x$ es $P(X = x) = p(1-p)^{x-1}$.
+
+$$
+E[X] = \frac{1}{p}
+\quad \text{y} \quad
+\mathrm{Var}(X) = \frac{1-p}{p^2}.
+$$
+
+### Cadenas de Markov
+
+Una **cadena de Markov** es un proceso aleatorio que consiste de estados y transiciones entre ellos, donde para cada estado se conocen las probabilidades de moverse a otros estados. Generalmente se representa con un [grafo](#grafos) donde los nodos son los estados y las aristas las transiciones.
+
+![Ejemplo de Cadena de Markov](Imagenes/Markov'sChainExample.png)
+> *Notar que estando en el estado 1, solo puedo ir al estado 2 y que estando en el estado 5, solo puedo ir al estado 4.*
+
+#### Metodo 1
+
+Podemos resolver el ejemplo de arriba con [programacion dinamica](#programacion-dinamica) mediante la siguiente transicion de estados:
+
+$$
+\left\{
+\begin{array}{ll}
+dp[t][2] \mathrel{+}= dp[t-1][1], & \text{si } i = 1, \\[6pt]
+dp[t][n-1] \mathrel{+}= dp[t-1][n], & \text{si } i = n, \\[6pt]
+dp[t][i-1] \mathrel{+}= \dfrac{dp[t-1][i]}{2}, & \text{si } 1 < i < n, \\[4pt]
+dp[t][i+1] \mathrel{+}= \dfrac{dp[t-1][i]}{2}, & \text{si } 1 < i < n.
+\end{array}
+\right.
+$$
+
+```c++
+vector<double> cur(n + 1, 0.0), nxt(n + 1, 0.0);
+
+cur[1] = 1.0;
+for (int step = 1; step <= m; step++) {
+    fill(nxt.begin(), nxt.end(), 0.0);
+    for (int i = 1; i <= n; i++) {
+        if (cur[i] == 0.0) continue;
+        if (i == 1) {
+            nxt[2] += cur[i];
+        } else if (i == n) {
+            nxt[n - 1] += cur[i];
+        } else {
+            nxt[i - 1] += cur[i] * 0.5;
+            nxt[i + 1] += cur[i] * 0.5;
+        }
+    }
+    swap(cur, nxt);
+}
+```
+> *Complejidad ESTE CASO: $\mathcal{O}(n \cdot m)$*
+> *Complejidad GENERAL: $\mathcal{O}(n^2 \cdot m)$*
+
+#### Metodo 2
+
+Otra forma es representar las transiciones con una matriz que actualice las probabilidades de distribucion. La matriz se veria asi:
+
+$$
+T =
+\begin{pmatrix}
+0 & \tfrac{1}{2} & 0 & 0 & 0 \\
+1 & 0 & \tfrac{1}{2} & 0 & 0 \\
+0 & \tfrac{1}{2} & 0 & \tfrac{1}{2} & 0 \\
+0 & 0 & \tfrac{1}{2} & 0 & 1 \\
+0 & 0 & 0 & \tfrac{1}{2} & 0
+\end{pmatrix}.
+$$
+
+Luego de $m$ pasos, podemos obtener el vector de probabilidades en el paso $m$ $p_m$ como $p_m = T^m \cdot p_0$.
+
+```c++
+vector<vector<ll>> build_transition(int n)
+{
+    vector<vector<ll>> T(n, vector<ll>(n, 0));
+    ll inv2 = (MOD + 1) / 2;
+
+    T[1][0] = 1;
+
+    for(int j = 1; j <= n-2; j++){
+        T[j-1][j] = inv2;
+        T[j+1][j] = inv2;
+    }
+
+    T[n-2][n-1] = 1;
+
+    return T;
+}
+
+vector<ll> p0(n, 0);
+p0[0] = 1;
+vector<vector<ll>> T = build_transition(n);
+vector<vector<ll>> Tm = mat_pow(T, m);
+vector<ll> pm = multiply(Tm, p0);
+```
+> *Complejidad: $\mathcal{O}(n^3 \cdot \log (m))$*
+
+**NOTA**
+- A diferencia del primer [metodo](#metodo-1), este metodo NO permite ver las distribuciones en los pasos intermedios.  
+
 ## Teoria de Numeros
 
 ### Divisibilidad
@@ -4661,10 +4932,8 @@ $$
 ```c++
 const ll MOD = 1e9+7;
 
-vector<vector<ll>> mat_mul(
-    const vector<vector<ll>> &A,
-    const vector<vector<ll>> &B
-){
+vector<vector<ll>> mat_mul(const vector<vector<ll>> &A, const vector<vector<ll>> &B)
+{
     int n = A.size();
     vector<vector<ll>> C(n, vector<ll>(n, 0));
 
@@ -4676,9 +4945,8 @@ vector<vector<ll>> mat_mul(
     return C;
 }
 
-vector<vector<ll>> mat_pow(
-    vector<vector<ll>> base, ll exp
-){
+vector<vector<ll>> mat_pow(vector<vector<ll>> base, ll exp)
+{
     int n = base.size();
     vector<vector<ll>> A(n, vector<ll>(n, 0));
 
@@ -4692,11 +4960,8 @@ vector<vector<ll>> mat_pow(
     return A;
 }
 
-ll linear_recurrence(
-    vector<ll> c,        // coeficientes c1..ck
-    vector<ll> f,        // f(0)..f(k-1)
-    ll n
-){
+ll linear_recurrence(vector<ll> c, vector<ll> f, ll n)
+{
     int k = c.size();
 
     if(n < k) return f[n];
