@@ -540,14 +540,14 @@ cout << "\n"; // 1 2 3
 
 - **Presicion Fija**:
 ```c++
-double x = 3.141592653589793;
-cout << fixed << setprecision(4) << x << "\n"; // 3.1416
+double pi = 3.141592653589793;
+cout << fixed << setprecision(4) << pi << "\n"; // 3.1416
 ```
 
 - **Notacion Cientifica**:
 ```c++
-double x = 3.141592653589793;
-cout << scientific << setprecision(3) << x << "\n"; // 3.142e+00
+double pi = 3.141592653589793;
+cout << scientific << setprecision(3) << pi << "\n"; // 3.142e+00
 ```
 
 **NOTAS**:
@@ -5030,6 +5030,119 @@ if(x & (x-1) == 0)
     /* Hacer algo cuando x sea potencia de 2 */
 }
 ```
+
+# Teoria de Juegos
+
+Esta seccion esta orientada a la resolucion de problemas en los que haya un juego de **dos jugadores** y sin la presencia de **elementos aleatorios**. En tal caso, siempre se puede encontrar una **estrategia optima** para ambos jugadores la cual determine quien va a ser el ganador.
+
+## Estados de Juego
+
+Los estados de juego siempre son de alguno de los siguientes dos tipos:
+
+- **Ganadores**: Un estado ganador es un estado en el que el jugador va a ganar el juego si juega de manera optima.
+- **Perdedores**: Un estado perrdedor es un estado en el que el jugador va a perder el juego si el oponente juega de manera optima.
+
+### Ejemplo 1
+
+Consideremos un juego en el que inicialmente hay un monton con $n$ palos. El jugador A comienza y los turnos van alternando. En cada movimiento, un jugador pude remover $1$, $2$ o $3$ palos del monton. Gana el jugador que quita el ultimo palo.
+Es claro que cuando el monton tiene $0$ palos, estamos ante un estado perdedor. Del mismo modo, cuando el monton tiene $1$, $2$ o $3$ palos, estamos ante un estado ganador.
+Generalizando para este juego, decimos que estamos en un estado ganador si desde ese estado podemos alcanzar un estado perdedor con algun movimiento. De manera similar, decimos que estamos en un estado perdedor si desde ese estado solamente podemos alcanzar esados ganadores independientemente del movimiento que realicemos.
+Luego, la clasificacion de los estados $0 \cdots 15$ seria de la siguiente manera:
+
+![Estados del 0 al 15 en el Juego de los Palos](Imagenes/StatesFrom0to15-SticksGame.png)
+> *Notar que, en este caso, un estado es un estado perdedor si y solo si el estado es divisble por 4.*
+
+### Ejemplo 2
+
+Consideremos ahora un juego similar al anterior con la diferencia de que pierde el jugador que se queda sin movimientos y que si el monton tiene $k$ palos, puedo remover cualquier numero $x$ de ellos que sea menor a $k$ y que divida a $k$.
+
+El **grafo de estados** de los primeros $9$ estados del juego se puede ver en la siguiente imagen:
+![Grafo de Estados en el Otro Juego de los Palos](Imagenes/StateGraph-SecondSticksGame.png)
+
+Aqui cada nodo es un estado y cada arista representa un posible movimiento entre ellos.
+
+Es claro que el estado $1$ es un estad perdedor y, por lo tanto, cualquier estado que lleve al $1$ es un estado ganador. Luego, cualquier estado que lleve a un estado que lleva al $1$ es un estado perdedor y asi sucesivamente. Siguiendo esta idea, la clasificacion de los primetos $9$ estados seria de la siguiente manera:
+
+![Estados del 1 al 9 en el otro Juego de los Palos](Imagenes/StatesFrom1to9-SecondSticksGame.png)
+> *Notar que, en este caso, los estados perdedores son los estados impares y los estados ganadores son los pares.*
+
+## El Juego de Nim
+
+El juego de Nim consite de $n$ montones, cada uno con una determinada cantidad de palos. El jugador A comienza y los turnos van alternando. En cada turno, el jugador elige uno de los montones y puede remover cualquier cantidad de palos valida. Gana el jugador que remueve el ultimo palo.
+Los estados en el juego de Nim son de la forma $[x_1, x_2, \cdots, x_n]$, donde $x_k$ denota el numero de palos en el $k$-esimo monton. El estado $[0, 0 \cdots, 0]$ es un estado perdedor y siempre es el estado final.
+
+Resulta que el juego de Nim es interesante porque permite clasificar facilmente un estado mediante la **suma de Nim** $s = x_1 \oplus x_2 \oplus \cdots \oplus x_n$, donde $\oplus$ es la operacion XOR. Luego,
+
+- Un estado sera ganador si y solo si su suma de Nim es positiva (pues siempre existe un monton al cual se le puede quitar una cantidad de palos que hagan que la suma sea 0).
+- Un estado sera perdedor si y solo si su suma de Nim es nula (pues cualquier movimiento va a modificar la paridad de los bits).
+
+### Juego de Misère
+
+Un caso particular del juego de Nim  es el juego de Misère. El juego es identico al juego de Nim original salvo por que pierde el jugador que remueve el ultimo palo. La idea es seguir la misma estrategia del juego de Nim hasta que todos los montones queden con a lo sumo un palo. En tal caso, se debe cambiar la estrategia, puesto que 
+
+- Un estado ganador es aquel en el que quedan una cantidad par de montones con 1 palo.
+- Un estado perdedor es aquel en el que queda una cantidad impar de montones con 1 palo.
+
+## Numeros Grundy
+
+El numero Grundy de un estado de juego es 
+
+$$
+mex({g_1, g_2, \cdots, g_n}),
+$$
+
+donde $g_1, g_2, \cdots, g_n$ son los numeros Grundy de los estados a los que nos podemos mover. Si no hay movimientos posibles en un estado, su numero Grundy es 0.
+
+### Ejemplo
+
+Consideremos un juego en el que los jugadores mueven una ficha en un laberinto y cada cuadrado del laberinto puede ser piso o pared. Comienza el jugador A, los turnos se van alternando y en cada turno el jugador puede mover la ficha a izquierda o a arriba a cualquier cuadrado que sea piso.
+
+![Ejemplo de Estado Inicial en el Juego del Laberinto](Imagenes/ExampleInitialState-MazeGame.png)
+> *Posible estado inicial del juego.*
+
+Aqui '@' representa la ficha, '*' denota los cuadrados a los que se puede mover la ficha, los bloques blancos son el piso y los negros la pared.
+
+En este caso, los estados posibles son todos los cuadrados blancos del laberinto. En el ejemplo anterior, los numeros Grundy son los siguientes:
+
+![Ejemplo de Numeros Grundy en el Juego del Laberinto](Imagenes/ExampleGrundyNumbers-MazeGame.png)
+
+Asi, cada estado corresponde a un monton en el [juego de Nim](#el-juego-de-nim).
+
+### Subjuegos
+
+Consideremos ahora el caso en que el juego consite de varios subjuegos y que, en cada turno, el jugador elige primero un subjuego al cual jugar y luego realiza un movimiento en dicho subjuego. Pierde el jugador que no puede realiza mas movimientos en ninguno de los subjuegos.
+
+Resulta que el numero Grundy del juego es la suma de Nim de los numeros Grundy de cada subjuego. Por lo tanto, el juego puede ser jugado como [juego de Nim](#el-juego-de-nim) por medio de calcular los numeros Grundy de cada subjuego y su suma de Nim.
+
+Como ejemplo, consideremeos un juego que consiste en 3 subjuegos del laberinto cada uno con las mismas reglas que el ejemplo anterior. Asumiendo que en cada subjuego la ficha comienza en la esquina inferior derecha y que los laberintos son como se muestran a continuacion, su numero Grundy seria el siguiente:
+
+![Ejemplo de Numeros Grundy con Subjuegos](Imagenes/ExampleGrundyNumbers-Subgames.png)
+> *Notar que el estado inicial es un estado ganador.*
+
+### El Juego de Grundy
+
+En el juego de Grundy, inicialmente hay un monton con $n$ palos. En cada turno, el jugador elije un monton y lo divide en dos montones no vacios de diferente tamaño. Gana el jugador que realiza el ultimo movimiento. 
+
+Definamos $f(k)$ como el numero Grundy de un monton compuesto de $k$ palos. $f(k)$ puede ser calculada en base a calcular los numeros Grundy de todas las formas de dividr el monton de $k$ palos en otros dos montones. Por ejemplo, cuando $k = 8$, hay tres formas de dividr el monton de $8$ palos: $1 + 7$, $2 + 6$ y $3 + 5$. Luego, 
+
+$$
+f(8)=\operatorname{mex}\{f(1)\oplus f(7),\,f(2)\oplus f(6),\,f(3)\oplus f(5)\}.
+$$
+
+En este juego, los casos bases son $f(1) = f(2) = 0$. Luego, los numero Grundy son:
+
+$$
+\begin{aligned}
+f(1) = 0 \\
+f(2) = 0 \\
+f(3) = 1 \\
+f(4) = 0 \\
+f(5) = 2 \\
+f(6) = 1 \\
+f(7) = 0 \\
+f(8) = 2
+\end{aligned}
+$$
 
 [^1]: *Un conjunto de puntos es convexo si contiene todos los segmentos entre todo par de puntos del conjunto.*
 [^2]: *Un grafo dirigido es funcional si cada nodo tiene exactamente una arista saliente. Esto significa que el grafo forma una colección de ciclos y caminos que terminan en un ciclo*
