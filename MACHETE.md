@@ -952,13 +952,13 @@ struct trie {
 
 # Hashes
 
-Sea $\sum = \{a_1, a_2, \ldots, a_n\}$ un alfabeto con $n$ caracteres. Si le asociamos a cada $a_i$ el valor $i$, podemos representar a cada [string](#strings) $s = s_0s_1 \ldots s_k$ como el polinomio:
+Sea $\sum = \{a_1, a_2, \ldots, a_n\}$ un alfabeto con $n$ caracteres. Si le asociamos a cada $a_i$ el valor $i$ (como por ejemplo, su valor ASCII), podemos representar a cada [string](#strings) $s = s_0s_1 \ldots s_k$ como el polinomio:
 
 $$
-\text{hash}(s) = \sum_{i=0}^{k} \text{valor}(s_i) \cdot b^{k - i}
+\text{hash}(s) = \sum_{i=0}^{k} a_i \cdot b^{k - i} \pmod{2^{64}}
 $$
 
-donde $b$ es una **base** suficientemente grande ($>n$), y el resultado se toma modulo algun numero primo $m$ para evitar overflows y colisiones. Asi, cada string tendra asociado un numero unico al cual llamamos su **hash**.
+donde $b$ es una **base** impar suficientemente grande ($>n$), todas las operaciones se realizan utilizando `uint64_t` y, naturalmente el overflow implementa el modulo $\pmod{2^{64}}$. Asi, cada string tendra asociado un numero "unico" al cual llamamos su **hash**.
 
 
 Especialmente eficiente para:
@@ -966,28 +966,31 @@ Especialmente eficiente para:
 - Comparaciones lexicograficas de strings
 
 ```c++
-struct StrHash { // Hash polinomial con exponentes decrecientes.
-	static constexpr ll ms[] = {1'000'000'007, 1'000'000'403};
-	static constexpr ll b = 500'000'000;
-	vector<ll> hs[2], bs[2];
-	StrHash(string const& s) {
-		int n = sz(s);
-		forn(k, 2) {
-			hs[k].resize(n+1), bs[k].resize(n+1, 1);
-			forn(i, n) {
-				hs[k][i+1] = (hs[k][i] * b + s[i]) % ms[k];
-				bs[k][i+1] =  bs[k][i] * b         % ms[k];
-			}
-		}
-	}
-	ll get(int idx, int len) const { // Hashes en `s[idx, idx+len)`.
-		ll h[2];
-		forn(k, 2) {
-			h[k] = hs[k][idx+len] - hs[k][idx] * bs[k][len] % ms[k];
-			if (h[k] < 0) h[k] += ms[k];
-		}
-		return (h[0] << 32) | h[1];
-	}
+struct StrHash {
+    using ull = unsigned long long;
+
+    ull base;
+    vector<ull> h, p;
+
+    StrHash(const string& s) {
+        int n = s.size();
+
+        // base aleatoria impar
+        base = chrono::steady_clock::now().time_since_epoch().count() | 1;
+
+        h.assign(n+1, 0);
+        p.assign(n+1, 1);
+
+        for (int i = 0; i < n; ++i) {
+            h[i+1] = h[i] * base + (unsigned char)s[i];
+            p[i+1] = p[i] * base;
+        }
+    }
+
+    // hash de s[l, r)
+    ull get(int l, int len) const {
+        return h[l+len] - h[l] * p[len];
+    }
 };
 ```
 
@@ -995,7 +998,10 @@ struct StrHash { // Hash polinomial con exponentes decrecientes.
 
 ```c++
 string s = "hello world";
-strhash hs(s);
+StrHash hs(s);
+
+auto h1 = hs.get(0, 5);   // "hello"
+auto h2 = hs.get(6, 5);   // "world"
 ```
 
 > *Complejidad construccion: $\mathcal{O}(n)$*
@@ -1004,10 +1010,10 @@ strhash hs(s);
 
 # Z Function
 
-Dado un [string](#strings) $s$, definimos el arreglo $z$ tal que $z[i]$ es la longitud del prefijo mas largo de $s$ que a su vez empieza en el indice $i$.
+Dado un [string](#strings) $s$, definimos el arreglo $z$ tal que $z[i]$ es la longitud del prefijo mas largo de $s$ que a su vez empieza en el indice $i$. Asi, si $s[i] = m$, entonces $s[0 \cdots m-1] = s[i \cdots i+m-1]$
 
 Especialmente eficiente para:
-- Deteccion de patrones en strings
+- Deteccion de patrones en strings (*pattern matching*): s = preffix#string
 - Comparaciones de prefijos con sufijos
 
 ![Ejemplo Funcion Z](Imagenes/EjemploZFunction.png)
