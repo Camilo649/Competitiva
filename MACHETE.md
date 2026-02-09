@@ -72,6 +72,7 @@ header-includes:
 | [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | $\mathcal{O}(\log (n))$                         |
 | [Busqueda: Ventana deslizante](#ventana-deslizante)                                                      | $\mathcal{O}(n)$                                |
 | [Busqueda: 2SUM](#2sum)                                                                                  | $\mathcal{O}(n)$                                |
+| [Busqueda: Algoritmo de Mo](#algoritmo-de-mo)                                                            | $\mathcal{O}(n \cdot \sqrt{n} \cdot f(n))$      |
 | [Grafos: DFS](#dfs)                                                                                      | $\mathcal{O}(n + m)$                            |
 | [Grafos: BFS](#bfs)                                                                                      | $\mathcal{O}(n + m)$                            |
 | [Grafos: Bellman-Ford](#bellman-ford)                                                                    | $\mathcal{O}(n \cdot m)$                        |
@@ -230,6 +231,10 @@ header-includes:
 - **Cuando en un problema de [flujos y cortes](#flujos-y-cortes) quiera tener muchas fuentes y resumideros, puedo hacer un S' y un T' con capacidad infinita y resolverlo como un problema de max flow**
 
 - **Si en una dp solo me muevo del estado i al estado i+1 y no necesito preservar informacion historica, puedo simplemente tener una dp nueva y una vieja e irlas actualizando en cada paso**
+
+- **Si existen dos algoritmos para un mismo problema, uno eficiente para casos chicos y otro eficiente para casos grandes, suele ser posible combinarlos usando un umbral $T = \sqrt{n}$, donde los casos con $k$ elementos, en donde $k < \sqrt{n}$ se resuelven utilizando el primer algoritmo y los casos en donde $k \ge \sqrt{n}$ se resuelven utilizando el primer algoritmo. Este enfoque reduce un factor $n$ a $\sqrt{n}$ en la complejidad final.**
+
+- **Usando la propiedad de que un numero $n$ solo puede ser expresado como la suma de a lo sumo $\sqrt{n}$ numeros distintos, podemos mejorar la complejidad de problemas de [programacion dinamica](#programacion-dinamica) de $\mathcal{O}(n^2)$ a $\mathcal{O}(n \sqrt{n})$ procesando cada grupo una vez en $\mathcal{O}(n)$**
 
 # Funciones de Ordenacion
 
@@ -2801,6 +2806,17 @@ void sum2  (vector<int > &A, int x, int &iR , int &jR) {
 **NOTAS**:
 - Los elementos deben estar **ordenados** 
 - Se necesitan **dos indieces/punteros** (uno para el primer elemento y otro para el ultimo)
+
+## Algoritmo de Mo
+
+Especialmente eficiente para:
+
+- Procesar querys de rango en un arreglo estatico
+
+El algoritmo de Mo mantiene un **rango activo** de la matriz y la respuesta a la query actual es conocida en cada paso. Se procesan las querys una por una y se van moviendo los extremos del rango activo insertando y eliminando elementos. 
+El truco radica en el orden en el que se procesan las consultas: el arreglo es dividido en bloques de $k = \sqrt(n)$ elementos y una query $[a_1, b_1]$ es procesada antes que una query $[a_2, b_2]$ si $\lfloor a_1/k \rfloor < \lfloor a_2/k \rfloor$ o $\lfloor a_1/k \rfloor = \lfloor a_2/k \rfloor$ y $b_1 < b_2$. Esto garantiza que todas las querys cuyo inidice inferior izquierdo se encuentren en el mismo bloque, se procesen juntas.
+
+> *Complejidad: $\mathcal{O}(n \cdot \sqrt{n} \cdot f(n))$ (donde $f(n)$ es el costo de insercion y eliminacion)*
 
 # Grafos
 
