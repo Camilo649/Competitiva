@@ -134,6 +134,7 @@ header-includes:
 | [Iteradores](#iteradores)                             | $4B$                                                                                                            |
 | [Binary Index Tree/Fenwick Tree](#fenwick-tree)       | $(8 \cdot \#elementos)B$                                                                                        |
 | [Segment Tree](#segment-tree)                         | $(12 \cdot \#elementos - 4)B$                                                                                   |
+| [Lazy Segment Tree](#lazy-segment-tree)               | $2 \cdot (12 \cdot \#elementos - 4)B$                                                                           |
 | [Geometria: Punto](#punto)                            | $8B$                                                                                                            |
 | [Geometria: Vector](#vector)                          | $8B$                                                                                                            |
 | [Geometria: Recta](#recta)                            | $16B$                                                                                                           |
@@ -235,6 +236,8 @@ header-includes:
 - **Si existen dos algoritmos para un mismo problema, uno eficiente para casos chicos y otro eficiente para casos grandes, suele ser posible combinarlos usando un umbral $T = \sqrt{n}$, donde los casos con $k$ elementos, en donde $k < \sqrt{n}$ se resuelven utilizando el primer algoritmo y los casos en donde $k \ge \sqrt{n}$ se resuelven utilizando el primer algoritmo. Este enfoque reduce un factor $n$ a $\sqrt{n}$ en la complejidad final.**
 
 - **Usando la propiedad de que un numero $n$ solo puede ser expresado como la suma de a lo sumo $\sqrt{n}$ numeros distintos, podemos mejorar la complejidad de problemas de [programacion dinamica](#programacion-dinamica) de $\mathcal{O}(n^2)$ a $\mathcal{O}(n \sqrt{n})$ procesando cada grupo una vez en $\mathcal{O}(n)$**
+
+- **Los [segment trees](#segment-tree) no estan restringidos a almacenar unicamente numeros. Se puede utilizar cualquier estructura en ellos a coste de mayor complejidad computacional y mas espacio ocupado en memoria.**
 
 # Funciones de Ordenacion
 
@@ -1487,7 +1490,7 @@ Los nodos se almacenan desde abajo hacia arriba. Por ejemplo, el segment tree
 se guarda como:
 
 ![Segment Tree Representation Example](Imagenes/SegmentTreeRepresentationExample.png)
->*Usando esta representacion, el padre del nodo `tree[k]` es `tree[floor(k/2)]`, y sus hijos son `tree[2k]` and `tree[2k+1]`. Notar que esto implica que la posicion de un nodo es impar si es un hijo izquierdo y par si es un hijo derecho*
+>*Usando esta representacion, el padre del nodo `tree[k]` es `tree[floor(k/2)]`, y sus hijos son `tree[2k]` and `tree[2k+1]`. Notar que esto implica que la posicion de un nodo es par si es un hijo izquierdo e impar si es un hijo derecho*
 
 <u>Actualizacion:</u>
 1. Actualizo el valor del nodo actual.
@@ -1525,11 +1528,78 @@ int sumst(int l, int r) { // indice izquiero del subarreglo, indice derecho del 
 
 > *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
-> *Complejidad actualizacion: $\mathcal{O}(\log(n))$*
+> *Complejidad actualizacion individual: $\mathcal{O}(\log(n))$*
 
 **NOTAS**:
-- A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** de tamaño `(n+k)*2` para implementarlo, donde `k` son los elementos neutros agregados para lograr que `n` sea potencia de 2
+- A pesar de ser una estructura de arbol binario, utilizamos un **arreglo** de tamaño $(n+k) \cdot 2$ para implementarlo, donde $k$ son los elementos neutros agregados para lograr que $n$ sea potencia de $2$
 - Si bien es una estructura **mas general** que un *fenwick tree*, **requiere mas memoria** y es un poco **mas dificil de implementar**
+
+# Lazy Segment Tree
+
+Es como un segment tree, pero soporta actualizaciones de rango en $\mathcal{O}(\log(n))$ a costa de ocupar mas memoria.
+
+``` c++
+void updateRange(int node, int start, int end, int l, int r, long long val) {
+    if (lazy[node] != 0) {
+        tree[node] += (end - start + 1) * lazy[node];
+        if (start != end) {
+            lazy[node*2]     += lazy[node];
+            lazy[node*2 + 1] += lazy[node];
+        }
+        lazy[node] = 0;
+    }
+
+    if (start > r || end < l)
+        return;
+
+    if (start >= l && end <= r) {
+        tree[node] += (end - start + 1) * val;
+        if (start != end) {
+            lazy[node*2]     += val;
+            lazy[node*2 + 1] += val;
+        }
+        return;
+    }
+
+    int mid = (start + end) / 2;
+    updateRange(node*2,     start, mid, l, r, val);
+    updateRange(node*2 + 1, mid+1, end, l, r, val);
+
+    tree[node] = tree[node*2] + tree[node*2 + 1];
+}
+
+long long sumst(int node, int start, int end, int l, int r) {
+    if (lazy[node] != 0) {
+        tree[node] += (end - start + 1) * lazy[node];
+        if (start != end) {
+            lazy[node*2]     += lazy[node];
+            lazy[node*2 + 1] += lazy[node];
+        }
+        lazy[node] = 0;
+    }
+
+    if (start > r || end < l)
+        return 0;
+
+    if (start >= l && end <= r)
+        return tree[node];
+
+    int mid = (start + end) / 2;
+    return sumst(node*2,     start, mid, l, r) +
+           sumst(node*2 + 1, mid+1, end, l, r);
+}
+```
+>*`l` y `r` deben estar indexados desde 0*
+
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
+
+> *Complejidad consulta: $\mathcal{O}(\log(n))$* 
+
+> *Complejidad actualizacion en rango: $\mathcal{O}(\log(n))$*
+
+**NOTAS**:
+- `lazy` es un arreglo de tamaño $2*N$ que lleva el registro del valor de la actualización lazy de cada nodo. Se inicializa en $0$
+- Se construye del mismo modo que el [segment tree](#segment-tree) común
 
 # Matematicas
 
