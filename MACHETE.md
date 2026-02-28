@@ -239,6 +239,8 @@ header-includes:
 
 - **Los [segment trees](#segment-tree) no estan restringidos a almacenar unicamente numeros. Se puede utilizar cualquier estructura en ellos a coste de mayor complejidad computacional y mas espacio ocupado en memoria.**
 
+- **Al momento de trabajar con distancia Manhattan, resulta util rotar los puntos 45° de la siguiente manera: $(x,y) = (x+y,y-x) = (x',y')$. Esto permite resolver el problema de clacular la distancia maxima entre dos puntos como un problema de maximizacion en $\mathcal{O}(n)$ en lugar de $\mathcal{O}(n^2)$, ya que podemos calcular la distancia Manhattan entre dos puntos como $max(|x_1' - x_2'|,|y_1' - y_2'|)$**.
+
 # Funciones de Ordenacion
 
 ## Sort
@@ -1935,36 +1937,76 @@ struct cmp {
 
 El convex hull de un conjunto de puntos S es el conjunto convexo[^1] minimo que contiene a S.
 
-| ![Convex Hull Parte 1](Imagenes/ConvexHull1.png) | ![Convex Hull Parte 2](Imagenes/ConvexHull2.png) |
-|:------------------------------------------------:|:------------------------------------------------:|
+<div style="display: flex; width: 100%;">
+  <img src="Imagenes/ConvexHull1.png" style="width: 50%;" />
+  <img src="Imagenes/ConvexHull2.png" style="width: 50%;" />
+</div>
 
 ``` c++
-vector<pto> upper_hull(vector<pto>& p) {
-    vector<pto> uh;
+vector<pto> convex_hull(vector<pto>& p) {
     sort(p.begin(), p.end());
-    forn(i, sz(p)) {
-        while(sz(uh)>=2 && (uh[sz(uh)-1]-uh[sz(uh)-2])^(p[i]-uh[sz(uh)-2])>=0)
-        uh.pop_back();
-        uh.push_back(p[i]);
+    vector<pto> h;
+
+    // lower hull
+    for(auto pt : p) {
+        while(h.size() >= 2 &&
+              (h.back() - h[h.size()-2]) ^
+              (pt - h[h.size()-2]) < 0)
+            h.pop_back();
+        h.push_back(pt);
     }
-    return uh;
+
+    int t = h.size() + 1;
+
+    // upper hull
+    for(int i = p.size()-2; i >= 0; i--) {
+        while(h.size() >= t &&
+              (h.back() - h[h.size()-2]) ^
+              (p[i] - h[h.size()-2]) < 0)
+            h.pop_back();
+        h.push_back(p[i]);
+    }
+
+    h.pop_back();
+    return h;
 }
 ```
 > *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
 
-``` c++
-vector<pto> lower_hull(vector<pto>& p) {
-    vector<pto> uh;
-    sort(p.begin(), p.end());
-    forn(i, sz(p)) {
-        while(sz(uh)>=2 && (uh[sz(uh)-1]-uh[sz(uh)-2])^(p[i]-uh[sz(uh)-2])<=0)
-        uh.pop_back();
-        uh.push_back(p[i]);
-    }
-    return uh;
-}
-```
-> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
+**NOTA**: 
+- Esta implementacion contempla los puntos colineales. Si desean ignorarse hay que cambiar los `>`, `<` por `>=`, `<=`
+
+### Algoritmos Sweep Line
+
+La idea de este tipo de algoritmos es representar una instancia del problema como un conjunto de eventos que se corresponden con puntos en el plano.
+
+#### Ejemplo 1
+
+Una compania cuenta con $n$ empleados, para los cuales se conocen sus horarios de llegada y salida. El objetivo es hallar el maximo numero de empleados presentes en la oficina concurrentemente.
+
+Para resolver el problema, debemos modelar la situación de forma de que a cada empleado le correspondan dos eventos (su hora de llegada y su hora de salida). La siguiente imagen muestra un ejemplo de entrada y su correspondiente modelizacion:
+
+<div style="display: flex; width: 100%;">
+  <img src="Imagenes/SweepLine-Example1-Input.png" style="width: 50%;" />
+  <img src="Imagenes/SweepLine-Example1-Modeling.png" style="width: 50%;" />
+</div>
+
+Tras ordenar los eventos en sentido no decreciente, vamos guardando un contador a medida que los recorremos el cual vamos incrementando si el evento es la llegada de un empleado y decrementando cuando el evento sea de salida. Finalmente, la solucion es el maximo valor alcanzado por el contador.
+
+De este modo, podemos resolver el problema en $\mathcal{O}(n \cdot \log(n))$.
+
+#### Ejemplo 2
+
+Dado un conjunto de puntos en el plano, queremos encontrar aquellos cuya distancia euclideana sea minima. Consideremos la siguiente imagen como un posible caso:
+
+![Entrada](Imagenes/SweepLine-Example2-Input.png)
+> *Se destacan en negro los puntos que conforman la solucion*
+
+Podemos resolver este problema si ordenamos los puntos en orden no decreciente en base al eje $x$ y mantenemos la minima distancia $d$ vista hasta el momento. Luego, para cada nuevo punto, si existe otro punto que minimice $d$, este se encuentra contenido en la region delimitada por $[x-d,x]$ y $[y-d,y+d]$. A modo de ilustacion, la siguiente imagen muestra el momento exacto en el que se llega a la solucion de este caso:
+
+![Solucion](Imagenes/SweepLine-Example2-Solution.png)
+
+De esta manera, podemos pasar de resolver este problema comparando todos los puntos en $\mathcal{O}(n^2)$ a un complejidad de $\mathcal{O}(n \cdot \log(n))$.
 
 ## Combinatoria
 
