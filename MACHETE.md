@@ -151,6 +151,7 @@ header-includes:
 | [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n \cdot \log(n))$                  |
 | [Funciones de Ordenacion: Random Shuffle](#random-shuffle)          | Ordena aleatoriamente estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n)$                 |
 | [Funciones de Ordenacion: Rotate](#rotate)                          | Rota los elementos de un rango de forma que un iterador intermedio pase a ser el primero en tiempo $\mathcal{O}(n)$      |
+| [Funciones de Ordenacion: Is Sorted](#is-sorted)                    | Verifica si un rango está ordenado en tiempo $\mathcal{O}(n)$                                                            |
 | [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo $\mathcal{O}(\log(n))$                           |
 | [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo $\mathcal{O}(\log(n))$                            |
 | [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo $\mathcal{O}(\log(n))$ |
@@ -347,6 +348,11 @@ string s = "monkey";
 rotate(s.begin(), s.end() + 1, s.end());
 
 cout << s << "\n";  // onkeym
+## Is Sorted
+
+```c++
+vector<int> v = {1, 2, 3, 4, 5};
+cout << is_sorted(v.begin(), v.end()) << "\n"; // 1
 ```
 
 # Funciones de Busqueda
@@ -1809,21 +1815,44 @@ double reduce(vector<vector<double>> &a){  //Devuelve determinante si m == n
 
 #### Punto 
 
+- Version Entera
+
 ``` c++
 struct pto {
     ll x, y;
     pto() : x(0), y(0) {}
     pto(ll _x, ll _y) : x(_x), y(_y) {}
-    pto operator+(pto b) { return pto(x+b.x, y+b.y); }
-    pto operator-(pto b) { return pto(x-b.x, y-b.y); }
-    pto operator+(ll k) { return pto(x+k, y+k); }
-    pto operator*(ll k) { return pto(x*k, y*k); }
-    pto operator/(ll k) { return pto(x/k, y/k); }
-    ll operator*(pto b) { return x*b.x + y*b.y; }
-    pto proj(pto b) { return b*((*this)*b) / (b*b); }
-    ll operator^(pto b) { return x*b.y - y*b.x; }
-    ld norm() { return sqrt(x*x + y*y); }
-    ld dist(pto b) { return (b - (*this)).norm(); }
+    pto operator+(const pto b) const { return pto(x+b.x, y+b.y); }
+    pto operator-(const pto b) const { return pto(x-b.x, y-b.y); }
+    pto operator+(ll k) const { return pto(x+k, y+k); }
+    pto operator*(ll k) const { return pto(x*k, y*k); }
+    pto operator/(ll k) const { return pto(x/k, y/k); }
+    ll operator*(const pto b) const { return x*b.x + y*b.y; }
+    pto proj(const pto b) const { return b*((*this)*b) / (b*b); }
+    ll operator^(const pto b) const { return x*b.y - y*b.x; }       // Producto Vectorial - Producto Cruz
+    ll norm2() const { return x*x + y*y; }
+    ll dist2(const pto b) const { return (b - (*this)).norm2(); }
+};
+```
+
+- Version Punto Flotante
+
+```c++
+struct ptoD {
+    ld x, y;
+    ptoD() : x(0), y(0) {}
+    ptoD(ld _x, ld _y) : x(_x), y(_y) {}
+    ptoD(const pto& p) : x(p.x), y(p.y) {}                          // Conversion desde entero
+    ptoD operator+(const ptoD& b) const { return {x+b.x, y+b.y}; }
+    ptoD operator-(const ptoD& b) const { return {x-b.x, y-b.y}; }
+    ptoD operator*(ld k) const { return {x*k, y*k}; }
+    ld operator*(const ptoD& b) const { return x*b.x + y*b.y; }     
+    ld operator^(const ptoD& b) const { return x*b.y - y*b.x; }     // Producto Vectorial - Producto Cruz
+    ld norm() const { return sqrt(x*x + y*y); }
+    ld dist(const ptoD& b) const { return (b - *this).norm(); }
+    ld arg() const { return atan2(y, x); }
+    ptoD rotate(ld a) const { return {x*cos(a) - y*sin(a), x*sin(a) + y*cos(a)}; }
+    static ptoD polar(ld r, ld a) { return {r*cos(a), r*sin(a)}; }
 };
 ```
 
@@ -1919,7 +1948,9 @@ int escalar = Ux*Vx + Uy*Vy;
 
 #### Producto Cruz
 
-- Dos vectores son paralelos **<=>** el valor absoluto de su producto vectorial es 0
+- Dos vectores son paralelos **<=>** el valor absoluto de su producto vectorial es 0.
+- Dados los vectores $a$ y $b$, el signo del producto cruz $a \times b$ nos indica que $b$ apunta hacia la izquierda cuando se coloca despues de $a$ (signo positivo) o que $b$ apunta hacia la derecha cuando se coloca despues de $a$ (signo negativo).
+- Dados un punto $p$ y una linea formada por los puntos $s_1$ y $s_2$, el producto cruz $(p - s_1) \times (p - s_2)$ nos indica cuando $p$ esta a la izquierda de la linea (valor positivo), a la derecha de la linea (valor negativo) o sobre la linea (valor nulo).
 
 ``` c++
 int Ux, Uy; // Vector U
@@ -1960,17 +1991,13 @@ per += dist(Poly[n-1], Poly[0]);
 - Un polígono se puede separar en triángulos. Luego se puede calcular el área como suma de muchas áreas pequeñas.
 
 ``` c++
-double areaTri(vec A, vec B) {
-    double prodVec = A.x*B.y - B.x*A.y;
-    return prodVec/2;
-}
-// ...
 vector<pto> Poly(n);
 double area = 0;
-for (int i = 0; i < n-1; i++) {
-    area += areaTri(Poly[i], Poly[i+1]);
+for (int i = 0; i < n; i++) {
+    int j = (i + 1) % n;
+    area += Poly[i].x * Poly[j].y - Poly[j].x * Poly[i].y;
 }
-area += areaTri(Poly[n-1], Poly[0]);
+area = abs(area) / 2.0;
 ```
 > *Complejidad: $\mathcal{O}(\#lados)$*
 

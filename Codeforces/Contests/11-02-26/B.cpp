@@ -43,39 +43,44 @@ int main()
         forn(i,n) cin >> p[i];
         int a[n]; forn(i,n) cin >> a[i];
 
-        int i = 0;
-        bitset<MAXN> b;
-        while (i<n)
+        map<int,int> mn, mx, count, pos;
+        forn(i,n)
         {
-            b[i] = (p[max(i-1, 0)] == a[i]) || (p[i] == a[i]) || (p[min(i+1, n-1)] == a[i]);
-            i++;
-        }
-        
-        i = 0;
-        while (i<n)
-        {
-            if(b[i] == 1)
-            {
-                int l = i-1;
-                while (l>=0 && a[l] == a[i])
-                {
-                    b[l] = 1;
-                    l--;
-                }
-                int r = i+1;
-                while (r<n && a[i] == a[r])
-                {
-                    b[r] = 1;
-                    r++;
-                }
-            }
-            i++;
+            mn[a[i]] = mn.count(a[i]) == 0 ? i : min(mn[a[i]], i);
+            mx[a[i]] = mx.count(a[i]) == 0 ? i : max(mx[a[i]], i);
+            count.count(a[i]) == 0 ? count[a[i]] = 1 : count[a[i]]++;
+            pos[p[i]] = i;
         }
 
         bool flag = true;
-        forr(i,1,n) if(p[i-1] == a[i] && p[i] == a[i-1]) flag = false;
-
-        if((int)b.count() == n && flag) cout << "YES";
+        int i = 0;
+        int lastPos = -1;
+            
+        while (i < n && flag)
+        {
+            int val = a[i];
+        
+            // 1️⃣ verificar bloque contiguo
+            if ((mx[val] - mn[val]) != count[val] - 1)
+            {
+                flag = false;
+                break;
+            }
+        
+            // 2️⃣ verificar orden respecto al bloque anterior
+            if (lastPos != -1 && pos[val] <= lastPos)
+            {
+                flag = false;
+                break;
+            }
+        
+            lastPos = pos[val];
+        
+            // saltar al siguiente bloque
+            i = mx[val] + 1;
+        }
+        
+        if(flag) cout << "YES";
         else cout << "NO";
         cout << nl;
     }
