@@ -148,11 +148,14 @@ header-includes:
 
 | Funcion                                                             | Descripcion                                                                                                              |
 |---------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------|
-| [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(\log(n))$                          |
+| [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n \cdot \log(n))$                  |
 | [Funciones de Ordenacion: Random Shuffle](#random-shuffle)          | Ordena aleatoriamente estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n)$                 |
+| [Funciones de Ordenacion: Rotate](#rotate)                          | Rota los elementos de un rango de forma que un iterador intermedio pase a ser el primero en tiempo $\mathcal{O}(n)$      |
 | [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo $\mathcal{O}(\log(n))$                           |
 | [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo $\mathcal{O}(\log(n))$                            |
 | [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo $\mathcal{O}(\log(n))$ |
+| [Funciones de Busqueda: Min Element](#min-element)                  | Devuelve un iterador al elemento minimo dentro de un rango en tiempo $\mathcal{O}(n)$                                    |
+| [Funciones de Busqueda: Max Element](#max-element)                  | Devuelve un iterador al elemento maximo dentro de un rango en tiempo $\mathcal{O}(n)$                                    |
 | [Funciones de Conversion: To String](#to-string)                    | Convierte un numero real en una cadena en tiempo $\mathcal{O}(digitos(n))$                                               |    
 | [Funciones de Conversion: Atoi](#atoi)                              | Convierte una arreglo de caracteres en un entero en tiempo $\mathcal{O}(s.size())$                                       |    
 | [Funciones de Bits: Counting Leading Zeros](#count-leading-zeros)   | Retorna la cantidad de ceros antes del 1 mas significativo de `x` en tiempo $\mathcal{O}(1)$                             |
@@ -163,7 +166,7 @@ header-includes:
 | [Funciones de Conteo: Count If](#count-if)                          | Devuelve la cantidad de elemntos cumplen una determinada condicion en otro elemento iterable en tiempo $\mathcal{O}(n)$  |
 | [Funciones Aritmeticas: GCD](#gcd)                                  | Devuelve el maximo comun divisor en tiempo $\mathcal{O}log(min(a,b))$                                                    |
 | [Funciones Aritmeticas: LCM](#lcm)                                  | Devuelve el minimo comun multiplo en tiempo $\mathcal{O}log(min(a,b))$                                                   |
-| [Funciones Utilitarias: Swap](#swap)                                | Intercambia los valores de dos variables cualesquiera en tiempo $\mathcal{O}(1)$                                                      |
+| [Funciones Utilitarias: Swap](#swap)                                | Intercambia los valores de dos variables cualesquiera en tiempo $\mathcal{O}(1)$                                         |
 | [Funciones de Entrada/Salida: Setprecision](#setprecision)          | Establece la cantidad de dígitos decimales mostrados en el output en tiempo $\mathcal{O}(1)$                             |
 
 # Librerias God 
@@ -310,6 +313,42 @@ string s = "monkey";
 random_shuffle(s.begin(), s.end());
 ```
 
+## Rotate
+
+- **vectores:**
+
+```c++
+vector<int> v = {1, 2, 3, 4, 5};
+
+// Rotar 1 posición a la derecha
+rotate(v.begin(), v.end() - 1, v.end());
+
+for (int x : v) cout << x << " ";  // 5 1 2 3 4
+```
+
+- **arreglos:**
+
+```c++
+int array[] = {1, 2, 3, 4, 5};
+    int n = 5;
+    int k = 2;
+
+    rotate(array, array + k, array + n);
+
+    for(int i = 0; i < n; i++) cout << array[i] << " "; // 3 4 5 1 2
+```
+
+- **strings:**
+
+```c++
+string s = "monkey";
+
+// Rotar 1 posición a la izquierda
+rotate(s.begin(), s.end() + 1, s.end());
+
+cout << s << "\n";  // onkeym
+```
+
 # Funciones de Busqueda
 
 **NOTAS**:
@@ -323,7 +362,6 @@ auto a = lower_bound(array, array+n, x);
 
 ## Upper Bound
 
-
 ```c++
 auto b = upper_bound(array, array+n, x);
 ```
@@ -333,6 +371,30 @@ auto b = upper_bound(array, array+n, x);
 ```c++
 auto r = equal_range(array, array+n, x);
 cout << r.second-r.first << "\n";
+```
+
+## Min Element
+
+```c++
+int a[] = {7, 3, 9, 1, 5};
+int n = 5;
+
+auto it = min_element(a, a + n);
+
+cout << *it << "\n";          // 1
+cout << it - a << "\n";       // 3 (posición del minimo)
+```
+
+## Max Element
+
+```c++
+int a[] = {7, 3, 9, 1, 5};
+int n = 5;
+
+auto it = max_element(a, a + n);
+
+cout << *it << "\n";      // 9
+cout << it - a << "\n";   // 2 (posición del maximo)
 ```
 
 # Funciones de Conversion
