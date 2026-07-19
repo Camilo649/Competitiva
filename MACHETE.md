@@ -104,6 +104,7 @@ header-includes:
 | [Programacion Dinamica: Ejemplo TopDown](#topdown)                                                       | $\mathcal{O}(n \cdot m)$                        |
 | [Programacion Dinamica: Ejemplo BottomUp](#bottomup)                                                     | $\mathcal{O}(n \cdot m)$                        |
 | [Programacion Dinamica: Kadane's Algorithm](#algoritmo-de-kadane)                                        | $\mathcal{O}(n)$                                |
+| [Programacion Dinamica: Thresholding's Algorithm](#algoritmo-de-umbralizacion)                           | $\mathcal{O}(n)$                                |
 | [Operaciones de Bits: Setear el k-esimo Bit](#setear-el-k-esimo-bit)                                     | $\mathcal{O}(1)$                                |
 | [Operaciones de Bits: Chequear Potencia de 2](#chequear-potencia-de-2)                                   | $\mathcal{O}(1)$                                |
 
@@ -348,6 +349,8 @@ string s = "monkey";
 rotate(s.begin(), s.end() + 1, s.end());
 
 cout << s << "\n";  // onkeym
+```
+
 ## Is Sorted
 
 ```c++
@@ -1353,12 +1356,12 @@ Especialmente eficiente para:
 
 <u>Inicializacion:</u>
 
-El arreglo `link` indica, para cada elemento, el siguiente elemento en la cadena o el mismo elemento si este es representativo. El arreglo `size` indica el tamaño de cada conjunto para cada elemento representativo. Inicilamente, cada conjunto contiene solo un elemento.
+El arreglo `lk` (*link*) indica, para cada elemento, el siguiente elemento en la cadena o el mismo elemento si este es representativo. El arreglo `len` indica el tamaño de cada conjunto para cada elemento representativo. Inicilamente, cada conjunto contiene solo un elemento.
 
 ```c++
-int link[n], size[n];
-for (int i = 0; i < n; i++) link[i] = i;
-for (int i = 0; i < n; i++) size[i] = 1;
+int lk[n], len[n];
+for (int i = 0; i < n; i++) lk[i] = i;
+for (int i = 0; i < n; i++) len[i] = 1;
 ```
 
 <u>Funciones:</u>
@@ -1367,7 +1370,7 @@ for (int i = 0; i < n; i++) size[i] = 1;
 
 ```c++
 int find(int x) {
-    while (x != link[x]) x = link[x];
+    while (x != lk[x]) x = lk[x];
     return x;
 }
 ```
@@ -1388,11 +1391,11 @@ bool same(int x, int y) {
 
 ```c++
 void unite(int x, int y) {
-    a = find(x);
-    b = find(y);
-    if (size[x] < size[y]) swap(x,y);
-    size[x] += size[y];
-    link[y] = x;
+    int a = find(x);
+    int b = find(y);
+    if (len[x] < len[y]) swap(x,y);
+    len[x] += len[y];
+    lk[y] = x;
 }
 ```
 > *Complejidad: $\mathcal{O}(\log(n))$*
@@ -1540,16 +1543,10 @@ Luego, cada hoja representa el rango [i, i + 1), y los nodos internos representa
 
 ``` c++
 int n, t[2*MAXN];
-void buildst(int a[], int v, int tl, int tr) { // arreglo, nodo raiz, 0, n
-    if (tl == tr) {
-        t[v] = a[tl];
-    }
-    else {
-        int tm = (tl + tr) / 2;
-        buildst(a, v*2, tl, tm);
-        buildst(a, v*2+1, tm+1, tr);
-        t[v] = t[v*2] + t[v*2+1];
-    }
+void buildst(int a[]) {
+    forn(i,n) t[n+i] = a[i];
+    for (int i = n-1; i > 0; i--)
+        t[i] = t[2*i] + t[2*i+1];
 }
 ```
 
@@ -1569,9 +1566,9 @@ se guarda como:
 ``` c++
 void updatest(int k, int x) { // posicion del elemento a actualizar en A, nuevo valor
     k += n;
-    tree[k] += x;
+    t[k] += x;
     for (k /= 2; k >= 1; k /= 2) {
-        tree[k] = tree[2*k] + tree[2*k+1];
+        t[k] = t[2*k] + t[2*k+1];
     }
 }
 ```
@@ -1581,12 +1578,12 @@ void updatest(int k, int x) { // posicion del elemento a actualizar en A, nuevo 
 En cada paso, el rango se desplaza un nivel más arriba en el árbol, y antes se añaden a la suma los valores de los nodos que no pertenecen al rango superior.
 
 ``` c++
-int sumst(int l, int r) { // indice izquiero del subarreglo, indice derecho del subarreglo
+int sumst(int l, int r) { // indice izquiero del subarbol, indice derecho del subarbol
     l += n; r += n;
     int s = 0;
     while (l <= r) {
-        if (l%2 == 1) s += tree[l++];
-        if (r%2 == 0) s += tree[r--];
+        if (l%2 == 1) s += t[l++];
+        if (r%2 == 0) s += t[r--];
         l /= 2; r /= 2;
     }
     return s;
@@ -3281,24 +3278,26 @@ El algoritmo de Bellman-Ford puede ser utilizado para hallar ciclos negativos en
 Devuelve el camino minimo de un vertice a todos.
 
 ``` c++
-priority_queue<pair<int,int>> q;
+priority_queue<pair<int,int>> pq;
 bitset<MAXN> visited;
-int distance[n];
+int dist[MAXN];
 for(int i = 0; i < n; ++i) {
-    distance[i] = INF; // INF es un valor enorme
+    dist[i] = INF; // INF es un valor enorme
 }
 
 void dijkstra(int v) {
-    pq.push({0,x});
+    pq.push({0,v});
+    dist[v] = 0;
+    visited[v] = 1;
     while (!pq.empty()) {
         int a = pq.top().second; pq.pop();
         if (visited[a]) continue;
             visited[a] = 1;
         for (auto u : adj[a]) {
             int b = u.first, w = u.second;
-            if (distance[a]+w < distance[b]) {
-                distance[b] = distance[a]+w;
-                pq.push({-distance[b],b});
+            if (dist[a]+w < dist[b]) {
+                dist[b] = dist[a]+w;
+                pq.push({-dist[b],b});
             }
         }
     }
@@ -5085,6 +5084,8 @@ forr(i,1,n)
 }
 ```
 
+> *Complejidad $\mathcal{O}(n)$*
+
 Obtener la minima suma de subarreglos:
 
 ```c++
@@ -5096,6 +5097,45 @@ forr(i,1,n)
     glmn = min(glmn, curmn);
 }
 ```
+
+> *Complejidad $\mathcal{O}(n)$*
+
+## Algoritmo de Umbralizacion
+
+Especialmente eficiente para:
+
+- Problemas con medianas (`K = (len+1)/2`) o cualquier percentil
+
+```c++
+// Precomputar prefijos para un valor candidato X
+int b[n], c[n];
+int sum_b[n+1], sum_c[n+1];
+sum_b[0] = 0; sum_c[0] = 0;
+forr(i,0,n)
+{
+    b[i] = (a[i] >= X) ? 1 : -1;
+    c[i] = (a[i] <= X) ? 1 : -1;
+    sum_b[i+1] = sum_b[i] + b[i];
+    sum_c[i+1] = sum_c[i] + c[i];
+}
+
+// Verificar si X es el K-ésimo elemento (ordenado de menor a mayor) del subarreglo [L, R]:
+int len = R - L + 1;
+int sum1 = sum_b[R+1] - sum_b[L];
+int sum2 = sum_c[R+1] - sum_c[L];
+
+    // Condición 1: Hay al menos (len - K + 1) elementos >= X
+bool cond_b = (sum1 >= len - 2 * K + 2);
+    // Condición 2: Hay al menos K elementos <= X
+bool cond_c = (sum2 >= 2 * K - len);
+
+bool es_kesimo = (cond_b && cond_c);
+```
+
+> *Complejidad $\mathcal{O}(n)$*
+
+**NOTA**:
+- $K$ se considera 1-indexed.
 
 ## Recurrencias Lineales
 
