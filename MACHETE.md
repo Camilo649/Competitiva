@@ -55,7 +55,7 @@ header-includes:
 | [Probabilidad: Caminata en Cadena de Markov (Programacion Dinamica)](#metodo-1)                          | $\mathcal{O}(n^2 \cdot m)$                      |
 | [Probabilidad: Caminata en Cadena de Markov (Matrices)](#metodo-2)                                       | $\mathcal{O}(n^3 \cdot \log (m))$               |
 | [Teoria de Numeros: Ver si un numero es primo](#numeros-primos)                                          | $\mathcal{O}(\sqrt{n})$                         |
-| [Teoria de Numeros: Criba de Eratóstenes](#criba-de-eratóstenes)                                         | $\mathcal{O}(\sqrt{n})$                         |
+| [Teoria de Numeros: Criba de Eratostenes](#criba-de-eratostenes)                                         | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: MCD y MCM](#mcd-y-mcm)                                                               | $\mathcal{O}(\log(min(a,b)))$                   |
 | [Teoria de Numeros: Divisores de un numero](#divisores-de-un-numero)                                     | $\mathcal{O}(\sqrt{n})$                         |
 | [Teoria de Numeros: Factorizacion de un numero](#factorizacion-de-un-numero)                             | $\mathcal{O}(\sqrt{n})$                         |
@@ -66,7 +66,7 @@ header-includes:
 | [Teoria de Numeros: Ver si un numero es congruente a otro](#aritmetica-modular)                          | $\mathcal{O}(1)$                                |
 | [Teoria de Numeros: Inverso modular](#inverso-modular)                                                   | $\mathcal{O}(\log (M))$                         |
 | [Teoria de Numeros: Computo de inversos modulares](#computo-de-inversos-modulares)                       | $\mathcal{O}(n)$                                |
-| [Teoria de Numeros: Ecuacion diofantica lineal](#ecuación-diofantica-lineal)                             | $\mathcal{O}(\log(min(a,b)))$                   |
+| [Teoria de Numeros: Ecuacion diofantica lineal](#ecuacion-diofantica-lineal)                             | $\mathcal{O}(\log(min(a,b)))$                   |
 | [Teoria de Numeros: Teorema chino del resto](#teorema-chino-del-resto)                                   | $\mathcal{O}(n)$                                |
 | [Busqueda: Busqueda lineal](#busqueda-lineal)                                                            | $\mathcal{O}(n)$                                |
 | [Busqueda: Busqueda binaria](#busqueda-binaria)                                                          | $\mathcal{O}(\log (n))$                         |
@@ -97,6 +97,8 @@ header-includes:
 | [Grafos: Kruskal](#kruskal)                                                                              | $\mathcal{O}(m \cdot \log(n))$                  |
 | [Grafos: Prim](#prim)                                                                                    | $\mathcal{O}(n + m \cdot \log(m))$              |
 | [Grafos: Kirchhoff](#kirchhoff)                                                                          | $\mathcal{O}(n^3)$                              |
+| [Grafos: Centroid Decomposition](#centroid-decomposition)                                                | $\mathcal{O}(n \cdot \log(n))$                  |
+| [Grafos: Virtual Trees](#virtual-trees)                                                                  | $\mathcal{O}(n)$                                |
 | [Fuerza Bruta: Generacion de Subconjuntos](#generacion-de-subconjuntos)                                  | $\mathcal{O}(2^{\|S\|})$                        |
 | [Fuerza Bruta: Generacion de Permutaciones](#generacion-de-permutaciones)                                | $\mathcal{O}(n!)$                               |
 | [Fuerza Bruta: Reunion en el Centro](#reunion-en-el-centro)                                              | $\mathcal{O}(\sqrt{2^n})$                       |
@@ -152,7 +154,7 @@ header-includes:
 | [Funciones de Ordenacion: Sort](#sort)                              | Ordena estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n \cdot \log(n))$                  |
 | [Funciones de Ordenacion: Random Shuffle](#random-shuffle)          | Ordena aleatoriamente estructuras de datos con iteradores de acceso aleatorio en tiempo $\mathcal{O}(n)$                 |
 | [Funciones de Ordenacion: Rotate](#rotate)                          | Rota los elementos de un rango de forma que un iterador intermedio pase a ser el primero en tiempo $\mathcal{O}(n)$      |
-| [Funciones de Ordenacion: Is Sorted](#is-sorted)                    | Verifica si un rango está ordenado en tiempo $\mathcal{O}(n)$                                                            |
+| [Funciones de Ordenacion: Is Sorted](#is-sorted)                    | Verifica si un rango esta ordenado en tiempo $\mathcal{O}(n)$                                                            |
 | [Funciones de Busqueda: Lower Bound](#lower-bound)                  | Devuelve un puntero al primer elemento cuyo valor es >= a `x` en tiempo $\mathcal{O}(\log(n))$                           |
 | [Funciones de Busqueda: Upper Bound](#upper-bound)                  | Devuelve un puntero al primer elemento cuyo valor es > a `x` en tiempo $\mathcal{O}(\log(n))$                            |
 | [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo $\mathcal{O}(\log(n))$ |
@@ -169,7 +171,7 @@ header-includes:
 | [Funciones Aritmeticas: GCD](#gcd)                                  | Devuelve el maximo comun divisor en tiempo $\mathcal{O}log(min(a,b))$                                                    |
 | [Funciones Aritmeticas: LCM](#lcm)                                  | Devuelve el minimo comun multiplo en tiempo $\mathcal{O}log(min(a,b))$                                                   |
 | [Funciones Utilitarias: Swap](#swap)                                | Intercambia los valores de dos variables cualesquiera en tiempo $\mathcal{O}(1)$                                         |
-| [Funciones de Entrada/Salida: Setprecision](#setprecision)          | Establece la cantidad de dígitos decimales mostrados en el output en tiempo $\mathcal{O}(1)$                             |
+| [Funciones de Entrada/Salida: Setprecision](#setprecision)          | Establece la cantidad de digitos decimales mostrados en el output en tiempo $\mathcal{O}(1)$                             |
 
 # Librerias God 
 
@@ -246,6 +248,10 @@ header-includes:
 
 - **Al momento de trabajar con distancia Manhattan, resulta util rotar los puntos 45° de la siguiente manera: $(x,y) = (x+y,y-x) = (x',y')$. Esto permite resolver el problema de clacular la distancia maxima entre dos puntos como un problema de maximizacion en $\mathcal{O}(n)$ en lugar de $\mathcal{O}(n^2)$, ya que podemos calcular la distancia Manhattan entre dos puntos como $max(|x_1' - x_2'|,|y_1' - y_2'|)$**.
 
+- **Los problemas de conteo se resuelven mas facil siempre que se puedan plantear como una biyeccion.**.
+
+- **Para intercambiar cualquier tipo de estructuras es mejor utilizar `swap()` en vez de simplemente asignarle una variable a otra, puesto que simplemente intercambia los punteros.**.
+
 # Funciones de Ordenacion
 
 ## Sort
@@ -291,6 +297,9 @@ Luego, dado `v` un vector de strings, podemos ordenar utilizando *comp()* llaman
 sort(v.begin(), v.end(), comp);
 ```
 
+**NOTA**:
+- El orden asociado a `comp` debe ser **debil** y **estricto**.
+
 ## Random Shuffle
 
 - **vectores:**
@@ -322,7 +331,7 @@ random_shuffle(s.begin(), s.end());
 ```c++
 vector<int> v = {1, 2, 3, 4, 5};
 
-// Rotar 1 posición a la derecha
+// Rotar 1 posicion a la derecha
 rotate(v.begin(), v.end() - 1, v.end());
 
 for (int x : v) cout << x << " ";  // 5 1 2 3 4
@@ -345,7 +354,7 @@ int array[] = {1, 2, 3, 4, 5};
 ```c++
 string s = "monkey";
 
-// Rotar 1 posición a la izquierda
+// Rotar 1 posicion a la izquierda
 rotate(s.begin(), s.end() + 1, s.end());
 
 cout << s << "\n";  // onkeym
@@ -391,7 +400,7 @@ int n = 5;
 auto it = min_element(a, a + n);
 
 cout << *it << "\n";          // 1
-cout << it - a << "\n";       // 3 (posición del minimo)
+cout << it - a << "\n";       // 3 (posicion del minimo)
 ```
 
 ## Max Element
@@ -403,7 +412,7 @@ int n = 5;
 auto it = max_element(a, a + n);
 
 cout << *it << "\n";      // 9
-cout << it - a << "\n";   // 2 (posición del maximo)
+cout << it - a << "\n";   // 2 (posicion del maximo)
 ```
 
 # Funciones de Conversion
@@ -426,8 +435,8 @@ cout << s << "\n"; // "1000"
 ```c++
 double d = 3.141592653589793;
 ostringstream oss;
-oss.precision(10);          // Configurar precisión
-oss << d;                   // Convertir número a string con la precisión dada
+oss.precision(10);          // Configurar precision
+oss << d;                   // Convertir numero a string con la precision dada
 string s = oss.str();
 cout << scientific << "\n"; // "3.141592654"
 ```
@@ -683,7 +692,7 @@ bitset<10> bs(string("0010011010")); // inicializado de derecha a izquierda arbi
 **bs.flip(k)** Invierte solamente el k-esimo bit (el orden es de derecha a izquierda y se indexa desde 0)
 **bs.any():** Devuelve *true* si hay al menos un bit en 1
 **bs.none():** Devuelve *true* si todos los bits estan en 0
-**bs.all():** Devuelve *true* si todos los bits están en 1
+**bs.all():** Devuelve *true* si todos los bits estan en 1
 **bs.size():** Devuelve el numero total de bits en el bitset
 **bs.count():** Devuelve el numero de 1s presentes en el bitset (NOTAR que `bs.size() - bs.count()` es la cantidad de 0s)
 **bs.to_ulong()/bs.to_ullong():** Convierte el bitset a un entero o long long no signado respectivamente. El tamaño del bitset no debe exceder de 32 para enteros o de 64 para long longs
@@ -955,7 +964,7 @@ Es como un arreglo pero con la posibilidad de tener un tamaño dinamico.
 <u>Inicializacion:</u>
 
 ```c++
-vector<int> v; // vector vacío
+vector<int> v; // vector vacio
 vector<int> v = {2,4,2,5,1}; // vector con valores arbitrarios
 vector<int> v(9); // vector de 9 ints con valor 0
 vector<int> v(9, 3); // vector de 9 ints, todos con valor 3
@@ -1101,8 +1110,8 @@ Especialmente eficiente para:
 > *Ejemplo de del arreglo $z$ para el string "abaacabaad"*
 
 ```c++
-// Retorna un vector `z` tal que `z[i]` es la longitud del prefijo más largo del
-// string `s` que a su vez empieza en el índice `i`.
+// Retorna un vector `z` tal que `z[i]` es la longitud del prefijo mas largo del
+// string `s` que a su vez empieza en el indice `i`.
 vector<int> z_function(string const& s) {
 	int n = int(size(s));
 	vector<int> z(n);
@@ -1345,7 +1354,7 @@ do {
 
 # Disjoint Set Union
 
-Un DSU mantiene una coleccion de conjuntos disjuntos. Cada conjunto tiene un elemento **representativo** y una **cadena** que une a cualquier elemento con el rerpesentativo.
+Un DSU mantiene una coleccion de conjuntos disjuntos. Cada conjunto tiene un elemento **representativo** y una **cadena** que une a cualquier elemento con el representativo.
 
 ![Ejemplo DSU](Imagenes/DSU.png) 
 > *Representacion grafica de los sets {1, 4, 7}, {5} y {2, 3, 6, 8}*
@@ -1356,10 +1365,10 @@ Especialmente eficiente para:
 
 <u>Inicializacion:</u>
 
-El arreglo `lk` (*link*) indica, para cada elemento, el siguiente elemento en la cadena o el mismo elemento si este es representativo. El arreglo `len` indica el tamaño de cada conjunto para cada elemento representativo. Inicilamente, cada conjunto contiene solo un elemento.
+El arreglo `lk` (*link*) indica, para cada elemento, el siguiente elemento en la cadena o el mismo elemento si este es representativo. El arreglo `len` indica el tamaño de cada conjunto para cada elemento representativo. Inicialmente, cada conjunto contiene solo un elemento.
 
 ```c++
-int lk[n], len[n];
+int lk[MAXN], len[MAXN];
 for (int i = 0; i < n; i++) lk[i] = i;
 for (int i = 0; i < n; i++) len[i] = 1;
 ```
@@ -1370,8 +1379,8 @@ for (int i = 0; i < n; i++) len[i] = 1;
 
 ```c++
 int find(int x) {
-    while (x != lk[x]) x = lk[x];
-    return x;
+    if(x == lk[x]) return x;
+    return lk[x] = find(lk[x]);
 }
 ```
 > *Complejidad: $\mathcal{O}(\log(n))$*
@@ -1393,9 +1402,9 @@ bool same(int x, int y) {
 void unite(int x, int y) {
     int a = find(x);
     int b = find(y);
-    if (len[x] < len[y]) swap(x,y);
-    len[x] += len[y];
-    lk[y] = x;
+    if (len[a] < len[b]) swap(a,b);
+    len[a] += len[b];
+    lk[b] = a;
 }
 ```
 > *Complejidad: $\mathcal{O}(\log(n))$*
@@ -1414,8 +1423,8 @@ map<int, string> M; // mapea de tipo `int` a tipo `string`
 M[5] = “V”; // asociamos el 5 con la string “V”
 **M.size()**; // 1
 M[7] = “VII”; // asociamos el 7 con la string “VII”
-M.size(); // 2. if (M[10] == “X”) { … } OJO: este patrón agrega el elemento 10
-// if (M.count(3) > 0 && M[3] == “III”) { … } este patrón si funciona como esperamos
+M.size(); // 2. if (M[10] == “X”) { … } OJO: este patron agrega el elemento 10
+// if (M.count(3) > 0 && M[3] == “III”) { … } este patron si funciona como esperamos
 
 <u>Como iterar un map:</u>
 
@@ -1427,7 +1436,7 @@ for (auto [key, value] : m) {
 
 # Unordered Sets & Unordered Maps
 
-Como set y map, pero sus elementos no están ordenados.
+Como set y map, pero sus elementos no estan ordenados.
 
 > *Muchas operaciones pasan a ser $\mathcal{O}(1)$ (en promedio) en vez de $\mathcal{O}(\log(n))$*
 
@@ -1514,7 +1523,7 @@ int sum(int k) {
 
 Toda consulta de rango puede resolverse de la siguiente manera: $sum(r) - sum(l-1)$
 
-> *Complejidad construccion: $\mathcal{O}(\log(n))$*
+> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
 
 > *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
@@ -1536,7 +1545,7 @@ Espcialmente eficiente para:
 1. Dado un arreglo `A` con `N` elementos, extender `A` con "elementos neutros" (sule ser 0 generalmente) hasta que tenga tamaño potencia de 2.
 2. Crear un arbol binario completo cuyas hojas sean los elementos de A.
 
-Luego, cada hoja representa el rango [i, i + 1), y los nodos internos representan la unión de los rangos de los hijos.
+Luego, cada hoja representa el rango [i, i + 1), y los nodos internos representan la union de los rangos de los hijos.
 
 ![Segment Tree](Imagenes/SegmentTree.png) 
 > *Este segment tree esta orientado a responder querys relacionadas con la suma de los subarreglos*
@@ -1575,7 +1584,7 @@ void updatest(int k, int x) { // posicion del elemento a actualizar en A, nuevo 
 >*`k` debe estar indexado desde 0*
 
 <u>Responder query:</u>
-En cada paso, el rango se desplaza un nivel más arriba en el árbol, y antes se añaden a la suma los valores de los nodos que no pertenecen al rango superior.
+En cada paso, el rango se desplaza un nivel mas arriba en el arbol, y antes se añaden a la suma los valores de los nodos que no pertenecen al rango superior.
 
 ``` c++
 int sumst(int l, int r) { // indice izquiero del subarbol, indice derecho del subarbol
@@ -1665,8 +1674,8 @@ long long sumst(int node, int start, int end, int l, int r) {
 > *Complejidad actualizacion en rango: $\mathcal{O}(\log(n))$*
 
 **NOTAS**:
-- `lazy` es un arreglo de tamaño $2*N$ que lleva el registro del valor de la actualización lazy de cada nodo. Se inicializa en $0$
-- Se construye del mismo modo que el [segment tree](#segment-tree) común
+- `lazy` es un arreglo de tamaño $2*N$ que lleva el registro del valor de la actualizacion lazy de cada nodo. Se inicializa en $0$
+- Se construye del mismo modo que el [segment tree](#segment-tree) comun
 
 # Matematicas
 
@@ -1956,7 +1965,7 @@ int vectorial = Ux*Vy - Uy*Vx;
 ```
 > *Complejidad: $\mathcal{O}(1)$*
 
-- El producto vectorial es igual al área del paralelogramo formado por los vectores
+- El producto vectorial es igual al area del paralelogramo formado por los vectores
 
 ![Producto vectorial](Imagenes/ProductoVectorial.png)
 
@@ -1985,7 +1994,7 @@ per += dist(Poly[n-1], Poly[0]);
 
 #### Calculo de Area
 
-- Un polígono se puede separar en triángulos. Luego se puede calcular el área como suma de muchas áreas pequeñas.
+- Un poligono se puede separar en triangulos. Luego se puede calcular el area como suma de muchas areas pequeñas.
 
 ``` c++
 vector<pto> Poly(n);
@@ -2070,7 +2079,7 @@ La idea de este tipo de algoritmos es representar una instancia del problema com
 
 Una compania cuenta con $n$ empleados, para los cuales se conocen sus horarios de llegada y salida. El objetivo es hallar el maximo numero de empleados presentes en la oficina concurrentemente.
 
-Para resolver el problema, debemos modelar la situación de forma de que a cada empleado le correspondan dos eventos (su hora de llegada y su hora de salida). La siguiente imagen muestra un ejemplo de entrada y su correspondiente modelizacion:
+Para resolver el problema, debemos modelar la situacion de forma de que a cada empleado le correspondan dos eventos (su hora de llegada y su hora de salida). La siguiente imagen muestra un ejemplo de entrada y su correspondiente modelizacion:
 
 <div style="display: flex; width: 100%;">
   <img src="Imagenes/SweepLine-Example1-Input.png" style="width: 50%;" />
@@ -2114,9 +2123,9 @@ for(ll i = 1; i < MAXN; i++) F[i] = F[i-1]*i %M;
 
 #### Computo de Factoriales Inversos
 
-- Le llamamos “factorial inverso” de $n$ módulo $M$, al inverso modular del factorial de $n$ módulo $M$.
+- Le llamamos “factorial inverso” de $n$ modulo $M$, al inverso modular del factorial de $n$ modulo $M$.
 
-- Cuando $n$ ≤ 10^6, es más eficiente tener en cuenta que:
+- Cuando $n$ ≤ 10^6, es mas eficiente tener en cuenta que:
 
 ![Formula2](Imagenes/Formula2.png)
 
@@ -2335,9 +2344,9 @@ $$
 
 #### Propiedades
 
-- Una expresión de paréntesis vacía es válida.
-- Si una expresión $A$ es válida, entonces la expresión $(A)$ también es válida.
-- Si las expresiones $A$ y $B$ son válidas, entonces la expresión $AB$ también es válida.
+- Una expresion de parentesis vacia es valida.
+- Si una expresion $A$ es valida, entonces la expresion $(A)$ tambien es valida.
+- Si las expresiones $A$ y $B$ son validas, entonces la expresion $AB$ tambien es valida.
 
 #### Usos
 
@@ -2357,10 +2366,10 @@ donde hay $n$ formas de cambiar la posicion de una combinacion, y hay $c(k)$ com
 
 #### Ejemplo
 
-Se nos pide calcular el numero de collares distintos de $n$ perlas, donde cada perla tiene $m$ colores posibles. Decimos que dos collares son identicos cuando uno sea igual al otro después de rotarlos.
+Se nos pide calcular el numero de collares distintos de $n$ perlas, donde cada perla tiene $m$ colores posibles. Decimos que dos collares son identicos cuando uno sea igual al otro despues de rotarlos.
 
 Hay $n$ rotaciones distintas para cada collar.
-Cuando el numero de pasos es $k$, un total de $m^{gcd(k,n)}$ siguen siendo identicos. La razón de esto es que los bloques de perlas de tamaño $gcd(k, n)$ se reemplazaran entre si.
+Cuando el numero de pasos es $k$, un total de $m^{gcd(k,n)}$ siguen siendo identicos. La razon de esto es que los bloques de perlas de tamaño $gcd(k, n)$ se reemplazaran entre si.
 
 Asi, el lema de Burnside nos dice que el numero de collares distintos es 
 
@@ -2505,7 +2514,7 @@ $$
 
 Una **cadena de Markov** es un proceso aleatorio que consiste de estados y transiciones entre ellos, donde para cada estado se conocen las probabilidades de moverse a otros estados. Generalmente se representa con un [grafo](#grafos) donde los nodos son los estados y las aristas las transiciones.
 
-![Ejemplo de Cadena de Markov](Imagenes/Markov'sChainExample.png)
+![Ejemplo de Cadena de Markov](Imagenes/MarkovsChainExample.png)
 > *Notar que estando en el estado 1, solo puedo ir al estado 2 y que estando en el estado 5, solo puedo ir al estado 4.*
 
 #### Metodo 1
@@ -2598,7 +2607,7 @@ vector<ll> pm = multiply(Tm, p0);
 
 #### Numeros Primos
 
-- Un número primo es aquel que tiene como únicos divisores el 1 y sí mismo.
+- Un numero primo es aquel que tiene como unicos divisores el 1 y si mismo.
 
 ``` c++
 bool isPrime(int n) {
@@ -2611,9 +2620,9 @@ bool isPrime(int n) {
 ```
 > *Complejidad: $\mathcal{O}(\sqrt{n})$*
 
-#### Criba de Eratóstenes
+#### Criba de Eratostenes
 
-- La criba de eratóstenes es una tabla que te indica si un número es primo o no.
+- La criba de eratostenes es una tabla que te indica si un numero es primo o no.
 
 ``` c++
 bitset isPrime[MAXN];
@@ -2634,7 +2643,7 @@ void criba() {
 **NOTA**:
 - Usar [gcd](#gcd) y [lcm](#lcm) en su lugar
 
-Para calcular el máximo común divisor entre dos números podemos usar el **algoritmo de euclides**.
+Para calcular el maximo comun divisor entre dos numeros podemos usar el **algoritmo de euclides**.
 
 ``` c++
 int mcd(int a, int b) {
@@ -2644,7 +2653,7 @@ int mcd(int a, int b) {
 ```
 > *Complejidad: $\mathcal{O}(\log(min(a,b)))$*
 
-Para calcular el mínimo común múltiplo entre dos números usamos el MCD
+Para calcular el minimo comun multiplo entre dos numeros usamos el MCD
 
 ``` c++
 int mcm(int a, int b) { return (a / mcd(a, b)) * b; }
@@ -2745,9 +2754,9 @@ ll count_coprime(ll n){
 ### Aritmetica Modular
 
 - a **es congruente** a b en modulo m (a≡b mod(m)) $\iff$ a tiene el mismo resto que b al dividirse por m $\iff$ |a $\pm$ b| % m == 0
-- $ (x + y) \bmod m = \big( (x \bmod m) + (y \bmod m) \big) \bmod m $
-- $ (x - y) \bmod m = \big( (x \bmod m) - (y \bmod m) \big) \bmod m $
-- $ (x \cdot y) \bmod m = \big( (x \bmod m) \cdot (y \bmod m) \big) \bmod m $
+- $(x + y) \bmod m = \big( (x \bmod m) + (y \bmod m) \big) \bmod m$
+- $(x - y) \bmod m = \big( (x \bmod m) - (y \bmod m) \big) \bmod m$
+- $(x \cdot y) \bmod m = \big( (x \bmod m) \cdot (y \bmod m) \big) \bmod m$
 
 
 ### Inverso Modular
@@ -2774,7 +2783,7 @@ ll invmod(ll a){ return expmod(a, M - 2, M); }
 
 ### Computo de Inversos Modulares
 
-- Cuando el módulo **$M$ es un número primo** se satisface la siguiente fórmula:
+- Cuando el modulo **$M$ es un numero primo** se satisface la siguiente formula:
 
 ![Formula1](Imagenes/Formula1.png)
 
@@ -2789,7 +2798,7 @@ for(ll a = 2; a < MAXN; a++) INV[a] = M - (ll)(M/a)*INV[M%a]%M;
 ```
 > *Complejidad: $\mathcal{O}(MAXN)$*
 
-### Ecuación Diofantica Lineal
+### Ecuacion Diofantica Lineal
 
 El problema consite en determinar si existe solucion para la siguiente ecuacion:
 
@@ -2851,7 +2860,7 @@ x &\equiv a_n \pmod{m_n}
 \end{aligned}
 $$
 
-donde los módulos $m_1,\cdots,m_n$ son **coprimos dos a dos**.
+donde los modulos $m_1,\cdots,m_n$ son **coprimos dos a dos**.
 
 Definimos:
 
@@ -3024,7 +3033,7 @@ El truco radica en el orden en el que se procesan las consultas: el arreglo es d
 
 ### Lista de Adyacencias
 
-En la representación de lista de adyacencia, a cada nodo `x` del grafo se le asigna una lista de adyacencia que consiste en nodos a los que existe una arista desde `x`.
+En la representacion de lista de adyacencia, a cada nodo `x` del grafo se le asigna una lista de adyacencia que consiste en nodos a los que existe una arista desde `x`.
 
 - **ventaja:** brindan una forma eficiente de encontrar todos los nodos a los que se puede viajar desde un nodo en particular
 ``` c++
@@ -3092,39 +3101,21 @@ Una matriz de adyacencia es un arreglo de dos dimensiones que representa las ari
 #### Grafo Dirigido 
 
 ``` c++
-int adj[n][n];
+int g[MAXN][MAXN] = {};
 
 // Para agregar hacemos:
 
-for(int i = 0; i < n; ++i) {
-    for(int j = 0; j < n; ++j) {
-        if(/* Existe arista desde i a j */) {
-            adj[i][j] = 1;
-        }
-        else {
-            adj[i][j] = 0;
-        }
-    }
-}
+g[1][2] = 1; // arista de 1 a 2
 ```
 
 #### Grafo Dirigido Pesado
 
 ``` c++
-int adj[n][n];
+int g[MAXN][MAXN] = {};
 
 // Para agregar hacemos:
 
-for(int i = 0; i < n; ++i) {
-    for(int j = 0; j < n; ++j) {
-        if(/* Existe arista desde i a j */) {
-            adj[i][j] = /* peso de la arista */;
-        }
-        else {
-            adj[i][j] = -1; // <-- valor para indicar que no hay arista de i a j;
-        }
-    }
-}
+g[1][2] = 5; // arista de 1 a 2 con peso 5
 ```
 
 ## Algoritmos de Recorrido
@@ -3173,11 +3164,11 @@ Encuentra **el camino mas corto** a cada vertice desde la raiz `r`.
 ``` c++
 queue<int> q;
 bitset<MAXN> visited;
-int distance[n];
+int dist[n];
 
 void bfs(int r) { // <-- pasamos la raiz como parametro
     visited[r] = 1;
-    distance[r] = 0;
+    dist[r] = 0;
     q.push(r);
     while(!q.empty()) {
         int s = q.front(); q.pop();
@@ -3185,7 +3176,7 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
         for (auto u:adj[s]) {
             if(visited[u]) continue;
             visited[u] = 1;
-            distance[u] = distance[s] + 1;
+            dist[u] = dist[s] + 1;
             q.push(u);
         }
     }
@@ -3208,7 +3199,7 @@ Mismo algoritmo de la seccion anterior.
 
 #### BFS 0-1
 
-Cuando queremos hallar el camino minimo de un nodo a otro en un grafo cuyas aristas solamente tienen peso 0 o 1 podríamos optar por utilizar el algoritmo de [Dijkstra](#dijkstra), sin embargo existe una solucion mas eficiente que consite en modificar el algoritmo clascio de BFS.
+Cuando queremos hallar el camino minimo de un nodo a otro en un grafo cuyas aristas solamente tienen peso 0 o 1 podriamos optar por utilizar el algoritmo de [Dijkstra](#dijkstra), sin embargo existe una solucion mas eficiente que consite en modificar el algoritmo clascio de BFS.
 
 ``` c++
 deque<int> dq;
@@ -3278,26 +3269,22 @@ El algoritmo de Bellman-Ford puede ser utilizado para hallar ciclos negativos en
 Devuelve el camino minimo de un vertice a todos.
 
 ``` c++
-priority_queue<pair<int,int>> pq;
+priority_queue<pair<ll,int>, vector<pair<ll,int>>, greater<>> pq;
 bitset<MAXN> visited;
-int dist[MAXN];
-for(int i = 0; i < n; ++i) {
-    dist[i] = INF; // INF es un valor enorme
-}
+ll dist[MAXN];
 
-void dijkstra(int v) {
-    pq.push({0,v});
-    dist[v] = 0;
-    visited[v] = 1;
+void dijkstra(int r) {
+    fill(dist, dist+MAXN, INF);
+    pq.push({0,r});
+    dist[r] = 0;
     while (!pq.empty()) {
-        int a = pq.top().second; pq.pop();
-        if (visited[a]) continue;
-            visited[a] = 1;
-        for (auto u : adj[a]) {
-            int b = u.first, w = u.second;
-            if (dist[a]+w < dist[b]) {
-                dist[b] = dist[a]+w;
-                pq.push({-dist[b],b});
+        int v = pq.top().second; pq.pop();
+        if (visited[v]) continue;
+            visited[v] = 1;
+        for (auto [u, w] : adj[v]) {
+            if (dist[v]+w < dist[u]) {
+                dist[u] = dist[v]+w;
+                pq.push({dist[u],u});
             }
         }
     }
@@ -3312,6 +3299,7 @@ void dijkstra(int v) {
 - **Requiere que el costo de las aristas sea no negativo**
 - MAXN debe ser ser igual a la cantidad de vertices (o un poquito mas por las moscas)
 - Util para **grafos densos**
+- Vale tanto para **grafos dirigidos** como **no dirigidos**
 
 ### Floyd-Warshall
 
@@ -3327,9 +3315,9 @@ for (int i = 1; i <= n; i++) {
     }
 }
 
-for(int k = 0; k < n, k++) {
-    for(int i = 0; i < n, i++) {
-        for(int j = 0; j < n, j++) {
+for(int k = 0; k < n; k++) {
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
             dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
         }
     }
@@ -3354,9 +3342,11 @@ Los grafos dirigidos poseen aristas que solo pueden ser recorridas en un solo se
 
 Un orden topologico es una forma de ordenacion para los nodos del grafo de forma tal que si existe un camino que lleva desde el nodo `a` al nodo `b`, entonces `a` aparece antes que `b` en la ordenacion.
 
-| ![DAG](Imagenes/DAG.png) | ![Ejemplo de Topological Sorting](Imagenes/TopologicalSortingExample.png) |
-|--------------------------|---------------------------------------------------------------------------|
-> *A la izquierda vemos un DAG (Directed Acyclic Graph) y a la derecha su ordenamiento topologico*
+![DAG](Imagenes/DAG.png)
+
+![Ejemplo de Topological Sorting](Imagenes/TopologicalSortingExample.png)
+
+> *Arriba vemos un DAG (Directed Acyclic Graph) y abajo su ordenamiento topologico.*
 
 El algoritmo recorre el grafo con [DFS](#dfs) comenzando desde un nodo no procesado. Decimos que un nodo ha sido procesado si todos sus sucesores han sido procesados. Tras cada DFS, todos los nodos procesados se agregan al orden. Finalmente, debemos ivertir el orden para obtener el orden topologico.
 
@@ -3509,7 +3499,7 @@ El algoritmo primero preprocesa la tabla `succ[x][k]` que nos indica para cada n
 const int LOG = ceil(log2(MAXN));
 int succ[MAXN][LOG];   // succ[x][j] = nodo alcanzado desde x en 2^j pasos
 
-int n; // Número de nodos
+int n; // Numero de nodos
 
 void preprocess(vector<int>& next) {
     // Inicializamos los pasos de 2^0
@@ -3526,7 +3516,7 @@ void preprocess(vector<int>& next) {
 int get_successor(int x, int k) {
     for (int j = 0; j < LOG; j++) {
         if (k & (1 << j)) {
-            x = succ[x][j];  // Avanzamos 2^j pasos si el bit j está activo
+            x = succ[x][j];  // Avanzamos 2^j pasos si el bit j esta activo
         }
     }
     return x;
@@ -3578,9 +3568,11 @@ while (a != b) {
 
 Encuentra las componentes fuertemente conexas[^9] de un grafo dirigido.
 
-| ![Ejemplo Grafo Dirigido](Imagenes/GrafoDirigidoKosaraju.png) | ![Ejemplo de Comoponentes Conexas](Imagenes/ComponentesFuertementeConexasKosaraju.png) |
-|---------------------------------------------------------------|---------------------------------------------------------------------------|
-> *A la izquierda vemos un grafo dirigido y a la derecha sus componentes fuertemenete conexas resaltadas con rojo*
+![Ejemplo Grafo Dirigido](Imagenes/GrafoDirigidoKosaraju.png)
+
+![Ejemplo de Comoponentes Conexas](Imagenes/ComponentesFuertementeConexasKosaraju.png)
+
+> *Arriba vemos un grafo dirigido y abajo sus componentes fuertemente conexas resaltadas con rojo.*
 
 Notar que las componentes halladas forman un DAG:
 
@@ -3643,31 +3635,31 @@ void dfs(int v, vector<vector<int>> const& adj, vector<int> &output) {
 En este tipo de problemas, nos dan una formula logica con la siguiente estructura: *(a1 ∨ b1) ∧ (a2 ∨ b2) ∧ · · · ∧ (am ∨ bm)*, donde cada `ai` y `bi` es una variable logica (*x1, x2, . . . , xn*) o la negacion de una variable (*¬x1 , ¬x2, . . . , ¬xn*). La tarea consiste en asignarle un valor de verdad a cada variable o indicar que no es posible, lo cual se logra mediante el siguiente algoritmo que hace uso del algoritmo de Tarjan:
 
 ```c++
-bool truth[MAXN]; // truth[cmp[i]] = valor de la variable i en la solución (2SAT)
-int nvar; // Número de variables originales
-int neg(int x) { return MAXN - 1 - x; } // Retorna la negación de x en el grafo
+bool truth[MAXN]; // truth[cmp[i]] = valor de la variable i en la solucion (2SAT)
+int nvar; // Numero de variables originales
+int neg(int x) { return MAXN - 1 - x; } // Retorna la negacion de x en el grafo
 vector<int> g[MAXN]; // Grafo de implicaciones
 int n;
 int lw[MAXN]; // Representa el "low-link value" de cada nodo para Tarjan
-int idx[MAXN]; // Guarda el índice de descubrimiento en el DFS de Tarjan
+int idx[MAXN]; // Guarda el indice de descubrimiento en el DFS de Tarjan
 int qidx; // Contador de nodos visitados en el DFS de Tarjan
 int cmp[MAXN]; // Guarda la componente fuertemente conexa (SCC) a la que pertenece cada nodo
 int qcmp; // Contador de SCCs encontradas
 stack<int> st; // Pila utilizada por el algoritmo de Tarjan
 
 void tjn(int u) {
-    lw[u] = idx[u] = ++qidx; // Asigna índice único y low-link inicial
+    lw[u] = idx[u] = ++qidx; // Asigna indice unico y low-link inicial
     st.push(u);
     cmp[u] = -2; // Marcamos como parte del stack
 
     for (int v : g[u]) { // Recorremos vecinos
-        if (!idx[v] || cmp[v] == -2) { // Si no ha sido visitado o está en el stack
+        if (!idx[v] || cmp[v] == -2) { // Si no ha sido visitado o esta en el stack
             if (!idx[v]) tjn(v);
             lw[u] = min(lw[u], lw[v]); // Actualizamos low-link
         }
     }
 
-    if (lw[u] == idx[u]) { // Si encontramos raíz de una SCC
+    if (lw[u] == idx[u]) { // Si encontramos raiz de una SCC
         int x, l = -1;
         do {
             x = st.top();
@@ -3684,7 +3676,7 @@ void tjn(int u) {
 /* Ejecuta Tarjan en todo el grafo */
 void scc() {
     memset(idx, 0, sizeof(idx)); // Reseteamos idx
-    qidx = 0; // Reiniciamos contador de índices
+    qidx = 0; // Reiniciamos contador de indices
     memset(cmp, -1, sizeof(cmp)); // Inicializamos SCCs
     qcmp = 0; // Reiniciamos contador de SCCs
 
@@ -3700,13 +3692,13 @@ void addor(int a, int b) {
 
 /* Verificacion de satisfactibilidad */
 bool satisf(int _nvar) {
-    nvar = _nvar; // Guardamos número de variables originales
+    nvar = _nvar; // Guardamos numero de variables originales
     n = MAXN; // Definimos tamaño del grafo
 
     scc(); // Encontramos SCCs
 
     for (int i = 0; i < nvar; i++)
-        if (cmp[i] == cmp[neg(i)]) return false; // Si x y ¬x están en la misma SCC, es insatisfacible
+        if (cmp[i] == cmp[neg(i)]) return false; // Si x y ¬x estan en la misma SCC, es insatisfacible
 
     return true; // Si no hay conflictos, es satisfacible
 }
@@ -3723,7 +3715,7 @@ bool satisf(int _nvar) {
 
 Suele usarse para:
 
-- Secuencias de De Brujin
+- Secuencias de De Bruijn
 
 El algoritmo de Hierholzer es un metodo para construir un circuito Euleriano[^10] (tambien se explica como construir un camino Euleriano en las notas).
 
@@ -3745,31 +3737,33 @@ Similar a como sucede con los grafos no dirigidos, que se cumpla la primera cond
 
 <u>Algoritmo</u>
 
-El algoritmo primero verifica la existencia de un circuito Euleriano como indicamos arriba. Luego, si se cumple la primera condicion, vamos recorriendo con un [DFS](#dfs) todas las aristas comenzando desde el nodo `start` (en algoritmo llamamos a la funcion con el nodo 0). Cada vez que revisamos todas las aristas del nodo, agregamos el nodo al circuito (el cual guardamos en el vector `circuit`) y hacemos [backtracking](#backtracking) para tratar de extender el circuito con las aristas que todavia no se visitaron hasta haberlas visitado a todas.
+El algoritmo asume que ya se ha verificado la existencia de un circuito Euleriano como indicamos arriba. Luego, si se cumple la primera condicion, vamos recorriendo con un [DFS](#dfs) todas las aristas comenzando desde el nodo `start`. Cada vez que revisamos todas las aristas del nodo, agregamos el nodo al circuito (el cual guardamos en el vector `circuit`) y hacemos [backtracking](#backtracking) para tratar de extender el circuito con las aristas que todavia no se visitaron hasta haberlas visitado a todas.
 
 #### Grafos no Dirigidos
 
 PRECONDICION: El grafo debe ser conexo
 
 ```c++
+vector<pair<int,int>> adj[MAXN];
+bitset<MAXM> used;
 vector<int> circuit;
 
-void hierholzer(int n, vector<unordered_set<int>> adj, int start) {
-    for (int i = 0; i < n; ++i) {
-        if (adj[i].size() % 2 == 1) {
-            return;
-        }
-    }
-
+// adj guarda pares {nodo_destino, id_arista}
+void hierholzer(int start) {
     vector<int> currPath;
     currPath.push_back(start);
 
     while (!currPath.empty()) {
         int currNode = currPath.back();
+        while (!adj[currNode].empty() && used[adj[currNode].back().second]) {
+            adj[currNode].pop_back();
+        }
         if (!adj[currNode].empty()) {
-            int nextNode = *adj[currNode].begin();
-            adj[currNode].erase(nextNode);
-            adj[nextNode].erase(currNode);
+            auto edge = adj[currNode].back();
+            int nextNode = edge.first;
+            int edgeID = edge.second;
+            adj[currNode].pop_back();
+            used[edgeID] = 1;
             currPath.push_back(nextNode);
         }
         else {
@@ -3779,41 +3773,29 @@ void hierholzer(int n, vector<unordered_set<int>> adj, int start) {
     }
     reverse(circuit.begin(), circuit.end());
 }
-
-hierholzer(n, adj, 0);
 ```
 > *Complejidad $\mathcal{O}(n + m)$*
 
 **NOTAS:**
-- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias) pero utilizando `unorder_set` para facilitar la eliminacion de aristas
-- Si queremos obtener un camino Euleriano, simplemente debemos hallar los dos nodos con grados impares y agregar un nodo extra entre esos nodos. Al final del circuito, debemos eliminar el nodo extra
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias)
+- Si queremos obtener un camino Euleriano, simplemente debemos hallar los dos nodos con grados impares y agregar una arista extra entre ellos. Al final del circuito, debemos eliminar la arista extra
 
 #### Grafos Dirigidos
 
 PRECONDICION: El grafo debe ser conexo
 
 ```c++
+vector<int> adj[MAXN];
+int in_degree[MAXN], out_degree[MAXN];
 vector<int> circuit;
 
-void hierholzer(int n, vector<vector<int>> adj, int start) {
-    vector<int> in_degree(n, 0), out_degree(n, 0);
-    for (int u = 0; u < n; ++u) {
-        out_degree[u] = adj[u].size();
-        for (int v : adj[u]) {
-            in_degree[v]++;
-        }
-    }
-    for (int i = 0; i < n; ++i) {
-        if (in_degree[i] != out_degree[i]) {
-            return;
-        }
-    }
-
+void hierholzer(int start) {
     vector<int> currPath;
     currPath.push_back(start);
 
     while (!currPath.empty()) {
         int currNode = currPath.back();
+        
         if (!adj[currNode].empty()) {
             int nextNode = adj[currNode].back();
             adj[currNode].pop_back();
@@ -3827,13 +3809,27 @@ void hierholzer(int n, vector<vector<int>> adj, int start) {
     reverse(circuit.begin(), circuit.end());
 }
 
-hierholzer(n, adj, 0);
+int start_node = -1;                // Solo para camino euleriano
+int start_count = 0, end_count = 0; // Solo para camino euleriano
+bool bad = false;
+forn(i,MAXN)
+{
+    if (out_degree[i] - in_degree[i] == 1) {
+        start_node = i;
+        start_count++;
+    } else if (in_degree[i] - out_degree[i] == 1) {
+        end_node = i;
+        end_count++;
+    } else if (in_degree[i] != out_degree[i]) {
+        bad = true; // Diferencia mayor a 1, imposible
+    }
+}
 ```
 > *Complejidad $\mathcal{O}(n + m)$*
 
 **NOTAS:**
-- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias) pero utilizando `vector` para facilitar la eliminacion de aristas
-- Si queremos obtener un camino Euleriano, simplemente debemos hallar los dos nodos con diferencias en sus aristas de entrada y salida y agregar un nodo extra entre esos nodos de forma tal que se igualen la cantidad de aristas de entrada y salida. Al final del circuito, debemos eliminar el nodo extra
+- `adj` es la representacion del grafo en forma de una [lista de adyacencias](#lista-de-adyacencias). Se destruye al finalizar el algoritmo
+- Si queremos obtener un camino Euleriano, simplemente debemos hallar los dos nodos con diferencias en sus aristas de entrada y salida y agregar una arista extra entre ellos. Al final del circuito, debemos eliminar la arista extra
 
 ### Encontrar Camino Hamiltoniano
 
@@ -4050,18 +4046,18 @@ namespace hamil {
 }
 
 int main() {
-    // Número de nodos en el grafo
+    // Numero de nodos en el grafo
     int n = 5;  // Ejemplo con 5 nodos
 
-    // Representación de las aristas (grafos no dirigidos)
+    // Representacion de las aristas (grafos no dirigidos)
     vector<pair<int, int>> edges = {
         {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 1}  // Ejemplo de ciclo no dirigido
     };
 
-    // Llamada a la función que devuelve el camino
+    // Llamada a la funcion que devuelve el camino
     hamil::vi path = hamil::work(n, edges);
 
-    // Imprimir el camino si se encontró
+    // Imprimir el camino si se encontro
     if (!path.empty()) {
         cout << "Camino encontrado: ";
         for (int v : path) {
@@ -4069,7 +4065,7 @@ int main() {
         }
         cout << endl;
     } else {
-        cout << "No se encontró un camino." << endl;
+        cout << "No se encontro un camino." << endl;
     }
 
     return 0;
@@ -4277,18 +4273,18 @@ namespace hamil {
 }
 
 int main() {
-    // Número de nodos en el grafo
+    // Numero de nodos en el grafo
     int n = 5;  // Ejemplo con 5 nodos
 
-    // Representación de las aristas (grafos dirigidos)
+    // Representacion de las aristas (grafos dirigidos)
     vector<pair<int, int>> edges = {
         {1, 2}, {2, 3}, {3, 4}, {4, 5}, {5, 1}  // Ejemplo de ciclo dirigido
     };
 
-    // Llamada a la función que devuelve el camino
+    // Llamada a la funcion que devuelve el camino
     hamil::vi path = hamil::work(n, edges);
 
-    // Imprimir el camino si se encontró
+    // Imprimir el camino si se encontro
     if (!path.empty()) {
         cout << "Camino encontrado: ";
         for (int v : path) {
@@ -4296,7 +4292,7 @@ int main() {
         }
         cout << endl;
     } else {
-        cout << "No se encontró un camino." << endl;
+        cout << "No se encontro un camino." << endl;
     }
 
     return 0;
@@ -4316,15 +4312,19 @@ Los algoritmos de esta seccion reciben como input un grafo dirigido donde el pes
 
 - **Caminos con Nodos Disjuntos:** Se nos pide encontrar la maxima cantidad de caminos desde la fuente hacia el resumidero de forma tal que cada nodo, con excepcion de la fuente y el resumidero, aparezca a lo sumo en un solo camino. Para ello, dividiremos cada nodo en 2, a excepcion de la fuente y el resumidero, donde una parte se queda con las aristas de entrada, mientras que la otra se queda con las aristas de salida; tambien agregamos una arista de capacidad 1 entre las dos mitades. Finalmente, corremos [Dinic](#dinic) en el nuevo grafo. Como la arista que conecta a las dos partes de cada nodo tiene capacidad 1, cada camino solo puede pertenecer a un unico nodo y asi, el flujo maximo sera la cantidad maxima de caminos validos existentes.
 
-| ![Grafo de Ejemplo para Caminos con Nodos Disjuntos](Imagenes/Node-disjointPathsGraph.png) | ![Grafo "Dividido" de Ejemplo para Caminos con Nodos Disjuntos](Imagenes/Node-disjointPathsDividedGraph.png) |
-|:------------------------------------------------------------------------------------------:|:---------------------------------------------------------------------------------------------------:|
-> *A la izquierda el grafo original y a la derecha el grafo luego de haber realizado la "division"*
+![Grafo de Ejemplo para Caminos con Nodos Disjuntos](Imagenes/Node-disjointPathsGraph.png)
+
+![Grafo "Dividido" de Ejemplo para Caminos con Nodos Disjuntos](Imagenes/Node-disjointPathsDividedGraph.png)
+
+> *Arriba el grafo original y abajo el grafo luego de haber realizado la "division".*
 
 - **Matching Maximo:** Dado un grafo **bipartito**[^5] no dirigido, se nos pide hallar el matching[^12] mas grande posible. Para lograrlo, basta extender el grafo con una fuente, un resumidero, aristas e interpretar todas las aristas como si tuvieran capacidad 1 y fueran dirigidas tal como se muestra en las imagenes de abajo. Luego, como la capacidad de todas las aristas es 1, al correr [Dinic](#dinic), el tamano del matching sera el mismo que el flujo maximo.
 
-| ![Grafo de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsGraph.png) | ![Grafo Extendido de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsExtendedGraph.png) |
-|:----------------------------------------------------------------------------:|:----------------------------------------------------------------:|
-> *A la izquierda el grafo original y a la derecha como debe quedar el grafo tras la extension*
+![Grafo de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsGraph.png)
+
+![Grafo Extendido de Ejemplo para Matching Maximo](Imagenes/MaximumMatchingsExtendedGraph.png)
+
+> *Arriba el grafo original y abajo como debe quedar el grafo tras la extension.*
 
 - **Matching Perfecto:** Dado un grafo **bipartito**[^5] no dirigido, se nos pide determinar si existe un matching[^12] perfecto en el grafo, i.e., sea `X` el conjunto de nodos de a izquierda y `Y` el conjunto de nodos a derecha, queremos hallar un matching `M` tal que `|M| = |X|` o `|M| = |Y|`. Ahora, el **teorema de Hall** nos dice que existe matching perfecto exactamente cuando cada subconjunto de `X` cumple que `|X| <= |vecinos(X)|` o cada subconjunto de `Y` cumple que `|X| <= |vecinos(X)|`. La idea es transformar el grafo igual que lo hicimos para el problema de obtener el matching maximo y correr [Dinic](#dinic) para obtener el flujo maximo. Luego, si el flujo maximo se corresponde con `|X|` o `|Y|` entonces, segun el teorema de Hall, existe matching perfecto.
 
@@ -4333,12 +4333,16 @@ Los algoritmos de esta seccion reciben como input un grafo dirigido donde el pes
 
 - **Cobertura por Caminos de Nodos Disjuntos:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a exactamente un camino. La idea es transformar el grafo como se muestra en la imagen de abajo y posteriormente ejecutar [Dinic](#dinic). Sea `n` la cantidad total de nodos y `c` la cantidad total de nodos emparejados; la cantidad de caminos esta dado por los nodos **no** emparejados, o sea `n-c`. Esto tambien nos dice que son los nodos que **no** estan emparejados a derecha los que inician los caminos, por lo que comenzando desde dichos nodos, podriamos obtener los `n-c` caminos.
 
-| ![Grafo de Ejemplo para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleGraph.png) | ![Grafo de Ejemplo  Resuelto para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleGraphSolved.png) | ![Grafo de Ejemplo  Transformado para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleTransformedGraph.png) |
-|:---------------------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-> *A la izquierda el grafo original, en el centro una solucion al problema y a la derecha como debe quedar el grafo transformado*
+![Grafo de Ejemplo para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleGraph.png)
+
+![Grafo de Ejemplo Resuelto para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleGraphSolved.png)
+
+![Grafo de Ejemplo Transformado para Cobertura por Caminos de Nodos Disjuntos](Imagenes/Node-disjointPathCoverExampleTransformedGraph.png)
+
+> *Arriba el grafo original, en el centro una solucion al problema y abajo como debe quedar el grafo transformado.*
 
 - **Cobertura por Caminos General:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar la **minima** cantidad de caminos en el grafo de forma tal que cada nodo pertenezca a al menos un camino. El problema se puede resolver de la misma forma que el problema de cobertura por caminos de nodos disjuntos con la particularidad de que en el grafo transformado existe una arista `a → b`, donde  `a` es disitnto de `b` (i.e, no existe la arista `a → a` en el grafo transformado), siempre que exista un camino desde `a` hacia `b` en el grafo original (posiblemente a traves de muchos nodos). 
-  - Una posible implementacion para hallar las aristas es realizar una [DFS](#dfs) desde cada nodo y agregar una arista por cada nodo visitado, lo cual nos da una complejidad de > $\mathcal{O}(n \cdot (n + m))$ (no encontre una implementacion mas sencilla💀).
+  - Una posible implementacion para hallar las aristas es realizar una [DFS](#dfs) desde cada nodo y agregar una arista por cada nodo visitado, lo cual nos da una complejidad de > $\mathcal{O}(n \cdot (n + m))$ (no encontre una implementacion mas sencilla).
 
 - **Hallar la Maxima Anticadena:** Dado un DAG (Directed Acyclic Graph), se nos pide hallar una anticadena de longitud **maxima**. En un grafo, se entiende por anticadena a un conjunto de nodos tal que para cada nodo en el conjunto, **no** existe un camino que lleve al resto de nodos, por lo que podemos decir que todos los nodos pertenecientes a la anticadena son de cierta forma "independientes" los unos de los otros. Ahora, el **teorema de Dilworth** nos dice que el tamaño de la maxima anticadena es igual a la cantidad de caminos que resuelven el problema de cobertura por caminos general. De hecho, si construimos los caminos tal como se indico en el problema de cobertura por caminos de nodos disjuntos, podemos formar una anticadena simplemente tomando los nodos que inician los caminos (¡Aunque no es la unica!).
 
@@ -4471,7 +4475,7 @@ struct Dinic {
 };
 
 int main() {
-    int n = 6;  // Número de nodos
+    int n = 6;  // Numero de nodos
     Dinic dinic(n);
 
     // Agregar aristas con capacidad
@@ -4565,9 +4569,9 @@ El algoritmo primero preprocesa la tabla `up[x][k]` que nos indica para cada nod
 
 ```c++
 const int LOG = ceil(log2(MAXN));
-int up[MAXN][LOG]; // up[x][j] = 2^j-ésimo ancestro de x
+int up[MAXN][LOG]; // up[x][j] = 2^j-esimo ancestro de x
 memset(up, -1, sizeof(up));
-int n; // Número de nodos
+int n; // Numero de nodos
 
 // **Preprocesamiento con DFS para construir la tabla up**
 void dfs(int node, int parent) {
@@ -4590,7 +4594,7 @@ void dfs(int node, int parent) {
 
 int get_ancestor(int x, int k) {
     for (int j = 0; j < LOG; j++) {
-        if (k & (1 << j)) {  // Si el bit j está activo en k, saltamos 2^j
+        if (k & (1 << j)) {  // Si el bit j esta activo en k, saltamos 2^j
             x = up[x][j];
             if (x == -1) break;  // Si ya no tiene ancestro, salimos
         }
@@ -4598,7 +4602,7 @@ int get_ancestor(int x, int k) {
     return x;
 }
 
-// Preprocesar la tabla up con DFS desde la raíz (asumimos raíz en 0)
+// Preprocesar la tabla up con DFS desde la raiz (asumimos raiz en 0)
 dfs(0, -1);
 ```
 > *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
@@ -4667,7 +4671,7 @@ int lca(int u, int v) {
     return euler[queryMin(L, R)];
 }
 
-dfs(0, -1, 0);  // Asumimos que el nodo 0 es la raíz
+dfs(0, -1, 0);  // Asumimos que el nodo 0 es la raiz
 build_sparse_table();
 ```
 
@@ -4704,8 +4708,8 @@ En el algoritmo de Kruskal, el arbol de expansion inicialmente contiene los nodo
 ```c++
 sort(edges.begin(), edges.end());
 for (int i = 0; i < edges.size(); i++) {
-    if (!same(get<1>(edges[i]), get<2>(edges[i])) 
-        unite(get<1>(edges[i], get<2>(edges[i]))));
+    if (!same(get<1>(edges[i]), get<2>(edges[i]))) 
+        unite(get<1>(edges[i]), get<2>(edges[i]));
 }
 ```
 > *Complejidad: $\mathcal{O}(m \cdot \log(n))$*
@@ -4773,15 +4777,15 @@ long long count_spanning_trees(int n, const vector<pair<int,int>> &edges)
 ##### Minimum Spanning Tree
 
 ```c++
-bitset<MAXN> visited; // Indica si un nodo ya está en el MST
-int minEdge[MAXN];    // Peso mínimo para alcanzar un nodo desde el MST
+bitset<MAXN> visited; // Indica si un nodo ya esta en el MST
+int minEdge[MAXN];    // Peso minimo para alcanzar un nodo desde el MST
 int parent[MAXN];     // Para reconstruir el MST
 
 void prim(int start) {
     fill(minEdge, minEdge + n, INT_MAX);
     fill(parent, parent + n, -1);
 
-    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq; // Priority queue para minimos
+    priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
     pq.push({0, start}); // Iniciamos desde el nodo `start` con peso 0
     minEdge[start] = 0;
 
@@ -4804,7 +4808,7 @@ void prim(int start) {
 
     // Mostramos el MST
     cout << "Aristas del MST:\n";
-    for (int i = 1; i < n; i++) { // Empezamos desde 1 porque el nodo raíz no tiene padre
+    for (int i = 1; i < n; i++) { // Empezamos desde 1 porque el nodo raiz no tiene padre
         cout << parent[i] << " - " << i << " con peso " << adj[i][parent[i]] << "\n";
     }
 }
@@ -4817,8 +4821,8 @@ void prim(int start) {
 ###### Maximum Spanning Tree
 
 ```c++
-bitset<MAXN> visited; // Indica si un nodo ya está en el MST
-int maxEdge[MAXN];    // Peso máximo para alcanzar un nodo desde el MST
+bitset<MAXN> visited; // Indica si un nodo ya esta en el MST
+int maxEdge[MAXN];    // Peso maximo para alcanzar un nodo desde el MST
 int parent[MAXN];     // Para reconstruir el MST
 
 void primMax(int start) {
@@ -4847,9 +4851,9 @@ void primMax(int start) {
         }
     }
 
-    // Mostramos el MST máximo
-    cout << "Aristas del MST Máximo:\n";
-    for (int i = 1; i < n; i++) { // Empezamos desde 1 porque el nodo raíz no tiene padre
+    // Mostramos el MST maximo
+    cout << "Aristas del MST Maximo:\n";
+    for (int i = 1; i < n; i++) { // Empezamos desde 1 porque el nodo raiz no tiene padre
         cout << parent[i] << " - " << i << " con peso " << adj[i][parent[i]] << "\n";
     }
 }
@@ -4858,6 +4862,73 @@ void primMax(int start) {
 
 **NOTA:**
 - `adj` es la representacion del grafo en forma de una [matriz de adyacencia](#matriz-de-adyacencia)
+
+### Centroid Decomposition
+
+Un **centroid** es un nodo que al sacarlo, todos las componentes conexas que quedan tienen tamaño a lo sumo $\lfloor N/2 \rfloor$.
+
+**Teorema:**  
+Todos los arboles tienen a lo sumo 2 centroids.
+
+**Propiedad**: 
+Dado cualquier par de nodos $u$ y $v$ en el arbol original, existe exactamente un centroid $c$ que cumple dos condiciones:
+1. $c$ se ecuentra en el camino original entre $u$ y $v$.
+2. Ambos nodos, $u$ y $v$, pertenecen al subarbol centroid de $c$ (en el momento de la descomposcion donde elegimos a $c$).
+
+```c++
+// tag[y]>=tag[x] for every y in x’s connected subgraph (unrooted subtree)
+vector<int> g[MAXN];
+int tag[MAXN]; // time of discovery of centroid
+int fat[MAXN]; // father in centroid decomposition
+int szt[MAXN]; // size of subtree
+int calcsz(int x, int f){
+s   zt[x] = 1;
+    for(auto y : g[x]) if(y != f && tag[y] < 0) szt[x] += calcsz(y, x);
+    return szt[x];
+}
+int ccnt = 0;
+void cdfs(int x, int f, int sz = -1){ // O(nlogn)
+    if(sz < 0) sz = calcsz(x, -1);
+    for(auto y : g[x]) if(tag[y] < 0 && szt[y] * 2 >= sz){
+        szt[x] = 0; cdfs(y, f, sz); return;
+    }
+    tag[x] = ccnt++; fat[x] = f;
+    for(auto y : g[x]) if(tag[y] < 0) cdfs(y, x);
+}
+void centroid(){ mset(tag, -1); ccnt = 0; cdfs(0, -1); }
+```
+> *Complejidad: $\mathcal{O}(n \cdot \log(n))$*
+
+### Virtual Trees
+
+Dado un arbol original y un subconjunto de nodos destacados $S$ (con $\left| S \right| = k$), un *virtual tree* es un arbol $T = (V, E)$ tal que:
+
+- $V = S \cup \{ \operatorname{LCA}(u, v) \mid u, v \in S \}$, i.e que $T$ contiene a todos los nodos de $S$ mas el [LCA](#ancestro-comun-menor) de cualquier par de nodos en $S$.
+- E preserva la estructura general, conectando $u$ con $v$ si $u$ es ancestro de $v$ en el arbol original y no hay ningun otro nodo de $V$ en el camino original entre ellos.
+
+```c++
+// assumes sorted v (in dfs order)
+// virtual (directed) tree is t
+void agr(ll x, ll y){if(y!=-1)t[x].pb(y);}
+ll virtu(vector<ll> v){ // O(|v|) * O(lca)
+    stack<ll>s; s.push(v[0]); ll ult=-1,p;
+    auto vacia=[&](bool fg){
+        while(SZ(s)&&(fg||lca(s.top(),p)!=s.top())){
+            agr(s.top(),ult);
+            ult=s.top(); s.pop();
+        }
+    };
+    vector<ll> vi; // virtual nodes and possibly normal
+    fore(i,1,SZ(v)){
+        ll x=v[i]; p=lca(s.top(),x); vi.pb(p); vacia(0);
+        if(s.empty()||p!=s.top())s.push(p);
+        agr(p,ult); ult=-1; if(p!=x)s.push(x);
+    }
+    vacia(1); ll rt=ult; // root of t
+    // do stuff, then reset t with both v and vi
+}
+```
+> *Complejidad: $\mathcal{O}(n)$*
 
 # Fuerza Bruta
 
@@ -4982,6 +5053,7 @@ void search(int y) {
 > *Este codigo resuelve el famoso [problema de las N reinas](https://www.cs.buap.mx/~zacarias/FZF/nreinas3.pdf) en $\mathcal{O}(n!)$[^14] utilizando un algoritmo de Backtracking*
 
 Ejemplo de soluciones parciales generadas por el algoritmo para *n = 4*:
+
 ![Soluciones Parciales N Reinas](Imagenes/SolucionesParcialesNReinas.png)
 
 # Greedy
@@ -5119,14 +5191,15 @@ forr(i,0,n)
     sum_c[i+1] = sum_c[i] + c[i];
 }
 
-// Verificar si X es el K-ésimo elemento (ordenado de menor a mayor) del subarreglo [L, R]:
+// Verificar si X es el K-esimo elemento (ordenado de menor a mayor) 
+// del subarreglo [L, R]:
 int len = R - L + 1;
 int sum1 = sum_b[R+1] - sum_b[L];
 int sum2 = sum_c[R+1] - sum_c[L];
 
-    // Condición 1: Hay al menos (len - K + 1) elementos >= X
+    // Condicion 1: Hay al menos (len - K + 1) elementos >= X
 bool cond_b = (sum1 >= len - 2 * K + 2);
-    // Condición 2: Hay al menos K elementos <= X
+    // Condicion 2: Hay al menos K elementos <= X
 bool cond_c = (sum2 >= 2 * K - len);
 
 bool es_kesimo = (cond_b && cond_c);
@@ -5229,14 +5302,14 @@ ll linear_recurrence(vector<ll> c, vector<ll> f, ll n)
 
     if(n < k) return f[n];
 
-    // matriz de transición
+    // matriz de transicion
     vector<vector<ll>> X(k, vector<ll>(k, 0));
 
     // desplazamiento
     for(int i=0;i<k-1;i++)
         X[i][i+1] = 1;
 
-    // última fila (recurrencia)
+    // ultima fila (recurrencia)
     for(int i=0;i<k;i++)
         X[k-1][i] = c[k-1-i];
 
@@ -5408,7 +5481,7 @@ f(8) = 2
 $$
 
 [^1]: *Un conjunto de puntos es convexo si contiene todos los segmentos entre todo par de puntos del conjunto.*
-[^2]: *Un grafo dirigido es funcional si cada nodo tiene exactamente una arista saliente. Esto significa que el grafo forma una colección de ciclos y caminos que terminan en un ciclo*
+[^2]: *Un grafo dirigido es funcional si cada nodo tiene exactamente una arista saliente. Esto significa que el grafo forma una coleccion de ciclos y caminos que terminan en un ciclo*
 [^3]: *Un grafo es conexo si todos los nodos estan conectados por un camino*
 [^4]: *Se denomina componente de un grafo a un subconjunto conexo de los nodos del mismo*
 [^5]: *Un grafo se considera bipartito si sus nodos puedes ser coloreados usando solamente dos colores de manera tal de que dos nodos adyacentes no tengan el mismo color*
