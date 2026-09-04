@@ -2095,9 +2095,10 @@ De este modo, podemos resolver el problema en $\mathcal{O}(n \cdot \log(n))$.
 Dado un conjunto de puntos en el plano, queremos encontrar aquellos cuya distancia euclideana sea minima. Consideremos la siguiente imagen como un posible caso:
 
 ![Entrada](Imagenes/SweepLine-Example2-Input.png)
+
 > *Se destacan en negro los puntos que conforman la solucion*
 
-Podemos resolver este problema si ordenamos los puntos en orden no decreciente en base al eje $x$ y mantenemos la minima distancia $d$ vista hasta el momento. Luego, para cada nuevo punto, si existe otro punto que minimice $d$, este se encuentra contenido en la region delimitada por $[x-d,x]$ y $[y-d,y+d]$. A modo de ilustacion, la siguiente imagen muestra el momento exacto en el que se llega a la solucion de este caso:
+Podemos resolver este problema si ordenamos los puntos en orden no decreciente en base al eje $x$ y mantenemos la minima distancia $d$ vista hasta el momento. Luego, para cada nuevo punto, si existe otro punto que minimice $d$, este se encuentra contenido en la region delimitada por $[x-d,x]$ y $[y-d,y+d]$. A modo de ilustracion, la siguiente imagen muestra el momento exacto en el que se llega a la solucion de este caso:
 
 ![Solucion](Imagenes/SweepLine-Example2-Solution.png)
 
@@ -3238,17 +3239,15 @@ void bfs(int r) { // <-- pasamos la raiz como parametro
 Calcula el camino minimo desde un vertice hacia todos.
 
 ``` c++
-int distance[n];
-void bf (int v) {
-    for(int i = 0; i < n; ++i) {
-        distance[i] = INF; // INF es un valor inalcanzable
+int dist[MAXN];
+void bf (int v, int n) {
+    forn(i,n) {
+        dist[i] = INF; // INF es un valor inalcanzable
     }
-    distance[v] = 0;
-    for(int i = 1; i <= n-1; i++) {
-        for(auto e:edges) {
-            int a, b, w;
-            tie(a, b, w) = e;
-            distance[b] = min(distance[b], distance[a]+w);
+    dist[v] = 0;
+    forn(i,n) {
+        for(auto [a, b, w] : edges) {
+            dist[b] = max(dist[b], dist[a]+w);
         }
     }
 }
@@ -3291,7 +3290,9 @@ void dijkstra(int r) {
 }
 ```
 > *Invariante: Antes de la k-esima iteracion, calcula correctamente la distancia hacia los k vertices mas cercanos al origen*
+
 > *Invariante: En cada iteracion, toma al vertice no procesado que este a distancia minima del origen*
+
 > *Complejidad: $\mathcal{O}(\min\{n^2,\ m \cdot \log(n)\})$*
 
 **NOTAS**:
@@ -3307,17 +3308,17 @@ Computa la distancia entre todo par de vertices.
 
 ``` c++
 int dist[n][n];
-for (int i = 1; i <= n; i++) {
-    for (int j = 1; j <= n; j++) {
+forn(i,n) {
+    forn(j,n) {
         if (i == j) dist[i][j] = 0;
         else if (adj[i][j]) dist[i][j] = adj[i][j];
         else dist[i][j] = INF; // INF es un valor enorme
     }
 }
 
-for(int k = 0; k < n; k++) {
-    for(int i = 0; i < n; i++) {
-        for(int j = 0; j < n; j++) {
+forn(k,n) {
+    forn(i,n) {
+        forn(j,n) {
             dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j]);
         }
     }
@@ -3810,16 +3811,13 @@ void hierholzer(int start) {
 }
 
 int start_node = -1;                // Solo para camino euleriano
-int start_count = 0, end_count = 0; // Solo para camino euleriano
 bool bad = false;
 forn(i,MAXN)
 {
     if (out_degree[i] - in_degree[i] == 1) {
         start_node = i;
-        start_count++;
     } else if (in_degree[i] - out_degree[i] == 1) {
         end_node = i;
-        end_count++;
     } else if (in_degree[i] != out_degree[i]) {
         bad = true; // Diferencia mayor a 1, imposible
     }

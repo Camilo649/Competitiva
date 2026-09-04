@@ -19,7 +19,7 @@ typedef long double ld;
 
 using u64 = uint64_t;
 
-const int MAXN = -1;
+const int MAXN = 1e5+4;
 
 using namespace std;
 
@@ -42,7 +42,29 @@ template<typename S, typename T> ostream& operator<<(ostream& os, const pair<S, 
     return os << (DBG ? "(" : "") << p.fst << (DBG ? ", " : " ") << p.snd << (DBG ? ")" : "");
 }
 
-int tests;
+vector<int> adj[MAXN];
+int in_degree[MAXN], out_degree[MAXN];
+vector<int> circuit;
+
+void hierholzer(int start) {
+    vector<int> currPath;
+    currPath.push_back(start);
+
+    while (!currPath.empty()) {
+        int currNode = currPath.back();
+        
+        if (!adj[currNode].empty()) {
+            int nextNode = adj[currNode].back();
+            adj[currNode].pop_back();
+            currPath.push_back(nextNode);
+        }
+        else {
+            circuit.push_back(currPath.back());
+            currPath.pop_back();
+        }
+    }
+    reverse(circuit.begin(), circuit.end());
+}
 
 int main()
 {
@@ -53,7 +75,38 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    
+    int n,m; cin >> n >> m;
+    forn(i,m)
+    {
+        int u,v; cin >> u >> v;
+        adj[u].pb(v);
+        out_degree[u]++;
+        in_degree[v]++;
+    }
+
+    int start_node = -1, end_node = -1;
+    bool bad = false;
+    forn(i,MAXN)
+    {
+        if (out_degree[i] - in_degree[i] == 1) {
+            start_node = i;
+        } else if (in_degree[i] - out_degree[i] == 1) {
+            end_node = i;
+        } else if (in_degree[i] != out_degree[i]) {
+            bad = true; // Diferencia mayor a 1, imposible
+        }
+    }
+
+    if(start_node == -1 && end_node == -1) {start_node = 1; end_node = n;}
+
+    if(bad || start_node != 1 || end_node != n) {cout << "IMPOSSIBLE" << nl; return 0;}
+
+    hierholzer(start_node);
+
+    if(SZ(circuit) != m+1 || circuit[0] != 1 || circuit.back() != n) {cout << "IMPOSSIBLE" << nl; return 0;}
+
+    forn(i, SZ(circuit)) cout << circuit[i] << " ";
+    cout << nl;
     
     return 0;
 }
