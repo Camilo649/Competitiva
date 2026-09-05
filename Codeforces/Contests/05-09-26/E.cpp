@@ -61,12 +61,14 @@ int main()
         int a[n]; forn(i,n) cin >> a[i];
 
         bitset<MAXN> forbidden;
-        int i = 0;
+        int i = 0, i_prev = 0;
         while (i<n)
         {
             while (i<n && a[i] == -1) i++;
+            if(i>=n) break;
             //print(i); print(a[i]); print(max(i-a[i]+1, 0)); print(min(i+a[i], n));
-            forr(j,max(i-a[i]+1, 0),min(i+a[i], n)) forbidden[j]= 1;
+            forr(j,max(i-a[i]+1, i_prev),min(i+a[i], n)) forbidden[j]= 1;
+            i_prev = max(min(i+a[i], n)-1,0);
             i++;
         }
 
