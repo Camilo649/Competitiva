@@ -42,16 +42,18 @@ template<typename S, typename T> ostream& operator<<(ostream& os, const pair<S, 
     return os << (DBG ? "(" : "") << p.fst << (DBG ? ", " : " ") << p.snd << (DBG ? ")" : "");
 }
 
-int getMEX(vector<int> v)
+int getMEX(const vector<int>& v)
 {
-    sort(ALL(v));
-    int next = 0;
+    bitset<MAXN> b;
     forn(i,SZ(v))
     {
-        if(v[i] == next) next++;
+        if(v[i] >= MAXN) continue;
+        b[v[i]] = 1;
     }
 
-    return next;
+    int ans = 0;
+    while(b[ans]) ans++;
+    return ans;
 }
 
 int tests;
@@ -70,25 +72,25 @@ int main()
     while (tests--)
     {
         int n; cin >> n;
-        multiset<int> ms;
+        map<int,int> count;
         vector<int> A,B,C;
-        string ans;
+        string ans(n, ' ');
         int a[n];
         forn(i,n)
         {
             cin >> a[i];
-            ms.insert(a[i]);
+            count[a[i]]++;
         }
 
         set<int> s;
         forn(i,n)
         {
-            if(ms.count(a[i]) >= 2)
+            if(count[a[i]] >= 2)
             {
-                if(s.count(a[i])) {ans += 'A'; A.pb(a[i]);}
-                else {ans += 'B'; B.pb(a[i]); s.insert(a[i]);};
+                if(s.count(a[i])) {ans[i] = 'A'; A.pb(a[i]);}
+                else {ans[i] = 'B'; B.pb(a[i]); s.insert(a[i]);};
             }
-            else {ans += 'C'; C.pb(a[i]);}
+            else {ans[i] = 'C'; C.pb(a[i]);}
         }
 
         

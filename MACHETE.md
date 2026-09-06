@@ -4704,8 +4704,8 @@ En el algoritmo de Kruskal, el arbol de expansion inicialmente contiene los nodo
 - Preferible para **grafos dispersos** (n≈m)
 
 ```c++
-sort(edges.begin(), edges.end());
-for (int i = 0; i < edges.size(); i++) {
+sort(ALL(edges));
+forn (i,SZ(edges)) {
     if (!same(get<1>(edges[i]), get<2>(edges[i]))) 
         unite(get<1>(edges[i]), get<2>(edges[i]));
 }

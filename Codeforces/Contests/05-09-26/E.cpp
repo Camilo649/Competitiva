@@ -60,7 +60,7 @@ int main()
         int n; cin >> n;
         int a[n]; forn(i,n) cin >> a[i];
 
-        bitset<MAXN> forbidden;
+        vector<bool> forbidden(n, false);
         int i = 0, i_prev = 0;
         while (i<n)
         {
@@ -68,12 +68,12 @@ int main()
             if(i>=n) break;
             //print(i); print(a[i]); print(max(i-a[i]+1, 0)); print(min(i+a[i], n));
             forr(j,max(i-a[i]+1, i_prev),min(i+a[i], n)) forbidden[j]= 1;
-            i_prev = max(min(i+a[i], n)-1,0);
+            i_prev = max(min(i+a[i], n)-1,i_prev);
             i++;
         }
 
-        // forn(i,n) cout << forbidden[i] << " ";
-        // cout << nl;
+        forn(i,n) cout << forbidden[i] << " ";
+        cout << nl;
 
         int ans[n] = {};
         int l = 0, r = n-1;
