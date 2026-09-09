@@ -20,7 +20,6 @@ typedef long double ld;
 using u64 = uint64_t;
 
 const int MAXN = -1;
-const int INF  = 1e9;
 
 using namespace std;
 
@@ -54,29 +53,21 @@ int main()
     cin.tie(0);
     cout.tie(0);
     
-    int n; cin >> n;
-    int a[n]; forn(i,n) cin >> a[i];
-    int b[n]; forn(i,n) cin >> b[i];
+    cin >> tests;
     
-    int mnA = INF, mnB = INF;
-    forn(i,n)
+    while (tests--)
     {
-        mnA = min(mnA, a[i]);
-        mnB = min(mnB, b[i]);
+        ll x,y,k; cin >> x >> y >> k;
+        ll d = y-x;
+        ll ans = 0;
+        while (k>0 && y/x > 1)
+        {
+            ans += y%x;
+            x++;y++;k--;
+        }
+
+        cout << ans + d*k << nl;
     }
-
-    int ans = -INF;
-    if(mnA < mnB) ans = min(mnB,0);
-    if(a[n-1] > ans) ans = a[n-1];
-
-    mnB = INF;
-    dforn(i,n-1)
-    {  
-        mnB = min(mnB, b[i+1]);
-        if(min(a[i], mnB) > ans) ans = min(a[i], mnB);
-    }
-
-    cout << ans << nl;
-
+    
     return 0;
 }
