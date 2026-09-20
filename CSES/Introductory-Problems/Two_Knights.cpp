@@ -48,9 +48,9 @@ void solve (int n)
 
 int main()
 {
-    // #ifdef MILF
-    //     freopen("../input.txt", "r", stdin);
-    // #endif
+    #ifdef MILF
+        freopen("../input.txt", "r", stdin);
+    #endif
     ios::sync_with_stdio(0);
     cin.tie(0);
     cout.tie(0);
