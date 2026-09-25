@@ -1497,11 +1497,16 @@ int tree[MAXN] = {};
 
 void constructBITree(int arr[], int n)
 {
-    for (int i=0; i<n; i++)
-        add(i, arr[i]);
-
-    //for (int i=1; i<=n; i++)
-    //     cout << tree[i] << " ";
+    for(int i = 0; i < n; i++) {
+        tree[i + 1] = arr[i]; 
+    }
+    for(int i = 1; i<=n; i++)
+    {
+        int p = i + (i&-i) // padre inmediato
+        if(p <= n){
+            tree[p] += tree[i];
+        }
+    }
 }
 
 void add(int k, int x) {
@@ -1523,7 +1528,7 @@ int sum(int k) {
 
 Toda consulta de rango puede resolverse de la siguiente manera: $sum(r) - sum(l-1)$
 
-> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
+> *Complejidad construccion: $\mathcal{O}(n)$*
 
 > *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
@@ -1534,7 +1539,7 @@ Toda consulta de rango puede resolverse de la siguiente manera: $sum(r) - sum(l-
 
 # Segment Tree
 
-Es un arreglo que responde tanto consultas de operaciones de prefijos sobre rangos (suma, producto, AND, OR, XOR, MCD, MCM, etc.) como consultas sobre minimos y maximos de rangos.
+Es un arreglo que permite responder consultas de operaciones **asociativas** sobre rangos (suma, producto, AND, OR, XOR, MCD, MCM, min, max, etc.) y actualizar valores individuales.
 
 Espcialmente eficiente para:
 
@@ -1600,7 +1605,7 @@ int sumst(int l, int r) { // indice izquiero del subarbol, indice derecho del su
 ```
 >*`l` y `r` deben estar indexados desde 0*
 
-> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
+> *Complejidad construccion: $\mathcal{O}(n)$*
 
 > *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
