@@ -98,9 +98,9 @@ void query(int k, int tl, int tr, int l, int r, int p) {
     }
 
     // 3. Paso recursivo: partimos el NODO a la mitad
-    int tm = (tl + tr) / 2;
-    query(k * 2, tl, tm, l, r, p);
-    query(k * 2 + 1, tm + 1, tr, l, r, p);
+    int tm = (tl+tr)/2;
+    query(k<<1,tl,tm,l,r,p);
+    query((k<<1)+1,tm+1,tr,l,r,p);
 }
 
 int main()

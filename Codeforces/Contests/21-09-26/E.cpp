@@ -20,6 +20,7 @@ typedef long double ld;
 using u64 = uint64_t;
 
 const int MAXN = -1;
+const ll INF = 1e18;
 
 using namespace std;
 
@@ -44,6 +45,20 @@ template<typename S, typename T> ostream& operator<<(ostream& os, const pair<S, 
 
 int tests;
 
+vector<ll> F;
+void fact(int n) {
+    F.clear();
+    for (ll p = 2; p * p <= n; p++) {
+        while (n%p == 0) {
+            n /= p;
+            F.pb(p);
+        }
+    }
+    if (n > 1) F.pb(n);
+
+    sort(ALL(F));
+}
+
 int main()
 {
     #ifdef GG
@@ -57,8 +72,34 @@ int main()
     
     while (tests--)
     {
-        int n,a,b,c; cin >> n >> a >> b >> c;
-        cout << n - min({a,b,c}) << nl;
+        ll n,k; cin >> n >> k;
+        map<ll,ll> h;
+        forn(i,n)
+        {
+            ll a; cin >> a;
+            h[a]++;
+        }
+
+        ll dp[n+1];
+        fill(dp, dp+n+1, INF);
+        forn(i,k+1) dp[i] = 0;
+        forr(i,k+1,n+1)
+        {
+            fact(i);
+            //print(a); print(F);
+            for(auto d : F)
+            {
+                dp[i] = min(dp[i], 1LL + d*dp[i/d]);
+            }
+            //print(dp[a]);
+        }
+
+        ll ans = 0;
+        for(auto [a,c] : h)
+        {
+            ans += dp[a]*c;
+        }
+        cout << ans << nl;
     }
     
     return 0;

@@ -42,20 +42,7 @@ template<typename S, typename T> ostream& operator<<(ostream& os, const pair<S, 
     return os << (DBG ? "(" : "") << p.fst << (DBG ? ", " : " ") << p.snd << (DBG ? ")" : "");
 }
 
-ll tests;
-
-vector<pair<int,int>> Div;
-void getDiv(int n) {
-    Div.clear();
-    for (int d = 1; d * d <= n; d++) {
-        if (n%d == 0) {
-            Div.push_back(d);
-            Div.push_back(n/d);
-        }
-        if (d*d == n) Div.pop_back();
-    }
-    // sort(Div.begin(), Div.end()); // OPCIONAL
-}
+int tests;
 
 int main()
 {
@@ -70,30 +57,22 @@ int main()
     
     while (tests--)
     {
-        ll n,k; cin >> n >> k;
-        map<ll,ll> h;
+        int n; cin >> n;
+        vector<int> v;
         forn(i,n)
         {
-            ll a; cin >> a;
-            h[a]++;
+            int a; cin >> a;
+            v.pb(a-i);
         }
+        sort(v.rbegin(), v.rend());
 
-        ll ans = 0;
-        for(auto [a,c] : h)
+        int ans = 1;
+        int length = 1;
+        forn(i,SZ(v)-1)
         {
-            if(a <= k) continue;
-            fact(a);
-            ll aux = a;
-            ll cost = 1;
-            forn(i,SZ(F))
-            {
-                //print(F[i]);
-                if(aux/F.back() <= k) break;
-                aux /= F[i];
-                cost += a/aux;
-            }
-
-            ans += cost*c;
+            //print(v[i]); print(v[i+1]);
+            if(v[i] - v[i+1] == 1) {length++; ans = max(ans, length);}
+            else if(v[i] - v[i+1] > 1) length = 1;
         }
 
         cout << ans << nl;
