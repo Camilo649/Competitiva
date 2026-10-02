@@ -1617,69 +1617,115 @@ int sumst(int l, int r) { // indice izquiero del subarbol, indice derecho del su
 
 # Lazy Segment Tree
 
-Es como un segment tree, pero soporta actualizaciones de rango en $\mathcal{O}(\log(n))$ a costa de ocupar mas memoria.
+Es como un segment tree, pero soporta actualizaciones de rango en $\mathcal{O}(\log(n))$ a costa de ocupar mas memoria. Las operaciones de *update* y *query* deben ser compatibles en el sentido que exista una propiedad algebraica que permita calcular el efecto del *update* sobre el resultado de la *query*, basándose solo en el estado actual del nodo y la longitud del intervalo y sin la necesidad de bajar a los hijos.
 
 ``` c++
-void updateRange(int node, int start, int end, int l, int r, long long val) {
-    if (lazy[node] != 0) {
-        tree[node] += (end - start + 1) * lazy[node];
-        if (start != end) {
-            lazy[node*2]     += lazy[node];
-            lazy[node*2 + 1] += lazy[node];
-        }
-        lazy[node] = 0;
-    }
+// ======================================================================
+// 1. ZONA MATEMÁTICA (Acá configuras la lógica de tu problema)
+// ======================================================================
 
-    if (start > r || end < l)
-        return;
+const int NO_OPERATION  = -1;
 
-    if (start >= l && end <= r) {
-        tree[node] += (end - start + 1) * val;
-        if (start != end) {
-            lazy[node*2]     += val;
-            lazy[node*2 + 1] += val;
-        }
-        return;
-    }
+// ¿Qué guarda cada nodo del árbol?
+struct Node {
+    ll val = 0; // Neutro (0 para suma, INF para mínimo, etc.)
+};
 
-    int mid = (start + end) / 2;
-    updateRange(node*2,     start, mid, l, r, val);
-    updateRange(node*2 + 1, mid+1, end, l, r, val);
+// ¿Qué guarda el post-it (lazy)?
+struct LazyTag {
+    ll add = NO_OPERATION;
+};
 
-    tree[node] = tree[node*2] + tree[node*2 + 1];
+// A) Fusión de nodos (Push-up) - IMPORTANTE EL ORDEN: izq luego der
+Node compose(Node izq, Node der) {
+    Node res;
+    res.val = izq.val + der.val; 
+    return res;
 }
 
-long long sumst(int node, int start, int end, int l, int r) {
-    if (lazy[node] != 0) {
-        tree[node] += (end - start + 1) * lazy[node];
-        if (start != end) {
-            lazy[node*2]     += lazy[node];
-            lazy[node*2 + 1] += lazy[node];
-        }
-        lazy[node] = 0;
+// B) Aplicar el post-it al nodo
+Node apply_lazy(Node nodo, LazyTag tag, int tl, int tr) {
+    if (tag.add == NO_OPERATION) return nodo;
+    nodo.val += tag.add * (tr - tl + 1); // Ejemplo: Sumar a rango
+    return nodo;
+}
+
+// C) Componer post-its (Cronología: 'viejo' ya estaba, 'nuevo' va llegando)
+LazyTag compose_lazy(LazyTag viejo, LazyTag nuevo) {
+    if (nuevo.add == NO_OPERATION) return viejo;
+    if (viejo.add == NO_OPERATION) return nuevo;    
+    LazyTag res;
+    res.add = viejo.add + nuevo.add;
+    return res;
+}
+
+// ======================================================================
+// 2. ZONA DEL SEGMENT TREE (Lógica de recorrido - Intocable)
+// ======================================================================
+
+Node t[2*MAXN];
+LazyTag lazy[2*MAXN];
+
+// Propagar el post-it a los hijos
+void propagate(int k, int tl, int tr) {
+    if (lazy[k].add == NO_OPERATION) return;
+    
+    int mid = (tl+tr)/2;
+    
+    // 1. Aplicamos el efecto del lazy a los valores reales de los hijos
+    t[2*k] = apply_lazy(t[2*k], lazy[k], tl, mid);
+    t[2*k+1] = apply_lazy(t[2*k+1], lazy[k], mid+1, tr);
+    
+    // 2. Acumulamos el post-it en el historial de los hijos
+    lazy[2*k] = compose_lazy(lazy[2*k], lazy[k]);
+    lazy[2*k+1] = compose_lazy(lazy[2*k+1], lazy[k]);
+    
+    // 3. Rompemos el post-it del padre
+    lazy[k] = LazyTag(); 
+}
+
+void updateRange(int k, int tl, int tr, int l, int r, LazyTag upd) {
+    if (l > tr || r < tl) return; // Fuera de rango
+    
+    if (tl >= l && tr <= r) { // Adentro del rango: aplicamos y cortamos
+        t[k] = apply_lazy(t[k], upd, tl, tr);
+        lazy[k] = compose_lazy(lazy[k], upd);
+        return;
     }
+    
+    propagate(k, tl, tr); // Propagamos antes de bajar
+    
+    int mid = (tl+tr)/2;
+    updateRange(2*k, tl, mid, l, r, upd);
+    updateRange(2*k+1, mid+1, tr, l, r, upd);
+    
+    t[k] = compose(t[2*k], t[2*k+1]); // Actualizamos el padre al subir
+}
 
-    if (start > r || end < l)
-        return 0;
-
-    if (start >= l && end <= r)
-        return tree[node];
-
-    int mid = (start + end) / 2;
-    return sumst(node*2,     start, mid, l, r) +
-           sumst(node*2 + 1, mid+1, end, l, r);
+Node query(int k, int tl, int tr, int l, int r) {
+    if (l > tr || r < tl) return Node(); // Nodo neutro
+    
+    if (tl >= l && tr <= r) return t[k]; // Adentro del rango
+    
+    propagate(k, tl, tr); // Propagamos antes de bajar
+    
+    int mid = (tl+tr)/2;
+    return compose(
+        query(2*k, tl, mid, l, r),
+        query(2*k+1, mid+1, tr, l, r)
+    );
 }
 ```
 >*`l` y `r` deben estar indexados desde 0*
 
-> *Complejidad construccion: $\mathcal{O}(n \cdot \log(n))$*
+> *Complejidad construccion: $\mathcal{O}(n)$*
 
 > *Complejidad consulta: $\mathcal{O}(\log(n))$* 
 
 > *Complejidad actualizacion en rango: $\mathcal{O}(\log(n))$*
 
 **NOTAS**:
-- `lazy` es un arreglo de tamaño $2*N$ que lleva el registro del valor de la actualizacion lazy de cada nodo. Se inicializa en $0$
+- `lazy` es un arreglo de tamaño $2*N$ que lleva el registro del valor de la actualizacion lazy de cada nodo del arbol. Se inicializa con el valor neutro de la operacion
 - Se construye del mismo modo que el [segment tree](#segment-tree) comun
 
 # Matematicas
