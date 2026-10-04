@@ -1,0 +1,54 @@
+#include <bits/stdc++.h>
+
+#define forr(i,a,b) for(int i = (int) a; i < (int) b; ++i)
+#define forn(i,n) forr(i,0,n)
+
+#define dforr(i,a,b) for(int i = (int) b-1; i >= (int) a; --i)
+#define dforn(i,n) dforr(i,0,n)
+
+#define SZ(x) ((int) x.size())
+#define ALL(x) x.begin, x.end()
+#define pb push_back
+#define fst first
+#define snd second 
+#define nl '\n'
+
+typedef long long ll;
+typedef long double ld;
+
+using u64 = uint64_t;
+
+using namespace std;
+
+int main()
+{
+    #ifdef GG
+        freopen("../input.txt", "r", stdin);
+    #endif
+    ios::sync_with_stdio(0);
+    cin.tie(0);
+    cout.tie(0);
+
+    int n; cin >> n;
+    ll a[n]; forn(i,n) cin >> a[i];
+
+    sort(a, a+n);
+
+    ll sum = 0;
+    forn(i,n)
+    {
+        if(a[i] <= sum+1)
+        {
+            sum += a[i];
+        }
+        else
+        {
+            cout << sum+1 << nl;
+            return 0;
+        }
+    }
+
+    cout << sum+1 << nl;
+
+    return 0;
+}
