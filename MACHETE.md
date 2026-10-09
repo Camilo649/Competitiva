@@ -2809,7 +2809,7 @@ ll count_coprime(ll n){
 - $(x + y) \bmod m = \big( (x \bmod m) + (y \bmod m) \big) \bmod m$
 - $(x - y) \bmod m = \big( (x \bmod m) - (y \bmod m) \big) \bmod m$
 - $(x \cdot y) \bmod m = \big( (x \bmod m) \cdot (y \bmod m) \big) \bmod m$
-
+- Si $x \bmod m < 0 \implies x + m \geq 0$
 
 ### Inverso Modular
 

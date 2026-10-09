@@ -18,47 +18,57 @@ typedef long double ld;
 
 using u64 = uint64_t;
 
+const int MAXN = 308;
+
 using namespace std;
+
 int main()
 {
+    #ifdef GG
+        freopen("../input.txt", "r", stdin);
+    #endif
     ios::sync_with_stdio(0);
     cin.tie(0);
+    cout.tie(0);
 
-    int N; cin >> N;
-    vector<string> names(N);
-    forn(i, N) cin >> names[i];
-    sort(ALL(names));                          // orden alfabético, como el map
+    int n; cin >> n;
+    vector<string> names(n);
+    forn(i,n) cin >> names[i];
 
-    map<string,int> id;
-    forn(i, N) id[names[i]] = i;
+    map<string,int> name_to_id;
+    forn(i,n) name_to_id[names[i]] = i;    // id_to_name es simplemente names[id]
 
-    vector<int> lo(N, 1);                      // cota inferior de posición
-    vector<vector<char>> ban(N, vector<char>(N + 2, 0));
+    vector<bitset<MAXN>> pos(n);
+    forn(i,n) forn(j,n) pos[i][j] = 1;
 
-    int Q; cin >> Q;
-    forn(q, Q) {
-        int R, W; cin >> R >> W;
-        vector<char> in(N, 0);
-        forn(i, R) { string s; cin >> s; in[id[s]] = 1; }
-
-        forn(h, N) {
-            if (in[h]) lo[h] = max(lo[h], W);  // posiciones 1..W-1 prohibidas
-            else       ban[h][W] = 1;          // posición W prohibida
+    int R; cin >> R;
+    forn(k,R)
+    {
+        int m, w; cin >> m >> w; w--;
+        bitset<MAXN> b;
+        forn(j,m){
+            string t; cin >> t;
+            b[name_to_id[t]] = 1;
+        }
+        forn(i,n)
+        {
+            if(b[i]) forn(j,w) pos[j][i] = 0;
+            else     pos[w][i] = 0;
         }
     }
 
-    vector<char> placed(N, 0);
+    bitset<MAXN> placed;
     vector<string> ans;
-    forr(p, 1, N + 1) {
-        forn(h, N) {
-            if (!placed[h] && lo[h] <= p && !ban[h][p]) {
-                placed[h] = 1;
-                ans.pb(names[h]);
-                break;
-            }
-        }
+    forn(i,n)
+    {
+        bitset<MAXN> cand = pos[i] & ~placed;
+        int j = cand._Find_first();        // menor id disponible en esta posición
+        placed[j] = 1;
+        ans.pb(names[j]);
     }
 
-    for (auto& s : ans) cout << s << " ";
+    forn(i,n) cout << ans[i] << " ";
     cout << nl;
+
+    return 0;
 }
