@@ -19,10 +19,59 @@ typedef long double ld;
 using u64 = uint64_t;
 
 const int MAXN = 1e5+5;
+const int INF  = 1e9;
 
 using namespace std;
 
-int nxt[MAXN];
+#ifdef GG
+#define DBG 1
+#define print(x) cout << #x << " = " << x << endl
+#else
+#define DBG 0
+#define print(x) cout << x << nl
+#endif
+
+template<typename T> ostream& operator<<(ostream& os, const vector<T>& v) {
+    if (DBG) os << "[";
+    for (auto& x : v) os << x << (DBG ? ", " : " ");
+    return DBG ? os << "]" : os;
+}
+
+template<typename S, typename T> ostream& operator<<(ostream& os, const pair<S, T>& p) {
+    return os << (DBG ? "(" : "") << p.fst << (DBG ? ", " : " ") << p.snd << (DBG ? ")" : "");
+}
+
+pair<int,int> nxt[MAXN];
+bitset<MAXN> visited;
+vector<int> adj[MAXN];
+
+void bfs(int r) {
+    //print(r);
+    visited.reset();
+    queue<pair<int,int>> q;
+    visited[r] = 1;
+    q.push({r,0});
+    int d = 0;
+    while(!q.empty()) {
+        pair<int,int> s = q.front(); q.pop();
+        if(s.snd == d) {
+            if(nxt[r].snd == d) break;
+            d++;
+        }
+        //print(d);
+        for (auto u:adj[s.fst]) {
+            //print(u);
+            if(visited[u]) continue;
+            visited[u] = 1;
+            q.push({u,d});
+
+            if(d<nxt[u].snd && r > u) nxt[u] = {r,d};
+            else if(d==nxt[u].snd && r > u) nxt[u].fst = min(nxt[u].fst, r); 
+
+            if(u>r) nxt[r] = {min(nxt[r].fst, u),d};
+        }
+    }
+}
 
 int main()
 {
@@ -34,40 +83,25 @@ int main()
     cout.tie(0);
 
     int n; cin >> n;
-
-    forr(i,1,n+1) nxt[i] = i;
+    fill(nxt, nxt + n, make_pair(INF, INF));
+    nxt[n-1] = {n-1,-1}; 
+    if(n>1) nxt[n-2] = {n-1,-1};
 
     forn(i,n-1)
     {
-        int u,v; cin >> u >> v;
-        if(v > u) 
-        {
-            if(nxt[u] > u)
-            {
-                nxt[u] = min(nxt[u], v);
-            }
-            else
-            {
-                nxt[u] = v;
-            }
-        }
-        
-        if(u > v) 
-        {
-            if(nxt[v] > v)
-            {
-                nxt[v] = min(nxt[v], u);
-            }
-            else
-            {
-                nxt[v] = u;
-            }
-        }
+        int u,v; cin >> u >> v; u--; v--;
+        adj[u].pb(v);
+        adj[v].pb(u);
     }
 
-    forr(i,1,n+1)
+    dforn(i,n-2)
     {
-        cout << nxt[i] << " ";
+        if(nxt[i].fst == INF) bfs(i);
+    }
+
+    forr(i,0,n)
+    {
+        cout << nxt[i].fst+1 << " ";
     }
     cout << nl;
 
