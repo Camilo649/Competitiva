@@ -64,7 +64,7 @@ int main()
         c += points[i].snd;
     }
 
-    cout << fixed << setprecision(8) << ans << nl;
+    cout << ans << nl;
 
 
     return 0;

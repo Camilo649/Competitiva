@@ -4,3 +4,5 @@ Codeforces/Contests/19-12-24/
 *.csv
 tempCodeRunnerFile
 texput.log
+
+.venv/

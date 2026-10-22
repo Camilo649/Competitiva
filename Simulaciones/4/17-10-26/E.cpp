@@ -34,7 +34,7 @@ bool solve(vector<int>& a) {
         if (a[i] <= prev) return false;
         prev = a[i];
     }
-    prev = n + 1;
+    prev = n + 1; // INF
     for (int i = pk + 1; i < n; i++) if (a[i]) {
         if (a[i] >= prev) return false;
         prev = a[i];

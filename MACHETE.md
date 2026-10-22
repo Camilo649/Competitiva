@@ -160,6 +160,7 @@ header-includes:
 | [Funciones de Busqueda: Equal Range](#equal-range)                  | Devuelve una tupla con las salidas de *lower_bound()* y *upper_bound()* respectivamente en tiempo $\mathcal{O}(\log(n))$ |
 | [Funciones de Busqueda: Min Element](#min-element)                  | Devuelve un iterador al elemento minimo dentro de un rango en tiempo $\mathcal{O}(n)$                                    |
 | [Funciones de Busqueda: Max Element](#max-element)                  | Devuelve un iterador al elemento maximo dentro de un rango en tiempo $\mathcal{O}(n)$                                    |
+| [Funciones de Busqueda: Find](#find)                                | Devuelve un iterador al elemento buscado en tiempo $\mathcal{O}(n)$                                                       |
 | [Funciones de Conversion: To String](#to-string)                    | Convierte un numero real en una cadena en tiempo $\mathcal{O}(digitos(n))$                                               |    
 | [Funciones de Conversion: Atoi](#atoi)                              | Convierte una arreglo de caracteres en un entero en tiempo $\mathcal{O}(s.size())$                                       |    
 | [Funciones de Bits: Counting Leading Zeros](#count-leading-zeros)   | Retorna la cantidad de ceros antes del 1 mas significativo de `x` en tiempo $\mathcal{O}(1)$                             |
@@ -369,29 +370,34 @@ cout << is_sorted(v.begin(), v.end()) << "\n"; // 1
 
 # Funciones de Busqueda
 
-**NOTAS**:
-- Las siguientes funciones requieren que la estructura a iterar se encuentre **ordenada de menor a mayor**
+## Busqueda Binaria
 
-## Lower Bound 
+Las siguientes funciones requieren que la estructura a iterar se encuentre **ordenada de menor a mayor**
+
+### Lower Bound 
 
 ```c++
 auto a = lower_bound(array, array+n, x);
 ```
 
-## Upper Bound
+### Upper Bound
 
 ```c++
 auto b = upper_bound(array, array+n, x);
 ```
 
-## Equal Range
+### Equal Range
 
 ```c++
 auto r = equal_range(array, array+n, x);
 cout << r.second-r.first << "\n";
 ```
 
-## Min Element
+## Busqueda Lineal
+
+Las siguientes funciones no rquieren ningun tipo de ordenamiento pero su costo es **$\mathcal{O}(n)$**
+
+### Min Element
 
 ```c++
 int a[] = {7, 3, 9, 1, 5};
@@ -403,7 +409,7 @@ cout << *it << "\n";          // 1
 cout << it - a << "\n";       // 3 (posicion del minimo)
 ```
 
-## Max Element
+### Max Element
 
 ```c++
 int a[] = {7, 3, 9, 1, 5};
@@ -413,6 +419,18 @@ auto it = max_element(a, a + n);
 
 cout << *it << "\n";      // 9
 cout << it - a << "\n";   // 2 (posicion del maximo)
+```
+
+### Find
+
+```c++
+int a[] = {7, 3, 9, 1, 5};
+int n = 5;
+
+auto it = find(a, a + n, 9);
+
+if (it != a + n) cout << it - a << "\n";   // 2 (posicion del elemento)
+else cout << "no esta\n";
 ```
 
 # Funciones de Conversion
@@ -2677,7 +2695,7 @@ bool isPrime(int n) {
 - La criba de eratostenes es una tabla que te indica si un numero es primo o no.
 
 ``` c++
-bitset isPrime[MAXN];
+bitset<MAXN> isPrime;
 void criba() {
     isPrime.set();
     isPrime[0] = isPrime[1] = false;
